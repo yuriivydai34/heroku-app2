@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import fileUploadService from '../services/fileUpload.service';
 
 interface FileItem {
+  id: number;
   filename: string;
   originalName: string;
   size: number;
@@ -13,7 +14,7 @@ interface FileItem {
 }
 
 interface FilesListProps {
-  onFileDeleted?: (filename: string) => void;
+  onFileDeleted?: (id: number) => void;
   onRefresh?: () => void;
   className?: string;
 }
@@ -26,7 +27,7 @@ export default function FilesList({
   const [files, setFiles] = useState<FileItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [deletingFiles, setDeletingFiles] = useState<Set<string>>(new Set());
+  const [deletingFiles, setDeletingFiles] = useState<Set<number>>(new Set());
 
   const fetchFiles = async () => {
     setLoading(true);
@@ -60,33 +61,32 @@ export default function FilesList({
     }
   };
 
-  const handleDelete = async (filename: string) => {
+  const handleDelete = async (id: number) => {
     if (!confirm('Are you sure you want to delete this file?')) {
       return;
     }
 
-    setDeletingFiles(prev => new Set(prev.add(filename)));
+    setDeletingFiles(prev => new Set(prev.add(id)));
 
     try {
-      const result = await fileUploadService.deleteFile(filename);
-      
+      const result = await fileUploadService.deleteFile(id);
+
       if (result.success) {
-        setFiles(prev => prev.filter(file => file.filename !== filename));
+        setFiles(prev => prev.filter(file => file.id !== id));
         if (onFileDeleted) {
-          onFileDeleted(filename);
+          onFileDeleted(id);
         }
       } else {
         alert(result.error || 'Failed to delete file');
       }
     } catch (err) {
-      alert(err instanceof Error ? err.message : 'Failed to delete file');
-    } finally {
-      setDeletingFiles(prev => {
-        const newSet = new Set(prev);
-        newSet.delete(filename);
-        return newSet;
-      });
-    }
+      alert(err instanceof Error ? err.message : 'Failed to delete file');      } finally {
+        setDeletingFiles(prev => {
+          const newSet = new Set(prev);
+          newSet.delete(id);
+          return newSet;
+        });
+      }
   };
 
   const getFileIcon = (mimetype: string) => {
@@ -203,7 +203,7 @@ export default function FilesList({
           </div>
         ) : (
           files.map((file) => (
-            <div key={file.filename} className="px-6 py-4">
+            <div key={file.id} className="px-6 py-4">
               <div className="flex items-center space-x-4">
                 {/* File Icon */}
                 <div className="flex-shrink-0">
@@ -272,12 +272,12 @@ export default function FilesList({
                   )}
                   
                   <button
-                    onClick={() => handleDelete(file.filename)}
-                    disabled={deletingFiles.has(file.filename)}
+                    onClick={() => handleDelete(file.id)}
+                    disabled={deletingFiles.has(file.id)}
                     className="p-2 text-red-400 hover:text-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 rounded-md disabled:opacity-50"
                     title="Delete file"
                   >
-                    {deletingFiles.has(file.filename) ? (
+                    {deletingFiles.has(file.id) ? (
                       <div className="w-4 h-4 border-2 border-red-600 border-t-transparent rounded-full animate-spin"></div>
                     ) : (
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

@@ -182,9 +182,9 @@ class FileUploadService {
     }
   }
 
-  async deleteFile(filename: string): Promise<UploadResponse> {
+  async deleteFile(id: number): Promise<UploadResponse> {
     try {
-      const response = await fetch(`${this.baseUrl}/upload/${filename}`, {
+      const response = await fetch(`${this.baseUrl}/upload/${id}`, {
         method: 'DELETE',
         headers: authService.getAuthHeaders(),
       });
