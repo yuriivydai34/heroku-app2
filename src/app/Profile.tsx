@@ -1,31 +1,115 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
+import authService from '../services/auth.service';
+import profileService from '../services/profile.service';
 
 const Profile = () => {
-  const [profile, setProfile] = useState(null);
+  const [profile, setProfile] = useState<any>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchProfile = async () => {
-      try {
-        const response = await fetch(process.env.NEXT_PUBLIC_BACKEND_URL + '/auth/profile');
-        const data = await response.json();
-        setProfile(data);
-        console.log('Fetched profile:', data);
-      } catch (error) {
-        console.error('Error fetching profile:', error);
+    const loadProfile = async () => {
+      setIsLoading(true);
+      setError(null);
+
+      const result = await profileService.fetchProfile();
+      
+      if (result.success) {
+        setProfile(result.data || null);
+        console.log('Fetched profile:', result.data);
+      } else {
+        setError(result.message || 'Failed to load profile');
       }
+      
+      setIsLoading(false);
     };
 
-    fetchProfile();
+    loadProfile();
   }, []);
 
-  return (
-    <div>
-      <h2>Profile</h2>
-      <div>
-        profile: {profile ? JSON.stringify(profile) : 'Loading...'}
+  const handleLogout = async () => {
+    await authService.logout();
+    setProfile(null);
+    // Optionally reload the page or update the UI state
+    window.location.reload();
+  };
+
+  // Show loading state
+  if (isLoading) {
+    return (
+      <div className="max-w-md mx-auto mt-8 p-6 bg-white rounded-lg shadow-md">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
+          <p className="mt-2 text-gray-600">Loading profile...</p>
+        </div>
       </div>
+    );
+  }
+
+  // Show login prompt if not authenticated
+  if (!authService.isAuthenticated()) {
+    return (
+      <div className="max-w-md mx-auto mt-8 p-6 bg-white rounded-lg shadow-md">
+        <div className="text-center">
+          <h2 className="text-xl font-semibold text-gray-800 mb-4">Profile</h2>
+          <p className="text-gray-600 mb-4">Please log in to view your profile.</p>
+          <div className="text-sm text-blue-600">
+            Use the login form above to access your profile.
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Show error state
+  if (error) {
+    return (
+      <div className="max-w-md mx-auto mt-8 p-6 bg-white rounded-lg shadow-md">
+        <div className="text-center">
+          <h2 className="text-xl font-semibold text-gray-800 mb-4">Profile</h2>
+          <p className="text-red-600 mb-4">{error}</p>
+          <button
+            onClick={() => window.location.reload()}
+            className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+          >
+            Try Again
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  // Show profile data
+  return (
+    <div className="max-w-md mx-auto mt-8 p-6 bg-white rounded-lg shadow-md">
+      <div className="text-center mb-6">
+        <h2 className="text-2xl font-bold text-gray-800">Profile</h2>
+      </div>
+      
+      {profile ? (
+        <div className="space-y-4">
+          <div className="bg-gray-50 p-4 rounded-lg">
+            <pre className="text-sm text-gray-700 whitespace-pre-wrap">
+              {JSON.stringify(profile, null, 2)}
+            </pre>
+          </div>
+          
+          <div className="flex justify-center">
+            <button
+              onClick={handleLogout}
+              className="px-6 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition-colors"
+            >
+              Logout
+            </button>
+          </div>
+        </div>
+      ) : (
+        <div className="text-center text-gray-600">
+          No profile data available
+        </div>
+      )}
     </div>
   );
 };
