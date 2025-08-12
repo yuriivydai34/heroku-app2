@@ -1,10 +1,10 @@
 import { Suspense } from 'react';
-import Feeds from './Feeds';
+import Profile from './Profile';
 
 export default function Home() {
   return (
     <div>
-      <Suspense fallback={'Loading links...'}>{<Feeds />}</Suspense>
+      <Suspense fallback={'Loading profile...'}>{<Profile />}</Suspense>
     </div>
   );
 }
