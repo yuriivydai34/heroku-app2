@@ -19,6 +19,8 @@ interface FilesListProps {
   className?: string;
 }
 
+const baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL + '/' || '';
+
 export default function FilesList({ 
   onFileDeleted, 
   onRefresh, 
@@ -209,7 +211,7 @@ export default function FilesList({
                 <div className="flex-shrink-0">
                   {file.mimetype.startsWith('image/') && file.url ? (
                     <img
-                      src={file.url}
+                      src={baseUrl + file.url}
                       alt={file.originalName}
                       className="w-10 h-10 object-cover rounded"
                       onError={(e) => {
@@ -231,7 +233,7 @@ export default function FilesList({
                     </p>
                     {file.url && (
                       <a
-                        href={file.url}
+                        href={baseUrl + file.url}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="text-blue-600 hover:text-blue-800 text-xs"
@@ -260,7 +262,7 @@ export default function FilesList({
                 <div className="flex-shrink-0 flex items-center space-x-2">
                   {file.url && (
                     <a
-                      href={file.url}
+                      href={baseUrl + file.url}
                       download={file.originalName}
                       className="p-2 text-gray-400 hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 rounded-md"
                       title="Download file"
