@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import authService from '../../services/auth.service';
 import Profile from '../../components/Profile';
 import FileUpload from '@/components/FileUpload';
+import FilesList from '@/components/FilesList';
 
 export default function DashboardPage() {
   const router = useRouter();
@@ -147,6 +148,16 @@ export default function DashboardPage() {
                 File Upload
               </h3>
               <FileUpload />
+            </div>
+          </div>
+
+          {/* FilesList Section */}
+          <div className="bg-white shadow rounded-lg">
+            <div className="px-4 py-5 sm:p-6">
+              <h3 className="text-lg leading-6 font-medium text-gray-900 mb-4">
+                Files List
+              </h3>
+              <FilesList />
             </div>
           </div>
         </div>
