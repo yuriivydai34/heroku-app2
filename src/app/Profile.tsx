@@ -15,14 +15,14 @@ const Profile = () => {
       setError(null);
 
       const result = await profileService.fetchProfile();
-      
+
       if (result.success) {
         setProfile(result.data || null);
         console.log('Fetched profile:', result.data);
       } else {
         setError(result.message || 'Failed to load profile');
       }
-      
+
       setIsLoading(false);
     };
 
@@ -87,7 +87,7 @@ const Profile = () => {
       <div className="text-center mb-6">
         <h2 className="text-2xl font-bold text-gray-800">Profile</h2>
       </div>
-      
+
       {profile ? (
         <div className="space-y-4">
           <div className="bg-gray-50 p-4 rounded-lg">
@@ -95,7 +95,7 @@ const Profile = () => {
               {JSON.stringify(profile, null, 2)}
             </pre>
           </div>
-          
+
           <div className="flex justify-center">
             <button
               onClick={handleLogout}

@@ -1,25 +1,29 @@
-import { Suspense } from 'react';
-import Profile from './Profile';
-import Register from './Register';
-import Login from './Login';
+'use client';
+
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import authService from '../services/auth.service';
 
 export default function Home() {
+  const router = useRouter();
+
+  useEffect(() => {
+    // Check if user is authenticated
+    if (authService.isAuthenticated()) {
+      // Redirect to dashboard if logged in
+      router.push('/dashboard');
+    } else {
+      // Redirect to login if not logged in
+      router.push('/login');
+    }
+  }, [router]);
+
+  // Show loading while redirecting
   return (
-    <div className="min-h-screen bg-gray-100 py-8">
-      <div className="container mx-auto px-4">
-        <div className="grid md:grid-cols-2 gap-8">
-          <div>
-            <h3 className="text-xl font-semibold text-center mb-4">New User</h3>
-            <Register />
-          </div>
-          <div>
-            <h3 className="text-xl font-semibold text-center mb-4">Existing User</h3>
-            <Login />
-          </div>
-        </div>
-        <div className="mt-8">
-          <Suspense fallback={'Loading profile...'}>{<Profile />}</Suspense>
-        </div>
+    <div className="min-h-screen bg-gray-100 flex items-center justify-center">
+      <div className="text-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
+        <p className="mt-4 text-gray-600">Redirecting...</p>
       </div>
     </div>
   );
