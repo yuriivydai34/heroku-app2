@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import authService from '../services/auth.service';
 
 interface FormData {
   username: string;
@@ -84,16 +85,13 @@ export default function Register() {
       // Here you would typically make an API call to register the user
       console.log('Registration data:', formData);
 
-      const response = await fetch(process.env.NEXT_PUBLIC_BACKEND_URL + '/users', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ ...formData, confirmPassword: undefined }), // Exclude confirmPassword from the request
+      const result = await authService.register({
+        username: formData.username,
+        password: formData.password,
       });
 
-      if (!response.ok) {
-        throw new Error('Registration failed');
+      if (!result.success) {
+        throw new Error(result.message || 'Registration failed');
       }
 
       setSubmitMessage('Registration successful! Welcome aboard!');
