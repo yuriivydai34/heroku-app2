@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import authService from '../../services/auth.service';
-import Profile from '../Profile';
+import Profile from '../../components/Profile';
 
 export default function DashboardPage() {
   const router = useRouter();
