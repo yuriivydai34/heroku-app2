@@ -29,13 +29,6 @@ const Profile = () => {
     loadProfile();
   }, []);
 
-  const handleLogout = async () => {
-    await authService.logout();
-    setProfile(null);
-    // Optionally reload the page or update the UI state
-    window.location.reload();
-  };
-
   // Show loading state
   if (isLoading) {
     return (
@@ -94,15 +87,6 @@ const Profile = () => {
             <pre className="text-sm text-gray-700 whitespace-pre-wrap">
               {JSON.stringify(profile, null, 2)}
             </pre>
-          </div>
-
-          <div className="flex justify-center">
-            <button
-              onClick={handleLogout}
-              className="px-6 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition-colors"
-            >
-              Logout
-            </button>
           </div>
         </div>
       ) : (
