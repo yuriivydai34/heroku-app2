@@ -302,11 +302,14 @@ export default function TasksPage() {
                             className="mt-1 h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
                           />
                           <div className="flex-1">
-                            <h4 className={`font-medium ${
-                              task.completed ? 'line-through text-gray-500' : 'text-gray-900'
-                            }`}>
+                            <button
+                              onClick={() => router.push(`/tasks/${task.id}`)}
+                              className={`font-medium text-left hover:underline ${
+                                task.completed ? 'line-through text-gray-500' : 'text-gray-900 hover:text-blue-600'
+                              }`}
+                            >
                               {task.title}
-                            </h4>
+                            </button>
                             {task.description && (
                               <p className={`mt-1 text-sm ${
                                 task.completed ? 'text-gray-400' : 'text-gray-600'
