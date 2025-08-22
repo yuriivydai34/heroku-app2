@@ -12,8 +12,7 @@ interface TaskData {
   completed?: boolean;
   createdAt?: string;
   updatedAt?: string;
-  userIdCreator: string;
-  userIdAssignee: string;
+  userIdAssignee: number;
 }
 
 export default function TasksPage() {
@@ -25,7 +24,7 @@ export default function TasksPage() {
   const [newTask, setNewTask] = useState({
     title: '',
     description: '',
-    userIdAssignee: ''
+    userIdAssignee: 0,
   });
 
   useEffect(() => {
@@ -69,12 +68,11 @@ export default function TasksPage() {
       const response = await taskService.createTask({
         title: newTask.title,
         description: newTask.description,
-        userIdCreator: '', // This should be set by the backend based on auth
-        userIdAssignee: newTask.userIdAssignee || '', // Default to empty if not provided
+        userIdAssignee: newTask.userIdAssignee || 0, // Default to 0 if not provided
       });
 
       if (response.success) {
-        setNewTask({ title: '', description: '', userIdAssignee: '' });
+        setNewTask({ title: '', description: '', userIdAssignee: 0 });
         setShowCreateForm(false);
         loadTasks(); // Reload tasks
       } else {
@@ -236,7 +234,7 @@ export default function TasksPage() {
                       type="text"
                       id="assignee"
                       value={newTask.userIdAssignee}
-                      onChange={(e) => setNewTask({ ...newTask, userIdAssignee: e.target.value })}
+                      onChange={(e) => setNewTask({ ...newTask, userIdAssignee: Number(e.target.value) })}
                       className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
                       placeholder="Enter assignee user ID"
                     />

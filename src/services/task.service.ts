@@ -7,8 +7,7 @@ interface TaskData {
   completed?: boolean;
   createdAt?: string;
   updatedAt?: string;
-  userIdCreator: string;
-  userIdAssignee: string;
+  userIdAssignee: number;
   [key: string]: any; // Allow for additional task fields
 }
 
