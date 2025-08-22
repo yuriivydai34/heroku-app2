@@ -62,52 +62,8 @@ export default function DashboardPage() {
       {/* Main Content */}
       <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
         <div className="px-4 py-6 sm:px-0">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
             {/* Dashboard Cards */}
-            <div className="bg-white overflow-hidden shadow rounded-lg">
-              <div className="p-5">
-                <div className="flex items-center">
-                  <div className="flex-shrink-0">
-                    <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center">
-                      <span className="text-white text-sm font-bold">U</span>
-                    </div>
-                  </div>
-                  <div className="ml-5 w-0 flex-1">
-                    <dl>
-                      <dt className="text-sm font-medium text-gray-500 truncate">
-                        User Status
-                      </dt>
-                      <dd className="text-lg font-medium text-gray-900">
-                        Active
-                      </dd>
-                    </dl>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-white overflow-hidden shadow rounded-lg">
-              <div className="p-5">
-                <div className="flex items-center">
-                  <div className="flex-shrink-0">
-                    <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center">
-                      <span className="text-white text-sm font-bold">✓</span>
-                    </div>
-                  </div>
-                  <div className="ml-5 w-0 flex-1">
-                    <dl>
-                      <dt className="text-sm font-medium text-gray-500 truncate">
-                        Authentication
-                      </dt>
-                      <dd className="text-lg font-medium text-gray-900">
-                        Verified
-                      </dd>
-                    </dl>
-                  </div>
-                </div>
-              </div>
-            </div>
-
             <div className="bg-white overflow-hidden shadow rounded-lg">
               <div className="p-5">
                 <div className="flex items-center">
@@ -122,22 +78,44 @@ export default function DashboardPage() {
                         Profile
                       </dt>
                       <dd className="text-lg font-medium text-gray-900">
-                        Complete
+                        <button
+                          onClick={() => router.push('/profile')}
+                          className="text-blue-600 hover:text-blue-800 font-medium"
+                        >
+                          Manage Profile
+                        </button>
                       </dd>
                     </dl>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
 
-          {/* Profile Section */}
-          <div className="bg-white shadow rounded-lg">
-            <div className="px-4 py-5 sm:p-6">
-              <h3 className="text-lg leading-6 font-medium text-gray-900 mb-4">
-                Profile Information
-              </h3>
-              <Profile />
+            <div className="bg-white overflow-hidden shadow rounded-lg">
+              <div className="p-5">
+                <div className="flex items-center">
+                  <div className="flex-shrink-0">
+                    <div className="w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center">
+                      <span className="text-white text-sm font-bold">T</span>
+                    </div>
+                  </div>
+                  <div className="ml-5 w-0 flex-1">
+                    <dl>
+                      <dt className="text-sm font-medium text-gray-500 truncate">
+                        Tasks
+                      </dt>
+                      <dd className="text-lg font-medium text-gray-900">
+                        <button
+                          onClick={() => router.push('/tasks')}
+                          className="text-blue-600 hover:text-blue-800 font-medium"
+                        >
+                          Manage Tasks
+                        </button>
+                      </dd>
+                    </dl>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
 
