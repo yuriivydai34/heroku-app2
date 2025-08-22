@@ -1,8 +1,9 @@
 import authService from './auth.service';
 
 interface ProfileData {
-  sub?: string;
-  username?: string;
+  firstName?: string;
+  lastName?: string;
+  email?: string;
   [key: string]: any; // Allow for additional profile fields
 }
 
@@ -29,7 +30,7 @@ class ProfileService {
         };
       }
 
-      const response = await fetch(`${this.baseUrl}/auth/profile`, {
+      const response = await fetch(`${this.baseUrl}/user-profile`, {
         method: 'GET',
         headers: authService.getAuthHeaders(),
       });
@@ -63,7 +64,7 @@ class ProfileService {
         };
       }
 
-      const response = await fetch(`${this.baseUrl}/auth/profile`, {
+      const response = await fetch(`${this.baseUrl}/user-profile`, {
         method: 'PUT',
         headers: authService.getAuthHeaders(),
         body: JSON.stringify(profileData),
@@ -85,37 +86,6 @@ class ProfileService {
       return {
         success: false,
         message: error instanceof Error ? error.message : 'Failed to update profile',
-      };
-    }
-  }
-
-  async deleteProfile(): Promise<ProfileResponse> {
-    try {
-      if (!authService.isAuthenticated()) {
-        return {
-          success: false,
-          message: 'User not authenticated',
-        };
-      }
-
-      const response = await fetch(`${this.baseUrl}/auth/profile`, {
-        method: 'DELETE',
-        headers: authService.getAuthHeaders(),
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        throw new Error(errorData.message || 'Failed to delete profile');
-      }
-
-      return {
-        success: true,
-        message: 'Profile deleted successfully',
-      };
-    } catch (error) {
-      return {
-        success: false,
-        message: error instanceof Error ? error.message : 'Failed to delete profile',
       };
     }
   }
