@@ -26,96 +26,6 @@ class FileUploadService {
     this.baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL || '';
   }
 
-  async uploadFile(
-    file: File,
-    taskId: string,
-    onProgress?: (progress: UploadProgress) => void,
-  ): Promise<UploadResponse> {
-    try {
-      const formData = new FormData();
-      formData.append('file', file);
-
-      // Create XMLHttpRequest for progress tracking
-      return new Promise((resolve, reject) => {
-        const xhr = new XMLHttpRequest();
-
-        // Track upload progress
-        if (onProgress) {
-          xhr.upload.addEventListener('progress', (event) => {
-            if (event.lengthComputable) {
-              const progress: UploadProgress = {
-                loaded: event.loaded,
-                total: event.total,
-                percentage: Math.round((event.loaded / event.total) * 100),
-              };
-              onProgress(progress);
-            }
-          });
-        }
-
-        // Handle response
-        xhr.addEventListener('load', () => {
-          try {
-            if (xhr.status >= 200 && xhr.status < 300) {
-              const response = JSON.parse(xhr.responseText);
-              resolve({
-                success: true,
-                data: response,
-                message: 'File uploaded successfully',
-              });
-            } else {
-              const errorResponse = JSON.parse(xhr.responseText || '{}');
-              resolve({
-                success: false,
-                error: errorResponse.message || `Upload failed with status ${xhr.status}`,
-              });
-            }
-          } catch (parseError) {
-            resolve({
-              success: false,
-              error: 'Failed to parse server response',
-            });
-          }
-        });
-
-        // Handle network errors
-        xhr.addEventListener('error', () => {
-          resolve({
-            success: false,
-            error: 'Network error occurred during upload',
-          });
-        });
-
-        // Handle timeout
-        xhr.addEventListener('timeout', () => {
-          resolve({
-            success: false,
-            error: 'Upload timeout',
-          });
-        });
-
-        // Configure and send request
-        xhr.open('POST', `${this.baseUrl}/upload/for-task/${taskId}`);
-
-        // Add auth headers if user is authenticated
-        if (authService.isAuthenticated()) {
-          const token = authService.getToken();
-          if (token) {
-            xhr.setRequestHeader('Authorization', `Bearer ${token}`);
-          }
-        }
-
-        xhr.timeout = 300000; // 5 minutes timeout
-        xhr.send(formData);
-      });
-    } catch (error) {
-      return {
-        success: false,
-        error: error instanceof Error ? error.message : 'Upload failed',
-      };
-    }
-  }
-
   async uploadMultipleFiles(
     files: File[],
     taskId: string,
@@ -143,7 +53,11 @@ class FileUploadService {
     return results;
   }
 
-  async uploadFileWithFetch(file: File): Promise<UploadResponse> {
+  async uploadFile(
+    file: File, 
+    taskId: string, 
+    onProgress?: (progress: UploadProgress) => void
+  ): Promise<UploadResponse> {
     try {
       const formData = new FormData();
       formData.append('file', file);
@@ -158,7 +72,7 @@ class FileUploadService {
         }
       }
 
-      const response = await fetch(`${this.baseUrl}/upload`, {
+      const response = await fetch(`${this.baseUrl}/upload/for-task/${taskId}`, {
         method: 'POST',
         headers,
         body: formData,
