@@ -88,18 +88,8 @@ export default function TaskDetailPage() {
     setCommentsError(null);
 
     try {
-      // Using the custom endpoint /comments/find-by-task/:id
-      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/comments/find-by-task/${taskId}`, {
-        method: 'GET',
-        headers: authService.getAuthHeaders(),
-      });
+      const { data } = await commentService.fetchComments(taskId);
 
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        throw new Error(errorData.message || 'Failed to fetch comments');
-      }
-
-      const data = await response.json();
       setComments(Array.isArray(data) ? data : []);
     } catch (err) {
       setCommentsError('Failed to load comments');

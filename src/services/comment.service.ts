@@ -31,9 +31,7 @@ class CommentService {
         };
       }
 
-      const url = taskId 
-        ? `${this.baseUrl}/comments?taskId=${taskId}`
-        : `${this.baseUrl}/comments`;
+      const url = `${this.baseUrl}/comments/find-by-task/${taskId}`;
 
       const response = await fetch(url, {
         method: 'GET',
@@ -191,40 +189,6 @@ class CommentService {
       return {
         success: false,
         message: error instanceof Error ? error.message : 'Failed to delete comment',
-      };
-    }
-  }
-
-  async fetchTaskComments(taskId: string): Promise<CommentResponse> {
-    try {
-      if (!authService.isAuthenticated()) {
-        return {
-          success: false,
-          message: 'User not authenticated',
-        };
-      }
-
-      const response = await fetch(`${this.baseUrl}/tasks/${taskId}/comments`, {
-        method: 'GET',
-        headers: authService.getAuthHeaders(),
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        throw new Error(errorData.message || 'Failed to fetch task comments');
-      }
-
-      const data = await response.json();
-      
-      return {
-        success: true,
-        data: data,
-        message: 'Task comments fetched successfully',
-      };
-    } catch (error) {
-      return {
-        success: false,
-        message: error instanceof Error ? error.message : 'Failed to load task comments',
       };
     }
   }
