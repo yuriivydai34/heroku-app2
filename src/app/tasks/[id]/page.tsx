@@ -28,7 +28,7 @@ export default function TaskDetailPage() {
   const router = useRouter();
   const params = useParams();
   const taskId = params.id as string;
-  
+
   const [isLoading, setIsLoading] = useState(true);
   const [task, setTask] = useState<TaskData | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -38,7 +38,7 @@ export default function TaskDetailPage() {
     description: '',
     userIdAssignee: 0,
   });
-  
+
   // Comments state
   const [comments, setComments] = useState<CommentData[]>([]);
   const [commentsLoading, setCommentsLoading] = useState(false);
@@ -52,7 +52,7 @@ export default function TaskDetailPage() {
       router.push('/login');
       return;
     }
-    
+
     if (taskId) {
       loadTask();
       loadComments();
@@ -62,10 +62,10 @@ export default function TaskDetailPage() {
   const loadTask = async () => {
     setIsLoading(true);
     setError(null);
-    
+
     try {
       const response = await taskService.fetchTask(taskId);
-      
+
       if (response.success && response.data && !Array.isArray(response.data)) {
         setTask(response.data);
         setEditForm({
@@ -86,7 +86,7 @@ export default function TaskDetailPage() {
   const loadComments = async () => {
     setCommentsLoading(true);
     setCommentsError(null);
-    
+
     try {
       // Using the custom endpoint /comments/find-by-task/:id
       const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/comments/find-by-task/${taskId}`, {
@@ -111,7 +111,7 @@ export default function TaskDetailPage() {
 
   const handleSubmitComment = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!newComment.trim() || !taskId) {
       setCommentsError('Comment content is required');
       return;
@@ -159,7 +159,7 @@ export default function TaskDetailPage() {
 
   const handleToggleComplete = async () => {
     if (!task?.id) return;
-    
+
     try {
       const response = await taskService.updateTask(task.id, {
         completed: !task.completed
@@ -177,7 +177,7 @@ export default function TaskDetailPage() {
 
   const handleUpdateTask = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!task?.id || !editForm.title.trim()) {
       setError('Task title is required');
       return;
@@ -200,6 +200,10 @@ export default function TaskDetailPage() {
     } catch (err) {
       setError('An error occurred while updating the task');
     }
+  };
+
+  const handleFilesClick = () => {
+    router.push(`/upload-for-task/${taskId}`);
   };
 
   const handleDeleteTask = async () => {
@@ -375,17 +379,15 @@ export default function TaskDetailPage() {
                 <div className="space-y-6">
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
-                      <h2 className={`text-2xl font-bold ${
-                        task.completed ? 'line-through text-gray-500' : 'text-gray-900'
-                      }`}>
+                      <h2 className={`text-2xl font-bold ${task.completed ? 'line-through text-gray-500' : 'text-gray-900'
+                        }`}>
                         {task.title}
                       </h2>
                       <div className="mt-2 flex items-center space-x-4">
-                        <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                          task.completed 
-                            ? 'bg-green-100 text-green-800' 
-                            : 'bg-yellow-100 text-yellow-800'
-                        }`}>
+                        <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${task.completed
+                          ? 'bg-green-100 text-green-800'
+                          : 'bg-yellow-100 text-yellow-800'
+                          }`}>
                           {task.completed ? 'Completed' : 'Pending'}
                         </span>
                       </div>
@@ -439,7 +441,13 @@ export default function TaskDetailPage() {
                     </dl>
                   </div>
 
-                  <div className="border-t pt-6 flex justify-end">
+                  <div className="border-t pt-6 flex justify-end space-x-3">
+                    <button
+                      onClick={handleFilesClick}
+                      className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
+                    >
+                      Files
+                    </button>
                     <button
                       onClick={handleDeleteTask}
                       className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
