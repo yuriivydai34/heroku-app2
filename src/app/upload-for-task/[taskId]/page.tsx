@@ -51,7 +51,7 @@ export default function UploadForTaskPage() {
           <h3 className="text-lg leading-6 font-medium text-gray-900 mb-4">
             File Upload
           </h3>
-          <FileUpload />
+          <FileUpload taskId={taskId} />
         </div>
       </div>
 
@@ -61,7 +61,7 @@ export default function UploadForTaskPage() {
           <h3 className="text-lg leading-6 font-medium text-gray-900 mb-4">
             Files List
           </h3>
-          <FilesList />
+          <FilesList taskId={taskId} />
         </div>
       </div>
     </div>

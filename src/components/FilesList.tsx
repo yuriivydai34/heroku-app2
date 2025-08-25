@@ -17,6 +17,7 @@ interface FilesListProps {
   onFileDeleted?: (id: number) => void;
   onRefresh?: () => void;
   className?: string;
+  taskId: string;
 }
 
 const baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL + '/' || '';
@@ -24,7 +25,8 @@ const baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL + '/' || '';
 export default function FilesList({ 
   onFileDeleted, 
   onRefresh, 
-  className = '' 
+  className = '',
+  taskId
 }: FilesListProps) {
   const [files, setFiles] = useState<FileItem[]>([]);
   const [loading, setLoading] = useState(true);
@@ -36,8 +38,8 @@ export default function FilesList({
     setError(null);
 
     try {
-      const result = await fileUploadService.getUploadedFiles();
-      
+      const result = await fileUploadService.getUploadedFiles(taskId);
+
       if (result.success && result.data) {
         setFiles(Array.isArray(result.data) ? result.data : []);
       } else {

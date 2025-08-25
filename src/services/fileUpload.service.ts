@@ -23,12 +23,13 @@ class FileUploadService {
   private baseUrl: string;
 
   constructor() {
-    this.baseUrl = 'http://localhost:3000';
+    this.baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL || '';
   }
 
   async uploadFile(
     file: File,
-    onProgress?: (progress: UploadProgress) => void
+    taskId: string,
+    onProgress?: (progress: UploadProgress) => void,
   ): Promise<UploadResponse> {
     try {
       const formData = new FormData();
@@ -94,7 +95,7 @@ class FileUploadService {
         });
 
         // Configure and send request
-        xhr.open('POST', `${this.baseUrl}/upload`);
+        xhr.open('POST', `${this.baseUrl}/upload/for-task/${taskId}`);
 
         // Add auth headers if user is authenticated
         if (authService.isAuthenticated()) {
@@ -117,6 +118,7 @@ class FileUploadService {
 
   async uploadMultipleFiles(
     files: File[],
+    taskId: string,
     onProgress?: (fileIndex: number, progress: UploadProgress) => void,
     onFileComplete?: (fileIndex: number, result: UploadResponse) => void
   ): Promise<UploadResponse[]> {
@@ -125,7 +127,7 @@ class FileUploadService {
     for (let i = 0; i < files.length; i++) {
       const file = files[i];
 
-      const result = await this.uploadFile(file, (progress) => {
+      const result = await this.uploadFile(file, taskId, (progress) => {
         if (onProgress) {
           onProgress(i, progress);
         }
@@ -206,9 +208,9 @@ class FileUploadService {
     }
   }
 
-  async getUploadedFiles(): Promise<UploadResponse> {
+  async getUploadedFiles(taskId: string): Promise<UploadResponse> {
     try {
-      const response = await fetch(`${this.baseUrl}/upload`, {
+      const response = await fetch(`${this.baseUrl}/upload/for-task/${taskId}`, {
         method: 'GET',
         headers: authService.getAuthHeaders(),
       });

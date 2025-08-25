@@ -9,6 +9,7 @@ interface FileUploadProps {
   maxSize?: number; // in MB
   acceptedTypes?: string[];
   className?: string;
+  taskId: string;
 }
 
 interface UploadedFile {
@@ -28,6 +29,7 @@ export default function FileUpload({
   maxSize = 10, // 10MB default
   acceptedTypes = ['image/*', 'application/pdf', '.doc', '.docx', '.txt'],
   className = '',
+  taskId,
 }: FileUploadProps) {
   const [files, setFiles] = useState<UploadedFile[]>([]);
   const [dragOver, setDragOver] = useState(false);
@@ -143,6 +145,7 @@ export default function FileUpload({
       try {
         const result = await fileUploadService.uploadFile(
           fileItem.file,
+          taskId,
           (progress) => {
             // Update progress
             setFiles(prev => prev.map(f =>
