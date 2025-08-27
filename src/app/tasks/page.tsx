@@ -174,7 +174,7 @@ export default function TasksPage() {
               >
                 ← Back to Dashboard
               </button>
-            </div>
+                  </div>
             <div className="flex items-center space-x-4">
               <button
                 onClick={() => setShowCreateForm(!showCreateForm)}
@@ -190,7 +190,7 @@ export default function TasksPage() {
               </button>
             </div>
           </div>
-        </div>
+                  </div>
       </header>
 
       {/* Main Content */}
@@ -237,6 +237,7 @@ export default function TasksPage() {
                       onChange={(e) => setNewTask({ ...newTask, title: e.target.value })}
                       className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
                       placeholder="Enter task title"
+                      style={{ color: 'black' }}
                       required
                     />
                   </div>
@@ -251,6 +252,7 @@ export default function TasksPage() {
                       rows={3}
                       className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
                       placeholder="Enter task description"
+                      style={{ color: 'black' }}
                     />
                   </div>
                   <div>
@@ -262,6 +264,7 @@ export default function TasksPage() {
                       value={newTask.userIdSupervisor}
                       onChange={(e) => setNewTask({ ...newTask, userIdSupervisor: Number(e.target.value) })}
                       className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                      style={{ color: 'black' }}
                     >
                       <option value={0}>Select supervisor</option>
                       {users.map((user) => (
@@ -280,6 +283,7 @@ export default function TasksPage() {
                       value={newTask.userIdAssociate}
                       onChange={(e) => setNewTask({ ...newTask, userIdAssociate: Number(e.target.value) })}
                       className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                      style={{ color: 'black' }}
                     >
                       <option value={0}>Select associate</option>
                       {users.map((user) => (
@@ -372,13 +376,19 @@ export default function TasksPage() {
                                 <span>Created: {new Date(task.createdAt).toLocaleDateString()}</span>
                               )}
                               {task.userIdCreator && (
-                                <span>Created by: {task.userIdCreator}</span>
+                                <span>
+                                  Created by: {users.find(u => String(u.id) === String(task.userIdCreator))?.username || task.userIdCreator}
+                                </span>
                               )}
                               {task.userIdAssociate && (
-                                <span>Assigned to: {task.userIdAssociate}</span>
+                                <span>
+                                  Assigned to: {users.find(u => String(u.id) === String(task.userIdAssociate))?.username || task.userIdAssociate}
+                                </span>
                               )}
                               {task.userIdSupervisor && (
-                                <span>Supervised by: {task.userIdSupervisor}</span>
+                                <span>
+                                  Supervised by: {users.find(u => String(u.id) === String(task.userIdSupervisor))?.username || task.userIdSupervisor}
+                                </span>
                               )}
                             </div>
                           </div>

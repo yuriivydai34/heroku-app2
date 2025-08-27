@@ -351,6 +351,7 @@ export default function TaskDetailPage() {
                       value={editForm.title}
                       onChange={(e) => setEditForm({ ...editForm, title: e.target.value })}
                       className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                      style={{ color: 'black' }}
                       required
                     />
                   </div>
@@ -364,6 +365,7 @@ export default function TaskDetailPage() {
                       onChange={(e) => setEditForm({ ...editForm, description: e.target.value })}
                       rows={4}
                       className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                      style={{ color: 'black' }}
                     />
                   </div>
                                     <div>
@@ -375,6 +377,7 @@ export default function TaskDetailPage() {
                                         value={editForm.userIdSupervisor || 0}
                                         onChange={(e) => setEditForm({ ...editForm, userIdSupervisor: Number(e.target.value) })}
                                         className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                                        style={{ color: 'black' }}
                                       >
                                         <option value={0}>Select supervisor</option>
                                         {users.map((user) => (
@@ -393,6 +396,7 @@ export default function TaskDetailPage() {
                                         value={editForm.userIdAssociate || 0}
                                         onChange={(e) => setEditForm({ ...editForm, userIdAssociate: Number(e.target.value) })}
                                         className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                                        style={{ color: 'black' }}
                                       >
                                         <option value={0}>Select associate</option>
                                         {users.map((user) => (
@@ -561,6 +565,7 @@ export default function TaskDetailPage() {
                     className="block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
                     placeholder="Write your comment here..."
                     disabled={isSubmittingComment}
+                    style={{ color: 'black' }}
                   />
                 </div>
                 <div className="mt-3 flex justify-end">
@@ -597,7 +602,9 @@ export default function TaskDetailPage() {
                           <p className="text-gray-900 whitespace-pre-wrap">{comment.content}</p>
                           <div className="mt-2 flex items-center space-x-4 text-xs text-gray-500">
                             {comment.userId && (
-                              <span>By: {comment.userId}</span>
+                              <span>
+                                By: {users.find(u => String(u.id) === String(comment.userId))?.username || comment.userId}
+                              </span>
                             )}
                             {comment.createdAt && (
                               <span>{new Date(comment.createdAt).toLocaleString()}</span>
