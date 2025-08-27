@@ -457,16 +457,22 @@ export default function TaskDetailPage() {
                   <div className="border-t pt-6">
                     <dl className="grid grid-cols-1 gap-x-4 gap-y-6 sm:grid-cols-2">
                       <div>
-                        <dt className="text-sm font-medium text-gray-500">Creator ID</dt>
-                        <dd className="mt-1 text-sm text-gray-900">{task.userIdCreator}</dd>
+                        <dt className="text-sm font-medium text-gray-500">Creator</dt>
+                        <dd className="mt-1 text-sm text-gray-900">
+                          {users.find(u => String(u.id) === String(task.userIdCreator))?.username || task.userIdCreator}
+                        </dd>
                       </div>
                       <div>
-                        <dt className="text-sm font-medium text-gray-500">Supervisor ID</dt>
-                        <dd className="mt-1 text-sm text-gray-900">{task.userIdSupervisor}</dd>
+                        <dt className="text-sm font-medium text-gray-500">Supervisor</dt>
+                        <dd className="mt-1 text-sm text-gray-900">
+                          {users.find(u => String(u.id) === String(task.userIdSupervisor))?.username || task.userIdSupervisor}
+                        </dd>
                       </div>
                       <div>
-                        <dt className="text-sm font-medium text-gray-500">Associate ID</dt>
-                        <dd className="mt-1 text-sm text-gray-900">{task.userIdAssociate}</dd>
+                        <dt className="text-sm font-medium text-gray-500">Associate</dt>
+                        <dd className="mt-1 text-sm text-gray-900">
+                          {users.find(u => String(u.id) === String(task.userIdAssociate))?.username || task.userIdAssociate}
+                        </dd>
                       </div>
                       {task.createdAt && (
                         <div>
