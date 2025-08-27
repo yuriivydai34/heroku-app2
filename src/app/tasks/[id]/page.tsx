@@ -13,7 +13,9 @@ interface TaskData {
   completed?: boolean;
   createdAt?: string;
   updatedAt?: string;
-  userIdAssignee: number;
+  userIdCreator: number;
+  userIdSupervisor: number;
+  userIdAssociate: number;
 }
 
 interface CommentData {
@@ -36,7 +38,9 @@ export default function TaskDetailPage() {
   const [editForm, setEditForm] = useState({
     title: '',
     description: '',
-    userIdAssignee: 0,
+    userIdCreator: 0,
+    userIdAssociate: 0,
+    userIdSupervisor: 0
   });
 
   // Comments state
@@ -71,7 +75,9 @@ export default function TaskDetailPage() {
         setEditForm({
           title: response.data.title,
           description: response.data.description || '',
-          userIdAssignee: response.data.userIdAssignee,
+          userIdCreator: response.data.userIdCreator,
+          userIdSupervisor: response.data.userIdSupervisor,
+          userIdAssociate: response.data.userIdAssociate,
         });
       } else {
         setError(response.message || 'Failed to load task');
@@ -177,7 +183,9 @@ export default function TaskDetailPage() {
       const response = await taskService.updateTask(task.id, {
         title: editForm.title,
         description: editForm.description,
-        userIdAssignee: editForm.userIdAssignee,
+        userIdAssociate: editForm.userIdAssociate,
+        userIdCreator: editForm.userIdCreator,
+        userIdSupervisor: editForm.userIdSupervisor,
       });
 
       if (response.success) {
@@ -337,14 +345,26 @@ export default function TaskDetailPage() {
                     />
                   </div>
                   <div>
+                    <label htmlFor="supervisor" className="block text-sm font-medium text-gray-700">
+                      Supervisor ID
+                    </label>
+                    <input
+                      type="number"
+                      id="supervisor"
+                      value={editForm.userIdSupervisor}
+                      onChange={(e) => setEditForm({ ...editForm, userIdSupervisor: parseInt(e.target.value) || 0 })}
+                      className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                    />
+                  </div>
+                  <div>
                     <label htmlFor="assignee" className="block text-sm font-medium text-gray-700">
                       Assignee ID
                     </label>
                     <input
                       type="number"
                       id="assignee"
-                      value={editForm.userIdAssignee}
-                      onChange={(e) => setEditForm({ ...editForm, userIdAssignee: parseInt(e.target.value) || 0 })}
+                      value={editForm.userIdAssociate}
+                      onChange={(e) => setEditForm({ ...editForm, userIdAssociate: parseInt(e.target.value) || 0 })}
                       className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
                     />
                   </div>
@@ -403,8 +423,16 @@ export default function TaskDetailPage() {
                   <div className="border-t pt-6">
                     <dl className="grid grid-cols-1 gap-x-4 gap-y-6 sm:grid-cols-2">
                       <div>
-                        <dt className="text-sm font-medium text-gray-500">Assignee ID</dt>
-                        <dd className="mt-1 text-sm text-gray-900">{task.userIdAssignee}</dd>
+                        <dt className="text-sm font-medium text-gray-500">Creator ID</dt>
+                        <dd className="mt-1 text-sm text-gray-900">{task.userIdCreator}</dd>
+                      </div>
+                      <div>
+                        <dt className="text-sm font-medium text-gray-500">Supervisor ID</dt>
+                        <dd className="mt-1 text-sm text-gray-900">{task.userIdSupervisor}</dd>
+                      </div>
+                      <div>
+                        <dt className="text-sm font-medium text-gray-500">Associate ID</dt>
+                        <dd className="mt-1 text-sm text-gray-900">{task.userIdAssociate}</dd>
                       </div>
                       {task.createdAt && (
                         <div>

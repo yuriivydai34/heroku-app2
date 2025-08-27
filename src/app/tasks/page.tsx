@@ -12,7 +12,9 @@ interface TaskData {
   completed?: boolean;
   createdAt?: string;
   updatedAt?: string;
-  userIdAssignee: number;
+  userIdCreator: number;
+  userIdAssociate: number;
+  userIdSupervisor: number;
 }
 
 export default function TasksPage() {
@@ -24,7 +26,9 @@ export default function TasksPage() {
   const [newTask, setNewTask] = useState({
     title: '',
     description: '',
-    userIdAssignee: 0,
+    userIdCreator: 0,
+    userIdAssociate: 0,
+    userIdSupervisor: 0
   });
 
   useEffect(() => {
@@ -68,11 +72,13 @@ export default function TasksPage() {
       const response = await taskService.createTask({
         title: newTask.title,
         description: newTask.description,
-        userIdAssignee: newTask.userIdAssignee || 0, // Default to 0 if not provided
+        userIdCreator: newTask.userIdCreator || 0,
+        userIdAssociate: newTask.userIdAssociate || 0,
+        userIdSupervisor: newTask.userIdSupervisor || 0,
       });
 
       if (response.success) {
-        setNewTask({ title: '', description: '', userIdAssignee: 0 });
+        setNewTask({ title: '', description: '', userIdCreator: 0, userIdAssociate: 0, userIdSupervisor: 0 });
         setShowCreateForm(false);
         loadTasks(); // Reload tasks
       } else {
@@ -227,16 +233,29 @@ export default function TasksPage() {
                     />
                   </div>
                   <div>
-                    <label htmlFor="assignee" className="block text-sm font-medium text-gray-700">
-                      Assignee ID
+                    <label htmlFor="supervisor" className="block text-sm font-medium text-gray-700">
+                      Supervisor ID
                     </label>
                     <input
                       type="text"
-                      id="assignee"
-                      value={newTask.userIdAssignee}
-                      onChange={(e) => setNewTask({ ...newTask, userIdAssignee: Number(e.target.value) })}
+                      id="supervisor"
+                      value={newTask.userIdSupervisor}
+                      onChange={(e) => setNewTask({ ...newTask, userIdSupervisor: Number(e.target.value) })}
                       className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                      placeholder="Enter assignee user ID"
+                      placeholder="Enter supervisor user ID"
+                    />
+                  </div>
+                  <div>
+                    <label htmlFor="associate" className="block text-sm font-medium text-gray-700">
+                      Associate ID
+                    </label>
+                    <input
+                      type="text"
+                      id="associate"
+                      value={newTask.userIdAssociate}
+                      onChange={(e) => setNewTask({ ...newTask, userIdAssociate: Number(e.target.value) })}
+                      className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                      placeholder="Enter associate user ID"
                     />
                   </div>
                   <div className="flex justify-end space-x-3">
@@ -321,8 +340,14 @@ export default function TasksPage() {
                               {task.createdAt && (
                                 <span>Created: {new Date(task.createdAt).toLocaleDateString()}</span>
                               )}
-                              {task.userIdAssignee && (
-                                <span>Assigned to: {task.userIdAssignee}</span>
+                              {task.userIdCreator && (
+                                <span>Created by: {task.userIdCreator}</span>
+                              )}
+                              {task.userIdAssociate && (
+                                <span>Assigned to: {task.userIdAssociate}</span>
+                              )}
+                              {task.userIdSupervisor && (
+                                <span>Supervised by: {task.userIdSupervisor}</span>
                               )}
                             </div>
                           </div>
