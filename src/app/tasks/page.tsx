@@ -4,6 +4,12 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import authService from '../../services/auth.service';
 import taskService from '../../services/task.service';
+import userService from '../../services/user.service';
+
+interface UserData {
+  id: string;
+  username: string;
+}
 
 interface TaskData {
   id?: string;
@@ -18,6 +24,21 @@ interface TaskData {
 }
 
 export default function TasksPage() {
+  const [users, setUsers] = useState<UserData[]>([]);
+  // Load users for supervisor/associate selection
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const usersArr = await userService.getUsers({});
+        if (Array.isArray(usersArr)) {
+          setUsers(usersArr);
+        }
+      } catch (err) {
+        // Optionally handle error
+      }
+    };
+    fetchUsers();
+  }, []);
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(true);
   const [tasks, setTasks] = useState<TaskData[]>([]);
@@ -234,29 +255,39 @@ export default function TasksPage() {
                   </div>
                   <div>
                     <label htmlFor="supervisor" className="block text-sm font-medium text-gray-700">
-                      Supervisor ID
+                      Supervisor
                     </label>
-                    <input
-                      type="text"
+                    <select
                       id="supervisor"
                       value={newTask.userIdSupervisor}
                       onChange={(e) => setNewTask({ ...newTask, userIdSupervisor: Number(e.target.value) })}
                       className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                      placeholder="Enter supervisor user ID"
-                    />
+                    >
+                      <option value={0}>Select supervisor</option>
+                      {users.map((user) => (
+                        <option key={user.id} value={user.id}>
+                          {user.username} (ID: {user.id})
+                        </option>
+                      ))}
+                    </select>
                   </div>
                   <div>
                     <label htmlFor="associate" className="block text-sm font-medium text-gray-700">
-                      Associate ID
+                      Associate
                     </label>
-                    <input
-                      type="text"
+                    <select
                       id="associate"
                       value={newTask.userIdAssociate}
                       onChange={(e) => setNewTask({ ...newTask, userIdAssociate: Number(e.target.value) })}
                       className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                      placeholder="Enter associate user ID"
-                    />
+                    >
+                      <option value={0}>Select associate</option>
+                      {users.map((user) => (
+                        <option key={user.id} value={user.id}>
+                          {user.username} (ID: {user.id})
+                        </option>
+                      ))}
+                    </select>
                   </div>
                   <div className="flex justify-end space-x-3">
                     <button
