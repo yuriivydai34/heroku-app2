@@ -5,6 +5,7 @@ import { useRouter, useParams } from 'next/navigation';
 import authService from '../../../services/auth.service';
 import taskService from '../../../services/task.service';
 import commentService from '../../../services/comment.service';
+import { userService } from '@/services/user.service';
 
 interface TaskData {
   id?: string;
@@ -24,6 +25,11 @@ interface CommentData {
   taskId?: number;
   userId?: number;
   createdAt?: string;
+}
+
+interface UserData {
+  id: string;
+  username: string;
 }
 
 export default function TaskDetailPage() {
@@ -49,6 +55,22 @@ export default function TaskDetailPage() {
   const [commentsError, setCommentsError] = useState<string | null>(null);
   const [newComment, setNewComment] = useState('');
   const [isSubmittingComment, setIsSubmittingComment] = useState(false);
+
+  const [users, setUsers] = useState<UserData[]>([]);
+  // Load users for supervisor/associate selection
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const usersArr = await userService.getUsers({});
+        if (Array.isArray(usersArr)) {
+          setUsers(usersArr);
+        }
+      } catch (err) {
+        // Optionally handle error
+      }
+    };
+    fetchUsers();
+  }, []);
 
   useEffect(() => {
     // Check authentication status
@@ -344,30 +366,42 @@ export default function TaskDetailPage() {
                       className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
                     />
                   </div>
-                  <div>
-                    <label htmlFor="supervisor" className="block text-sm font-medium text-gray-700">
-                      Supervisor ID
-                    </label>
-                    <input
-                      type="number"
-                      id="supervisor"
-                      value={editForm.userIdSupervisor}
-                      onChange={(e) => setEditForm({ ...editForm, userIdSupervisor: parseInt(e.target.value) || 0 })}
-                      className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                    />
-                  </div>
-                  <div>
-                    <label htmlFor="assignee" className="block text-sm font-medium text-gray-700">
-                      Assignee ID
-                    </label>
-                    <input
-                      type="number"
-                      id="assignee"
-                      value={editForm.userIdAssociate}
-                      onChange={(e) => setEditForm({ ...editForm, userIdAssociate: parseInt(e.target.value) || 0 })}
-                      className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                    />
-                  </div>
+                                    <div>
+                                      <label htmlFor="supervisor" className="block text-sm font-medium text-gray-700">
+                                        Supervisor
+                                      </label>
+                                      <select
+                                        id="supervisor"
+                                        value={editForm.userIdSupervisor || 0}
+                                        onChange={(e) => setEditForm({ ...editForm, userIdSupervisor: Number(e.target.value) })}
+                                        className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                                      >
+                                        <option value={0}>Select supervisor</option>
+                                        {users.map((user) => (
+                                          <option key={user.id} value={user.id}>
+                                            {user.username} (ID: {user.id})
+                                          </option>
+                                        ))}
+                                      </select>
+                                    </div>
+                                    <div>
+                                      <label htmlFor="associate" className="block text-sm font-medium text-gray-700">
+                                        Associate
+                                      </label>
+                                      <select
+                                        id="associate"
+                                        value={editForm.userIdAssociate || 0}
+                                        onChange={(e) => setEditForm({ ...editForm, userIdAssociate: Number(e.target.value) })}
+                                        className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                                      >
+                                        <option value={0}>Select associate</option>
+                                        {users.map((user) => (
+                                          <option key={user.id} value={user.id}>
+                                            {user.username} (ID: {user.id})
+                                          </option>
+                                        ))}
+                                      </select>
+                                    </div>
                   <div className="flex justify-end space-x-3">
                     <button
                       type="button"
