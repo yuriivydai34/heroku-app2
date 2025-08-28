@@ -16,25 +16,27 @@ const baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL + '/' || '';
 const Notification = () => {
   const [notifications, setNotifications] = useState<NotificationData[]>([]);
 
-  useEffect(() => {
-    const fetchNotifications = async () => {
-      const response = await notificationService.getNotifications();
-      const notificationsData: NotificationData[] = response.map((notification: any) => ({
-        id: notification.id,
-        content: notification.content,
-        userId: notification.userId,
-        read: notification.read,
-        createdAt: notification.createdAt,
-      }));
-      setNotifications(notificationsData);
-    };
+  const fetchNotifications = async () => {
+    const response = await notificationService.getNotifications();
+    const notificationsData: NotificationData[] = response.map((notification: any) => ({
+      id: notification.id,
+      content: notification.content,
+      userId: notification.userId,
+      read: notification.read,
+      createdAt: notification.createdAt,
+    }));
+    setNotifications(notificationsData);
+  };
 
+  useEffect(() => {
     fetchNotifications();
   }, []);
 
-  function markAllAsRead(): void {
+  async function markAllAsRead(): Promise<void> {
     const unreadNotifications = notifications.filter(notification => !notification.read);
-    notificationService.markAsRead(unreadNotifications.map(n => Number(n.id)));
+    await notificationService.markAsRead(unreadNotifications.map(n => Number(n.id)));
+    // Refresh notifications after marking as read
+    fetchNotifications();
   }
 
   return (
