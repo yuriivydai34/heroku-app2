@@ -5,10 +5,24 @@ import { useRouter } from 'next/navigation';
 import authService from '../../services/auth.service';
 import Notification from '../../components/Notification';
 
+import notificationService from "../../services/notification.service";
+
+type NotificationData = {
+  id: string;
+  content: string;
+  userId: number;
+  read: boolean;
+  createdAt: string;
+};
+
+const baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL + '/' || '';
+
 export default function DashboardPage() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(true);
   const [showNotifications, setShowNotifications] = useState(false);
+
+  const [notifications, setNotifications] = useState<NotificationData[]>([]);
 
   useEffect(() => {
     // Check authentication status
@@ -19,6 +33,22 @@ export default function DashboardPage() {
       setIsLoading(false);
     }
   }, [router]);
+
+  const fetchNotifications = async () => {
+    const response = await notificationService.getNotifications();
+    const notificationsData: NotificationData[] = response.map((notification: any) => ({
+      id: notification.id,
+      content: notification.content,
+      userId: notification.userId,
+      read: notification.read,
+      createdAt: notification.createdAt,
+    }));
+    setNotifications(notificationsData);
+  };
+
+  useEffect(() => {
+    fetchNotifications();
+  }, []);
 
   const handleLogout = async () => {
     await authService.logout();
@@ -52,7 +82,7 @@ export default function DashboardPage() {
                 className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
                 title="Show notifications"
               >
-                🔔 Notifications
+                🔔 Notifications ({notifications.filter(n => !n.read).length})
               </button>
               <button
                 onClick={handleLogout}
