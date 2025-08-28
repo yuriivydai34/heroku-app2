@@ -99,8 +99,7 @@ const Chat = () => {
             <option key={user.id} value={user.id}>{user.username}</option>
           ))}
         </select>
-        <input
-          type="text"
+        <textarea
           name="message"
           placeholder="Type your message..."
           className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
