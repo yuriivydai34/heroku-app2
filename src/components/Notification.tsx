@@ -33,6 +33,9 @@ const Notification = () => {
   }, []);
 
   async function markAllAsRead(): Promise<void> {
+    if (notifications.filter((notification) => !notification.read).length === 0) {
+      return;
+    }
     const unreadNotifications = notifications.filter(notification => !notification.read);
     await notificationService.markAsRead(unreadNotifications.map(n => Number(n.id)));
     // Refresh notifications after marking as read
