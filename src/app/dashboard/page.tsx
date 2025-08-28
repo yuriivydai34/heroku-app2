@@ -3,10 +3,12 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import authService from '../../services/auth.service';
+import Notification from '../../components/Notification';
 
 export default function DashboardPage() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(true);
+  const [showNotifications, setShowNotifications] = useState(false);
 
   useEffect(() => {
     // Check authentication status
@@ -46,12 +48,37 @@ export default function DashboardPage() {
             <div className="flex items-center space-x-4">
               <span className="text-gray-700">Welcome back!</span>
               <button
+                onClick={() => setShowNotifications(true)}
+                className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
+                title="Show notifications"
+              >
+                🔔 Notifications
+              </button>
+              <button
                 onClick={handleLogout}
                 className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
               >
                 Logout
               </button>
             </div>
+            {/* Notifications Popup */}
+            {showNotifications && (
+              <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
+                <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md relative">
+                  <button
+                    onClick={() => setShowNotifications(false)}
+                    className="absolute top-2 right-2 text-gray-400 hover:text-gray-700 text-xl font-bold"
+                    title="Close"
+                  >
+                    ×
+                  </button>
+                  <h2 className="text-lg font-semibold mb-4 text-gray-900">Notifications</h2>
+                  <div className="text-gray-600 text-sm">
+                    <Notification />
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </header>

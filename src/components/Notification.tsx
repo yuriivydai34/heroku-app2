@@ -32,13 +32,19 @@ const Notification = () => {
     fetchNotifications();
   }, []);
 
+  function markAllAsRead(): void {
+    const unreadNotifications = notifications.filter(notification => !notification.read);
+    notificationService.markAsRead(unreadNotifications.map(n => Number(n.id)));
+  }
+
   return (
     <div>
-      <h2>Notifications</h2>
+      <h2>Notifications: {notifications.length} New: {notifications.filter(n => !n.read).length}</h2>
+      <button onClick={() => markAllAsRead()}>Read all</button>
       <ul>
         {notifications.map((notification) => (
           <li key={notification.id}>
-            <p>{notification.content}</p>
+            <p>{notification.content} {notification.read ? '✓' : '✗'}</p>
             <small>{new Date(notification.createdAt).toLocaleString()}</small>
           </li>
         ))}
