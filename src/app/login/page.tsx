@@ -117,8 +117,7 @@ export default function LoginPage() {
                 name="username"
                 value={formData.username}
                 onChange={handleInputChange}
-                className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.username ? 'border-red-500' : 'border-gray-300'
-                  }`}
+                className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.username ? 'border-red-500' : 'border-gray-300'} text-black`}
                 placeholder="Enter your username"
               />
               {errors.username && (
@@ -137,8 +136,7 @@ export default function LoginPage() {
                 name="password"
                 value={formData.password}
                 onChange={handleInputChange}
-                className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.password ? 'border-red-500' : 'border-gray-300'
-                  }`}
+                className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.password ? 'border-red-500' : 'border-gray-300'} text-black`}
                 placeholder="Enter your password"
               />
               {errors.password && (
@@ -151,8 +149,8 @@ export default function LoginPage() {
               type="submit"
               disabled={isSubmitting}
               className={`w-full py-2 px-4 rounded-md font-medium transition-colors ${isSubmitting
-                  ? 'bg-gray-400 cursor-not-allowed'
-                  : 'bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2'
+                ? 'bg-gray-400 cursor-not-allowed'
+                : 'bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2'
                 } text-white`}
             >
               {isSubmitting ? 'Signing In...' : 'Sign In'}
