@@ -19,7 +19,7 @@ interface TaskContentProps {
   task: TaskData;
   isEditing: boolean;
   setIsEditing: (value: boolean) => void;
-  handleUpdateTask: (event: React.FormEvent<HTMLFormElement>) => void;
+  handleUpdateTask: (e: React.FormEvent) => void;
   editForm: TaskData;
   setEditForm: React.Dispatch<React.SetStateAction<{
     title: string;
