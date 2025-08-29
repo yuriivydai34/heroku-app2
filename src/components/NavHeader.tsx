@@ -51,10 +51,15 @@ const NavHeader = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-6">
             <div>
-              <h1 className="text-3xl font-bold text-gray-900">CRM tasks</h1>
+              <h1 onClick={() => router.push('/dashboard')} className="text-3xl font-bold text-gray-900">CRM tasks</h1>
             </div>
             <div className="flex items-center space-x-4">
-              <span className="text-gray-700">Welcome back!</span>
+              <button type="button"
+                onClick={() => router.back()}
+                className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
+              >
+                Go Back
+              </button>
               <button
                 onClick={() => setShowNotifications(true)}
                 className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"

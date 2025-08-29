@@ -245,11 +245,6 @@ export default function TaskDetailPage() {
     }
   };
 
-  const handleLogout = async () => {
-    await authService.logout();
-    router.push('/login');
-  };
-
   if (isLoading) {
     return (
       <div className="min-h-screen bg-gray-100 flex items-center justify-center">
