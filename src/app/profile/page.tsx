@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import authService from '../../services/auth.service';
 import profileService from '../../services/profile.service';
-import Profile from '../../components/Profile';
+import NavHeader from '@/components/NavHeader';
 
 interface ProfileData {
   firstName?: string;
@@ -89,11 +89,6 @@ export default function UserProfilePage() {
     setError(null);
   };
 
-  const handleLogout = async () => {
-    await authService.logout();
-    router.push('/login');
-  };
-
   if (isLoading) {
     return (
       <div className="min-h-screen bg-gray-100 flex items-center justify-center">
@@ -108,30 +103,7 @@ export default function UserProfilePage() {
   return (
     <div className="min-h-screen bg-gray-100">
       {/* Header */}
-      <header className="bg-white shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-6">
-            <div className="flex items-center space-x-4">
-              <h1 className="text-3xl font-bold text-gray-900">User Profile</h1>
-              <button
-                onClick={() => router.push('/dashboard')}
-                className="text-blue-600 hover:text-blue-800 text-sm font-medium"
-              >
-                ← Back to Dashboard
-              </button>
-            </div>
-            <div className="flex items-center space-x-4">
-              <span className="text-gray-700">Manage your profile</span>
-              <button
-                onClick={handleLogout}
-                className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
-              >
-                Logout
-              </button>
-            </div>
-          </div>
-        </div>
-      </header>
+      <NavHeader />
 
       {/* Main Content */}
       <main className="max-w-4xl mx-auto py-6 sm:px-6 lg:px-8">

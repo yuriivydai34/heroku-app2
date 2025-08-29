@@ -6,6 +6,7 @@ import authService from '../../../services/auth.service';
 import taskService from '../../../services/task.service';
 import commentService from '../../../services/comment.service';
 import { userService } from '@/services/user.service';
+import NavHeader from '@/components/NavHeader';
 
 interface TaskData {
   id?: string;
@@ -280,35 +281,7 @@ export default function TaskDetailPage() {
   return (
     <div className="min-h-screen bg-gray-100">
       {/* Header */}
-      <header className="bg-white shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-6">
-            <div className="flex items-center space-x-4">
-              <h1 className="text-3xl font-bold text-gray-900">Task Details</h1>
-              <button
-                onClick={() => router.push('/tasks')}
-                className="text-blue-600 hover:text-blue-800 text-sm font-medium"
-              >
-                ← Back to Tasks
-              </button>
-            </div>
-            <div className="flex items-center space-x-4">
-              <button
-                onClick={() => setIsEditing(!isEditing)}
-                className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
-              >
-                {isEditing ? 'Cancel Edit' : 'Edit Task'}
-              </button>
-              <button
-                onClick={handleLogout}
-                className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
-              >
-                Logout
-              </button>
-            </div>
-          </div>
-        </div>
-      </header>
+      <NavHeader />
 
       {/* Main Content */}
       <main className="max-w-4xl mx-auto py-6 sm:px-6 lg:px-8">
@@ -338,6 +311,12 @@ export default function TaskDetailPage() {
           {/* Task Content */}
           <div className="bg-white shadow rounded-lg">
             <div className="px-4 py-5 sm:p-6">
+              <button
+                onClick={() => setIsEditing(!isEditing)}
+                className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
+              >
+                {isEditing ? 'Cancel Edit' : 'Edit Task'}
+              </button>
               {isEditing ? (
                 /* Edit Form */
                 <form onSubmit={handleUpdateTask} className="space-y-6">
@@ -368,44 +347,44 @@ export default function TaskDetailPage() {
                       style={{ color: 'black' }}
                     />
                   </div>
-                                    <div>
-                                      <label htmlFor="supervisor" className="block text-sm font-medium text-gray-700">
-                                        Supervisor
-                                      </label>
-                                      <select
-                                        id="supervisor"
-                                        value={editForm.userIdSupervisor || 0}
-                                        onChange={(e) => setEditForm({ ...editForm, userIdSupervisor: Number(e.target.value) })}
-                                        className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                                        style={{ color: 'black' }}
-                                      >
-                                        <option value={0}>Select supervisor</option>
-                                        {users.map((user) => (
-                                          <option key={user.id} value={user.id}>
-                                            {user.username} (ID: {user.id})
-                                          </option>
-                                        ))}
-                                      </select>
-                                    </div>
-                                    <div>
-                                      <label htmlFor="associate" className="block text-sm font-medium text-gray-700">
-                                        Associate
-                                      </label>
-                                      <select
-                                        id="associate"
-                                        value={editForm.userIdAssociate || 0}
-                                        onChange={(e) => setEditForm({ ...editForm, userIdAssociate: Number(e.target.value) })}
-                                        className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                                        style={{ color: 'black' }}
-                                      >
-                                        <option value={0}>Select associate</option>
-                                        {users.map((user) => (
-                                          <option key={user.id} value={user.id}>
-                                            {user.username} (ID: {user.id})
-                                          </option>
-                                        ))}
-                                      </select>
-                                    </div>
+                  <div>
+                    <label htmlFor="supervisor" className="block text-sm font-medium text-gray-700">
+                      Supervisor
+                    </label>
+                    <select
+                      id="supervisor"
+                      value={editForm.userIdSupervisor || 0}
+                      onChange={(e) => setEditForm({ ...editForm, userIdSupervisor: Number(e.target.value) })}
+                      className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                      style={{ color: 'black' }}
+                    >
+                      <option value={0}>Select supervisor</option>
+                      {users.map((user) => (
+                        <option key={user.id} value={user.id}>
+                          {user.username} (ID: {user.id})
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  <div>
+                    <label htmlFor="associate" className="block text-sm font-medium text-gray-700">
+                      Associate
+                    </label>
+                    <select
+                      id="associate"
+                      value={editForm.userIdAssociate || 0}
+                      onChange={(e) => setEditForm({ ...editForm, userIdAssociate: Number(e.target.value) })}
+                      className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                      style={{ color: 'black' }}
+                    >
+                      <option value={0}>Select associate</option>
+                      {users.map((user) => (
+                        <option key={user.id} value={user.id}>
+                          {user.username} (ID: {user.id})
+                        </option>
+                      ))}
+                    </select>
+                  </div>
                   <div className="flex justify-end space-x-3">
                     <button
                       type="button"

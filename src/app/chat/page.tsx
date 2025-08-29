@@ -4,6 +4,7 @@ import Chat from "@/components/Chat";
 import authService from "../../services/auth.service";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import NavHeader from "@/components/NavHeader";
 
 export default function ChatPage() {
   const router = useRouter();
@@ -19,11 +20,6 @@ export default function ChatPage() {
     }
   }, [router]);
 
-  const handleLogout = async () => {
-    await authService.logout();
-    router.push('/login');
-  };
-
   if (isLoading) {
     return (
       <div className="min-h-screen bg-gray-100 flex items-center justify-center">
@@ -37,34 +33,7 @@ export default function ChatPage() {
   return (
     <div className="min-h-screen bg-gray-100">
       {/* Header */}
-      <header className="bg-white shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-6">
-            <div className="flex items-center space-x-4">
-              <h1 className="text-3xl font-bold text-gray-900">Chat</h1>
-              <button
-                onClick={() => router.push('/dashboard')}
-                className="text-blue-600 hover:text-blue-800 text-sm font-medium"
-              >
-                ← Back to Dashboard
-              </button>
-            </div>
-            <div className="flex items-center space-x-4">
-              <button
-                onClick={() => {
-                  if (typeof window !== 'undefined') {
-                    localStorage.clear(); // Optionally clear local storage
-                  }
-                  window.location.href = '/login';
-                }}
-                className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
-              >
-                Logout
-              </button>
-            </div>
-          </div>
-        </div>
-      </header>
+      <NavHeader />
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">

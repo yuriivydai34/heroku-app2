@@ -2,45 +2,42 @@
 
 import FilesList from "@/components/FilesList";
 import FileUpload from "@/components/FileUpload";
-import authService from "@/services/auth.service";
+import NavHeader from "@/components/NavHeader";
+import { authService } from "@/services/auth.service";
 import { useParams, useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
 export default function UploadForTaskPage() {
   const router = useRouter();
   const params = useParams();
   const taskId = params.taskId as string;
+  const [isLoading, setIsLoading] = useState(true); 
 
-  const handleLogout = async () => {
-    await authService.logout();
-    router.push('/login');
-  };
+  useEffect(() => {
+    // Check authentication status
+    if (!authService.isAuthenticated()) {
+      router.push('/login');
+      return;
+    } else {
+      setIsLoading(false);
+    }
+  }, [router]);
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gray-100 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
+          <p className="mt-4 text-gray-600">Loading tasks...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-100">
       {/* Header */}
-      <header className="bg-white shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-6">
-            <div className="flex items-center space-x-4">
-              <h1 className="text-3xl font-bold text-gray-900">Upload Files</h1>
-              <button
-                onClick={() => router.push(`/tasks/${taskId}`)}
-                className="text-blue-600 hover:text-blue-800 text-sm font-medium"
-              >
-                ← Back to Task
-              </button>
-            </div>
-            <div className="flex items-center space-x-4">
-              <button
-                onClick={handleLogout}
-                className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
-              >
-                Logout
-              </button>
-            </div>
-          </div>
-        </div>
-      </header>
+      <NavHeader />
 
       <h1>Upload Files for Task {taskId}</h1>
       {/* Upload form goes here */}

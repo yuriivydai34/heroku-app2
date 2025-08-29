@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import authService from '../../services/auth.service';
 import taskService from '../../services/task.service';
 import userService from '../../services/user.service';
+import NavHeader from '@/components/NavHeader';
 
 interface UserData {
   id: string;
@@ -58,17 +59,17 @@ export default function TasksPage() {
       router.push('/login');
       return;
     }
-    
+
     loadTasks();
   }, [router]);
 
   const loadTasks = async () => {
     setIsLoading(true);
     setError(null);
-    
+
     try {
       const response = await taskService.fetchTasks();
-      
+
       if (response.success && Array.isArray(response.data)) {
         setTasks(response.data);
       } else {
@@ -83,7 +84,7 @@ export default function TasksPage() {
 
   const handleCreateTask = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!newTask.title.trim()) {
       setError('Task title is required');
       return;
@@ -144,11 +145,6 @@ export default function TasksPage() {
     }
   };
 
-  const handleLogout = async () => {
-    await authService.logout();
-    router.push('/login');
-  };
-
   if (isLoading) {
     return (
       <div className="min-h-screen bg-gray-100 flex items-center justify-center">
@@ -163,35 +159,7 @@ export default function TasksPage() {
   return (
     <div className="min-h-screen bg-gray-100">
       {/* Header */}
-      <header className="bg-white shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-6">
-            <div className="flex items-center space-x-4">
-              <h1 className="text-3xl font-bold text-gray-900">Tasks</h1>
-              <button
-                onClick={() => router.push('/dashboard')}
-                className="text-blue-600 hover:text-blue-800 text-sm font-medium"
-              >
-                ← Back to Dashboard
-              </button>
-                  </div>
-            <div className="flex items-center space-x-4">
-              <button
-                onClick={() => setShowCreateForm(!showCreateForm)}
-                className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
-              >
-                {showCreateForm ? 'Cancel' : 'New Task'}
-              </button>
-              <button
-                onClick={handleLogout}
-                className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
-              >
-                Logout
-              </button>
-            </div>
-          </div>
-                  </div>
-      </header>
+      <NavHeader />
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
@@ -222,6 +190,12 @@ export default function TasksPage() {
           {showCreateForm && (
             <div className="mb-6 bg-white shadow rounded-lg">
               <div className="px-4 py-5 sm:p-6">
+                <button
+                  onClick={() => setShowCreateForm(!showCreateForm)}
+                  className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
+                >
+                  {showCreateForm ? 'Cancel' : 'New Task'}
+                </button>
                 <h3 className="text-lg leading-6 font-medium text-gray-900 mb-4">
                   Create New Task
                 </h3>
@@ -316,6 +290,12 @@ export default function TasksPage() {
           {/* Tasks List */}
           <div className="bg-white shadow rounded-lg">
             <div className="px-4 py-5 sm:p-6">
+              <button
+                onClick={() => setShowCreateForm(!showCreateForm)}
+                className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
+              >
+                {showCreateForm ? 'Cancel' : 'New Task'}
+              </button>
               <div className="flex justify-between items-center mb-4">
                 <h3 className="text-lg leading-6 font-medium text-gray-900">
                   Your Tasks ({tasks.length})
@@ -327,7 +307,7 @@ export default function TasksPage() {
                   🔄 Refresh
                 </button>
               </div>
-              
+
               {tasks.length === 0 ? (
                 <div className="text-center py-8">
                   <p className="text-gray-500">No tasks found.</p>
@@ -343,9 +323,8 @@ export default function TasksPage() {
                   {tasks.map((task) => (
                     <div
                       key={task.id}
-                      className={`border rounded-lg p-4 ${
-                        task.completed ? 'bg-green-50 border-green-200' : 'bg-white border-gray-200'
-                      }`}
+                      className={`border rounded-lg p-4 ${task.completed ? 'bg-green-50 border-green-200' : 'bg-white border-gray-200'
+                        }`}
                     >
                       <div className="flex items-start justify-between">
                         <div className="flex items-start space-x-3">
@@ -358,16 +337,14 @@ export default function TasksPage() {
                           <div className="flex-1">
                             <button
                               onClick={() => router.push(`/tasks/${task.id}`)}
-                              className={`font-medium text-left hover:underline ${
-                                task.completed ? 'line-through text-gray-500' : 'text-gray-900 hover:text-blue-600'
-                              }`}
+                              className={`font-medium text-left hover:underline ${task.completed ? 'line-through text-gray-500' : 'text-gray-900 hover:text-blue-600'
+                                }`}
                             >
                               {task.title}
                             </button>
                             {task.description && (
-                              <p className={`mt-1 text-sm ${
-                                task.completed ? 'text-gray-400' : 'text-gray-600'
-                              }`}>
+                              <p className={`mt-1 text-sm ${task.completed ? 'text-gray-400' : 'text-gray-600'
+                                }`}>
                                 {task.description}
                               </p>
                             )}
