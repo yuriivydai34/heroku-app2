@@ -19,7 +19,7 @@ interface UploadProgress {
   percentage: number;
 }
 
-class FileUploadService {
+class TaskFileUploadService {
   private baseUrl: string;
 
   constructor() {
@@ -72,7 +72,7 @@ class FileUploadService {
         }
       }
 
-      const response = await fetch(`${this.baseUrl}/upload/for-task/${taskId}`, {
+      const response = await fetch(`${this.baseUrl}/task-upload/${taskId}`, {
         method: 'POST',
         headers,
         body: formData,
@@ -100,7 +100,7 @@ class FileUploadService {
 
   async deleteFile(id: number): Promise<UploadResponse> {
     try {
-      const response = await fetch(`${this.baseUrl}/upload/${id}`, {
+      const response = await fetch(`${this.baseUrl}/task-upload/${id}`, {
         method: 'DELETE',
         headers: authService.getAuthHeaders(),
       });
@@ -124,7 +124,7 @@ class FileUploadService {
 
   async getUploadedFiles(taskId: string): Promise<UploadResponse> {
     try {
-      const response = await fetch(`${this.baseUrl}/upload/for-task/${taskId}`, {
+      const response = await fetch(`${this.baseUrl}/task-upload/${taskId}`, {
         method: 'GET',
         headers: authService.getAuthHeaders(),
       });
@@ -187,5 +187,5 @@ class FileUploadService {
 }
 
 // Export a singleton instance
-export const fileUploadService = new FileUploadService();
-export default fileUploadService;
+export const taskFileUploadService = new TaskFileUploadService();
+export default taskFileUploadService;

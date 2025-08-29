@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import fileUploadService from '../services/fileUpload.service';
+import taskFileUploadService from '../services/taskFileUpload.service';
 
 interface FileItem {
   id: number;
@@ -38,7 +38,7 @@ export default function FilesList({
     setError(null);
 
     try {
-      const result = await fileUploadService.getUploadedFiles(taskId);
+      const result = await taskFileUploadService.getUploadedFiles(taskId);
 
       if (result.success && result.data) {
         setFiles(Array.isArray(result.data) ? result.data : []);
@@ -73,7 +73,7 @@ export default function FilesList({
     setDeletingFiles(prev => new Set(prev.add(id)));
 
     try {
-      const result = await fileUploadService.deleteFile(id);
+      const result = await taskFileUploadService.deleteFile(id);
 
       if (result.success) {
         setFiles(prev => prev.filter(file => file.id !== id));
@@ -122,7 +122,7 @@ export default function FilesList({
   };
 
   const formatFileSize = (bytes: number): string => {
-    return fileUploadService.formatFileSize(bytes);
+    return taskFileUploadService.formatFileSize(bytes);
   };
 
   const formatDate = (dateString?: string): string => {

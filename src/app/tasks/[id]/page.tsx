@@ -224,7 +224,7 @@ export default function TaskDetailPage() {
   };
 
   const handleFilesClick = () => {
-    router.push(`/upload-for-task/${taskId}`);
+    router.push(`/task-upload/${taskId}`);
   };
 
   const handleDeleteTask = async () => {

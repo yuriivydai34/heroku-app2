@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useRef, DragEvent, ChangeEvent } from 'react';
-import fileUploadService from '../services/fileUpload.service';
+import taskFileUploadService from '../services/taskFileUpload.service';
 
 interface FileUploadProps {
   onFileSelect?: (files: File[]) => void;
@@ -39,7 +39,7 @@ export default function FileUpload({
   const generateId = () => Math.random().toString(36).substr(2, 9);
 
   const validateFile = (file: File): string | null => {
-    return fileUploadService.validateFile(file, maxSize, acceptedTypes);
+    return taskFileUploadService.validateFile(file, maxSize, acceptedTypes);
   };
 
   const processFiles = (fileList: FileList) => {
@@ -143,7 +143,7 @@ export default function FileUpload({
       ));
 
       try {
-        const result = await fileUploadService.uploadFile(
+        const result = await taskFileUploadService.uploadFile(
           fileItem.file,
           taskId,
           (progress) => {
@@ -206,7 +206,7 @@ export default function FileUpload({
   };
 
   const formatFileSize = (bytes: number): string => {
-    return fileUploadService.formatFileSize(bytes);
+    return taskFileUploadService.formatFileSize(bytes);
   };
 
   return (

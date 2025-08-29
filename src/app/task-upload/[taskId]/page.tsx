@@ -1,7 +1,7 @@
 'use client';
 
-import FilesList from "@/components/FilesList";
-import FileUpload from "@/components/FileUpload";
+import TaskFilesList from "@/components/TaskFilesList";
+import TaskFileUpload from "@/components/TaskFileUpload";
 import NavHeader from "@/components/NavHeader";
 import { authService } from "@/services/auth.service";
 import { useParams, useRouter } from "next/navigation";
@@ -48,7 +48,7 @@ export default function UploadForTaskPage() {
           <h3 className="text-lg leading-6 font-medium text-gray-900 mb-4">
             File Upload
           </h3>
-          <FileUpload taskId={taskId} />
+          <TaskFileUpload taskId={taskId} />
         </div>
       </div>
 
@@ -58,7 +58,7 @@ export default function UploadForTaskPage() {
           <h3 className="text-lg leading-6 font-medium text-gray-900 mb-4">
             Files List
           </h3>
-          <FilesList taskId={taskId} />
+          <TaskFilesList taskId={taskId} />
         </div>
       </div>
     </div>
