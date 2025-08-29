@@ -1,3 +1,5 @@
+import { useRouter } from "next/navigation";
+
 interface CommentData {
   id?: string;
   content: string;
@@ -38,6 +40,12 @@ const CommentsSection = ({
   loadComments,
   handleDeleteComment
 }: CommentsSectionProps) => {
+  const router = useRouter();
+
+  const handleCommentFilesClick = (commentId: string) => {
+    router.push(`/comment-upload/${commentId}`);
+  };
+
   return (
     <div className="mt-6 bg-white shadow rounded-lg">
       <div className="px-4 py-5 sm:p-6">
@@ -127,6 +135,12 @@ const CommentsSection = ({
                       )}
                     </div>
                   </div>
+                  <button
+                    onClick={() => handleCommentFilesClick(comment.id!)}
+                    className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
+                  >
+                    Files
+                  </button>
                   {comment.id && (
                     <button
                       onClick={() => handleDeleteComment(comment.id!)}
