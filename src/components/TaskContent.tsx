@@ -17,7 +17,7 @@ interface UserData {
   username: string;
 }
 
-interface FilesListProps {
+interface TaskContentProps {
   task: TaskData;
   isEditing: boolean;
   setIsEditing: (value: boolean) => void;
@@ -47,7 +47,7 @@ const TaskContent = ({
   handleToggleComplete,
   handleFilesClick,
   handleDeleteTask
-}: FilesListProps) => {
+}: TaskContentProps) => {
   return (
     <div className="bg-white shadow rounded-lg">
       <div className="px-4 py-5 sm:p-6">
