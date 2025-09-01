@@ -125,6 +125,18 @@ class AuthService {
       ...(token && { 'Authorization': `Bearer ${token}` }),
     };
   }
+
+  getCurrentUserId() {
+    const token = this.getToken();
+    if (!token) return null;
+
+    try {
+      const user = JSON.parse(atob(token.split('.')[1]));
+      return user.sub;
+    } catch {
+      return null;
+    }
+  }
 }
 
 // Export a singleton instance

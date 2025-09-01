@@ -74,27 +74,6 @@ class MessageService {
       return { success: false, message: 'Error fetching message' };
     }
   }
-
-  async createMessage(data: MessageData): Promise<MessageResponse | null> {
-    try {
-      const response = await fetch(`${this.baseUrl}/message`, {
-        method: 'POST',
-        headers: authService.getAuthHeaders(),
-        body: JSON.stringify(data),
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        throw new Error(errorData.message || 'Failed to create message');
-      }
-
-      const responseData = await response.json();
-      return responseData || null;
-    } catch (error) {
-      console.error('Error creating message:', error);
-      return null;
-    }
-  }
 }
 
 // Export a singleton instance

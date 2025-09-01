@@ -1,8 +1,12 @@
 'use client';
 
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, use, useEffect, useState } from "react";
 import messageService from "../services/message.service";
 import { userService } from "@/services/user.service";
+import { authService } from "@/services/auth.service";
+
+import { io, Socket } from "socket.io-client";
+import { send } from "process";
 
 type MessageData = {
   id: string;
@@ -18,6 +22,8 @@ interface UserData {
 }
 
 const baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL + '/' || '';
+
+const socket: Socket = io(baseUrl);
 
 const Chat = () => {
   const [messages, setMessages] = useState<MessageData[]>([]);
@@ -65,14 +71,24 @@ const Chat = () => {
     }
   }, [users]);
 
+  useEffect(() => {
+    socket.on('receiveMessage', (message) => {
+      setMessages(prevMessages => [...prevMessages, message]);
+    });
+  }, []);
+
   async function handleSendMessage(event: FormEvent<HTMLFormElement>): Promise<void> {
     event.preventDefault();
     if (!messageInput.trim() || !receiverInput) return;
-    await messageService.createMessage({
+    const message = {
       content: messageInput,
       receiverId: Number.parseInt(receiverInput),
-    });
-    await fetchMessages(); // Refresh messages after sending
+      senderId: authService.getCurrentUserId() || 0,
+    }
+
+    // To send a message
+    socket.emit('sendMessage', message);
+
     setMessageInput(""); // Clear input
   }
 
