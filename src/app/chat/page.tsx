@@ -6,6 +6,8 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import NavHeader from "@/components/NavHeader";
 
+import { io, Socket } from "socket.io-client";
+
 export default function ChatPage() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(true);
@@ -19,6 +21,23 @@ export default function ChatPage() {
       setIsLoading(false);
     }
   }, [router]);
+
+useEffect(() => {
+    const socket: Socket = io(process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3000');
+    socket.on('connect', () => {
+      console.log('Connected to server');
+    });
+
+    socket.on('receiveMessage', (message) => {
+      console.log('Received message:', message);
+    });
+
+    // To send a message
+    socket.emit('sendMessage', 'Hello from client!');
+    return () => {
+      socket.disconnect();
+    };
+  }, []);
 
   if (isLoading) {
     return (
