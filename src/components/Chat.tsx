@@ -6,7 +6,6 @@ import { userService } from "@/services/user.service";
 import { authService } from "@/services/auth.service";
 
 import { io, Socket } from "socket.io-client";
-import { send } from "process";
 
 type MessageData = {
   id: string;
@@ -23,7 +22,11 @@ interface UserData {
 
 const baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL + '/' || '';
 
-const socket: Socket = io(baseUrl);
+const socket: Socket = io(baseUrl, {
+  auth: {
+    userId: authService.getCurrentUserId()
+  }
+});
 
 const Chat = () => {
   const [messages, setMessages] = useState<MessageData[]>([]);
@@ -72,9 +75,23 @@ const Chat = () => {
   }, [users]);
 
   useEffect(() => {
+    socket.on('connect', () => {
+      console.log('Connected to socket server');
+    });
+
+    socket.on('disconnect', () => {
+      console.log('Disconnected from socket server');
+    });
+
     socket.on('receiveMessage', (message) => {
       setMessages(prevMessages => [...prevMessages, message]);
     });
+
+    return () => {
+      socket.off('connect');
+      socket.off('disconnect');
+      socket.off('receiveMessage');
+    };
   }, []);
 
   async function handleSendMessage(event: FormEvent<HTMLFormElement>): Promise<void> {
@@ -96,8 +113,8 @@ const Chat = () => {
     <div style={{ color: 'black' }}>
       messages: {messages.length}
       <ul>
-        {messages.map((message) => (
-          <li key={message.id} style={{ color: 'black' }}>
+        {messages.map((message, idx) => (
+          <li key={idx} style={{ color: 'black' }}>
             From: {users.find(user => user.id === message.senderId)?.username || 'Unknown'} To: {users.find(user => user.id === message.receiverId)?.username || 'Unknown'}: {message.content}
           </li>
         ))}
