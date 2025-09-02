@@ -9,6 +9,7 @@ import { userService } from '@/services/user.service';
 import NavHeader from '@/components/NavHeader';
 import TaskContent from '@/components/TaskContent';
 import CommentsSection from '@/components/CommentsSection';
+import ErrorMessage from '@/components/ErrorMessage';
 
 interface TaskData {
   id?: string;
@@ -286,24 +287,7 @@ export default function TaskDetailPage() {
         <div className="px-4 py-6 sm:px-0">
           {/* Error Message */}
           {error && (
-            <div className="mb-6 bg-red-50 border border-red-200 rounded-md p-4">
-              <div className="flex">
-                <div className="flex-shrink-0">
-                  <span className="text-red-500">⚠️</span>
-                </div>
-                <div className="ml-3">
-                  <p className="text-sm text-red-700">{error}</p>
-                </div>
-                <div className="ml-auto pl-3">
-                  <button
-                    onClick={() => setError(null)}
-                    className="text-red-400 hover:text-red-600"
-                  >
-                    ✕
-                  </button>
-                </div>
-              </div>
-            </div>
+            <ErrorMessage error={error} setError={setError} />
           )}
 
           {/* Task Content */}
