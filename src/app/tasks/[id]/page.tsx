@@ -10,6 +10,7 @@ import NavHeader from '@/components/NavHeader';
 import TaskContent from '@/components/TaskContent';
 import CommentsSection from '@/components/CommentsSection';
 import ErrorMessage from '@/components/ErrorMessage';
+import moment from 'moment';
 
 interface TaskData {
   id?: string;
@@ -49,6 +50,7 @@ export default function TaskDetailPage() {
   const [editForm, setEditForm] = useState({
     title: '',
     description: '',
+    deadline: '',
     userIdCreator: 0,
     userIdAssociate: 0,
     userIdSupervisor: 0
@@ -102,6 +104,7 @@ export default function TaskDetailPage() {
         setEditForm({
           title: response.data.title,
           description: response.data.description || '',
+          deadline: response.data.deadline || '',
           userIdCreator: response.data.userIdCreator,
           userIdSupervisor: response.data.userIdSupervisor,
           userIdAssociate: response.data.userIdAssociate,
@@ -210,6 +213,7 @@ export default function TaskDetailPage() {
       const response = await taskService.updateTask(task.id, {
         title: editForm.title,
         description: editForm.description,
+        deadline: moment(editForm.deadline).toISOString(),
         userIdAssociate: editForm.userIdAssociate,
         userIdCreator: editForm.userIdCreator,
         userIdSupervisor: editForm.userIdSupervisor,

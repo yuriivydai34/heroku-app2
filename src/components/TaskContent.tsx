@@ -3,6 +3,7 @@ interface TaskData {
   title: string;
   description?: string;
   completed?: boolean;
+  deadline?: string;
   createdAt?: string;
   updatedAt?: string;
   userIdCreator: number;
@@ -24,6 +25,7 @@ interface TaskContentProps {
   setEditForm: React.Dispatch<React.SetStateAction<{
     title: string;
     description: string;
+    deadline: string;
     userIdCreator: number;
     userIdAssociate: number;
     userIdSupervisor: number;
@@ -66,7 +68,7 @@ const TaskContent = ({
                 type="text"
                 id="title"
                 value={editForm.title}
-                onChange={(e) => setEditForm({ ...editForm, title: e.target.value, description: editForm.description ?? "" })}
+                onChange={(e) => setEditForm({ ...editForm, title: e.target.value, description: editForm.description ?? "", deadline: editForm.deadline ?? "" })}
                 className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
                 style={{ color: 'black' }}
                 required
@@ -79,8 +81,25 @@ const TaskContent = ({
               <textarea
                 id="description"
                 value={editForm.description}
-                onChange={(e) => setEditForm({ ...editForm, description: e.target.value })}
+                onChange={(e) => setEditForm({ 
+                  ...editForm, 
+                  description: e.target.value ?? "", 
+                  deadline: editForm.deadline ?? "" 
+                })}
                 rows={4}
+                className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                style={{ color: 'black' }}
+              />
+            </div>
+            <div>
+              <label htmlFor="deadline" className="block text-sm font-medium text-gray-700">
+                Deadline
+              </label>
+              <input
+                type="date"
+                id="deadline"
+                value={editForm.deadline ? editForm.deadline.slice(0, 10) : ''}
+                onChange={(e) => setEditForm({ ...editForm, deadline: e.target.value || "", description: editForm.description ?? "" })}
                 className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
                 style={{ color: 'black' }}
               />
@@ -92,7 +111,12 @@ const TaskContent = ({
               <select
                 id="supervisor"
                 value={editForm.userIdSupervisor || 0}
-                onChange={(e) => setEditForm({ ...editForm, userIdSupervisor: Number(e.target.value), description: editForm.description ?? "" })}
+                onChange={(e) => setEditForm({ 
+                  ...editForm, 
+                  userIdSupervisor: Number(e.target.value), 
+                  description: editForm.description ?? "", 
+                  deadline: editForm.deadline ?? "" 
+                })}
                 className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
                 style={{ color: 'black' }}
               >
@@ -111,7 +135,12 @@ const TaskContent = ({
               <select
                 id="associate"
                 value={editForm.userIdAssociate || 0}
-                onChange={(e) => setEditForm({ ...editForm, userIdAssociate: Number(e.target.value), description: editForm.description ?? "" })}
+                onChange={(e) => setEditForm({ 
+                  ...editForm, 
+                  userIdAssociate: Number(e.target.value), 
+                  description: editForm.description ?? "", 
+                  deadline: editForm.deadline ?? "" 
+                })}
                 className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
                 style={{ color: 'black' }}
               >
@@ -172,6 +201,13 @@ const TaskContent = ({
               <div>
                 <h3 className="text-lg font-medium text-gray-900 mb-2">Description</h3>
                 <p className="text-gray-600 whitespace-pre-wrap">{task.description}</p>
+              </div>
+            )}
+
+            {task.deadline && (
+              <div>
+                <h3 className="text-lg font-medium text-gray-900 mb-2">Deadline</h3>
+                <p className="text-gray-600 whitespace-pre-wrap">{task.deadline}</p>
               </div>
             )}
 
