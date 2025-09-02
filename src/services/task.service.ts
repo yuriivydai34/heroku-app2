@@ -5,6 +5,7 @@ interface TaskData {
   title: string;
   description?: string;
   completed?: boolean;
+  deadline?: string;
   createdAt?: string;
   updatedAt?: string;
   userIdCreator: number;
