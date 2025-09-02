@@ -73,6 +73,7 @@ const NavHeader = () => {
               >
                 Logout
               </button>
+              <span className="text-gray-600">{authService.getCurrentUser()?.username}</span>
             </div>
             {/* Notifications Popup */}
             {showNotifications && (

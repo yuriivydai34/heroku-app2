@@ -137,6 +137,18 @@ class AuthService {
       return null;
     }
   }
+
+  getCurrentUser() {
+    const token = this.getToken();
+    if (!token) return null;
+
+    try {
+      const user = JSON.parse(atob(token.split('.')[1]));
+      return user;
+    } catch {
+      return null;
+    }
+  }
 }
 
 // Export a singleton instance

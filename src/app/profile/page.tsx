@@ -168,6 +168,7 @@ export default function UserProfilePage() {
                         onChange={(e) => setEditForm({ ...editForm, firstName: e.target.value })}
                         className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
                         placeholder="Enter your first name"
+                        style={{ color: 'black' }}
                       />
                     </div>
                     <div>
@@ -181,6 +182,7 @@ export default function UserProfilePage() {
                         onChange={(e) => setEditForm({ ...editForm, lastName: e.target.value })}
                         className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
                         placeholder="Enter your last name"
+                        style={{ color: 'black' }}
                       />
                     </div>
                   </div>
@@ -195,6 +197,7 @@ export default function UserProfilePage() {
                       onChange={(e) => setEditForm({ ...editForm, email: e.target.value })}
                       className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
                       placeholder="Enter your email address"
+                      style={{ color: 'black' }}
                     />
                   </div>
                   <div className="flex justify-end space-x-3">
