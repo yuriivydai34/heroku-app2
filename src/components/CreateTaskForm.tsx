@@ -61,7 +61,7 @@ const CreateTaskForm = ({ handleCreateTask, newTask, setNewTask, users, setShowC
           Deadline
         </label>
         <input
-          type="date"
+          type="datetime-local"
           id="deadline"
           value={newTask.deadline}
           onChange={(e) => setNewTask({ ...newTask, deadline: e.target.value })}

@@ -76,9 +76,11 @@ const EditTaskForm = ({
           Deadline
         </label>
         <input
-          type="date"
+          type="datetime-local"
           id="deadline"
-          value={editForm.deadline ? editForm.deadline.slice(0, 10) : ''}
+          value={editForm.deadline
+            ? editForm.deadline.slice(0, 16) // "YYYY-MM-DDTHH:mm"
+            : ''}
           onChange={(e) => setEditForm({ ...editForm, deadline: e.target.value || "", description: editForm.description ?? "" })}
           className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
           style={{ color: 'black' }}
