@@ -8,7 +8,7 @@ interface TaskData {
   updatedAt?: string;
   userIdCreator: number;
   userIdSupervisor: number;
-  userIdAssociate: number;
+  usersIdAssociate: number[];
 }
 
 interface UserData {
@@ -23,7 +23,7 @@ interface EditTaskFormProps {
     description: string;
     deadline: string;
     userIdCreator: number;
-    userIdAssociate: number;
+    usersIdAssociate: number[];
     userIdSupervisor: number;
   }>>
   users: UserData[];
@@ -116,17 +116,20 @@ const EditTaskForm = ({
         </label>
         <select
           id="associate"
-          value={editForm.userIdAssociate || 0}
-          onChange={(e) => setEditForm({
-            ...editForm,
-            userIdAssociate: Number(e.target.value),
-            description: editForm.description ?? "",
-            deadline: editForm.deadline ?? ""
-          })}
+          multiple
+          value={(editForm.usersIdAssociate ?? []).map(String)}
+          onChange={(e) => {
+            const selected = Array.from(e.target.selectedOptions, option => Number(option.value));
+            setEditForm({
+              ...editForm,
+              usersIdAssociate: selected, // This will be an array of numbers
+              description: editForm.description ?? "",
+              deadline: editForm.deadline ?? ""
+            });
+          }}
           className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
           style={{ color: 'black' }}
         >
-          <option value={0}>Select associate</option>
           {users.map((user) => (
             <option key={user.id} value={user.id}>
               {user.username} (ID: {user.id})

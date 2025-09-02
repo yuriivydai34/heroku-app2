@@ -12,7 +12,7 @@ interface TaskData {
   createdAt?: string;
   updatedAt?: string;
   userIdCreator: number;
-  userIdAssociate: number;
+  usersIdAssociate: number[];
   userIdSupervisor: number;
 }
 
@@ -94,18 +94,22 @@ const CreateTaskForm = ({ handleCreateTask, newTask, setNewTask, users, setShowC
         </label>
         <select
           id="associate"
-          value={newTask.userIdAssociate}
-          onChange={(e) => setNewTask({ ...newTask, userIdAssociate: Number(e.target.value) })}
+          multiple
+          value={(newTask.usersIdAssociate ?? []).map(String)}
+          onChange={(e) => {
+            const selected = Array.from(e.target.selectedOptions, option => Number(option.value));
+            setNewTask({ ...newTask, usersIdAssociate: selected });
+          }}
           className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
           style={{ color: 'black' }}
         >
-          <option value={0}>Select associate</option>
           {users.map((user) => (
             <option key={user.id} value={user.id}>
               {user.username} (ID: {user.id})
             </option>
           ))}
         </select>
+        <p className="text-xs text-gray-500 mt-1">Hold Ctrl (Windows) or Cmd (Mac) to select multiple associates.</p>
       </div>
       <div className="flex justify-end space-x-3">
         <button

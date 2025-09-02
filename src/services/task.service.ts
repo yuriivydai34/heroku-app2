@@ -9,7 +9,7 @@ interface TaskData {
   createdAt?: string;
   updatedAt?: string;
   userIdCreator: number;
-  userIdAssociate: number;
+  usersIdAssociate: number[];
   userIdSupervisor: number;
   [key: string]: any; // Allow for additional task fields
 }

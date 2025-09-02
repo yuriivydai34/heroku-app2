@@ -25,7 +25,7 @@ interface TaskData {
   createdAt?: string;
   updatedAt?: string;
   userIdCreator: number;
-  userIdAssociate: number;
+  usersIdAssociate: number[];
   userIdSupervisor: number;
 }
 
@@ -55,7 +55,7 @@ export default function TasksPage() {
     description: '',
     deadline: '',
     userIdCreator: 0,
-    userIdAssociate: 0,
+    usersIdAssociate: [],
     userIdSupervisor: 0,
     completed: false
   });
@@ -109,12 +109,12 @@ const deadlineValue = newTask.deadline
         description: newTask.description,
         deadline: deadlineValue,
         userIdCreator: newTask.userIdCreator || 0,
-        userIdAssociate: newTask.userIdAssociate || 0,
+        usersIdAssociate: newTask.usersIdAssociate || [],
         userIdSupervisor: newTask.userIdSupervisor || 0,
       });
 
       if (response.success) {
-        setNewTask({ title: '', description: '', userIdCreator: 0, userIdAssociate: 0, userIdSupervisor: 0 });
+        setNewTask({ title: '', description: '', userIdCreator: 0, usersIdAssociate: [], userIdSupervisor: 0 });
         setShowCreateForm(false);
         loadTasks(); // Reload tasks
       } else {

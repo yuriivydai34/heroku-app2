@@ -10,7 +10,7 @@ interface TaskData {
   updatedAt?: string;
   userIdCreator: number;
   userIdSupervisor: number;
-  userIdAssociate: number;
+  usersIdAssociate: number[];
 }
 
 interface UserData {
@@ -29,7 +29,7 @@ interface TaskContentProps {
     description: string;
     deadline: string;
     userIdCreator: number;
-    userIdAssociate: number;
+    usersIdAssociate: number[];
     userIdSupervisor: number;
   }>>
   users: UserData[];
@@ -125,7 +125,7 @@ const TaskContent = ({
                 <div>
                   <dt className="text-sm font-medium text-gray-500">Associate</dt>
                   <dd className="mt-1 text-sm text-gray-900">
-                    {users.find(u => String(u.id) === String(task.userIdAssociate))?.username || task.userIdAssociate}
+                    {task.usersIdAssociate.map(id => users.find(u => String(u.id) === String(id))?.username || id).join(', ')}
                   </dd>
                 </div>
                 {task.createdAt && (

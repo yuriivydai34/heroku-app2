@@ -9,7 +9,7 @@ interface TaskData {
   createdAt?: string;
   updatedAt?: string;
   userIdCreator: number;
-  userIdAssociate: number;
+  usersIdAssociate: number[];
   userIdSupervisor: number;
 }
 
@@ -108,9 +108,9 @@ const TasksList = ({ setShowCreateForm, showCreateForm, tasks,
                             Created by: {users.find(u => String(u.id) === String(task.userIdCreator))?.username || task.userIdCreator}
                           </span>
                         )}
-                        {task.userIdAssociate && (
+                        {task.usersIdAssociate && (
                           <span>
-                            Assigned to: {users.find(u => String(u.id) === String(task.userIdAssociate))?.username || task.userIdAssociate}
+                            Assigned to: {task.usersIdAssociate.map(id => users.find(u => String(u.id) === String(id))?.username || id).join(', ')}
                           </span>
                         )}
                         {task.userIdSupervisor && (

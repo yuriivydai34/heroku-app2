@@ -22,7 +22,7 @@ interface TaskData {
   updatedAt?: string;
   userIdCreator: number;
   userIdSupervisor: number;
-  userIdAssociate: number;
+  usersIdAssociate: number[];
 }
 
 interface CommentData {
@@ -52,7 +52,7 @@ export default function TaskDetailPage() {
     description: '',
     deadline: '',
     userIdCreator: 0,
-    userIdAssociate: 0,
+    usersIdAssociate: [] as number[],
     userIdSupervisor: 0
   });
 
@@ -100,14 +100,25 @@ export default function TaskDetailPage() {
       const response = await taskService.fetchTask(taskId);
 
       if (response.success && response.data && !Array.isArray(response.data)) {
-        setTask(response.data);
+        setTask({
+          ...response.data,
+          usersIdAssociate: Array.isArray(response.data.usersIdAssociate)
+            ? response.data.usersIdAssociate
+            : typeof response.data.usersIdAssociate === 'number'
+              ? [response.data.usersIdAssociate]
+              : [],
+        });
         setEditForm({
           title: response.data.title,
           description: response.data.description || '',
           deadline: response.data.deadline || '',
           userIdCreator: response.data.userIdCreator,
           userIdSupervisor: response.data.userIdSupervisor,
-          userIdAssociate: response.data.userIdAssociate,
+          usersIdAssociate: Array.isArray(response.data.usersIdAssociate)
+            ? response.data.usersIdAssociate as number[]
+            : typeof response.data.usersIdAssociate === 'number'
+              ? [response.data.usersIdAssociate]
+              : [],
         });
       } else {
         setError(response.message || 'Failed to load task');
@@ -214,7 +225,7 @@ export default function TaskDetailPage() {
         title: editForm.title,
         description: editForm.description,
         deadline: moment.utc(editForm.deadline).toISOString(),
-        userIdAssociate: editForm.userIdAssociate,
+        usersIdAssociate: Array.isArray(editForm.usersIdAssociate) ? editForm.usersIdAssociate : [editForm.usersIdAssociate],
         userIdCreator: editForm.userIdCreator,
         userIdSupervisor: editForm.userIdSupervisor,
       });
