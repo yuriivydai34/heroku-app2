@@ -213,7 +213,7 @@ export default function TaskDetailPage() {
       const response = await taskService.updateTask(task.id, {
         title: editForm.title,
         description: editForm.description,
-        deadline: moment(editForm.deadline).toISOString(),
+        deadline: moment.utc(editForm.deadline).toISOString(),
         userIdAssociate: editForm.userIdAssociate,
         userIdCreator: editForm.userIdCreator,
         userIdSupervisor: editForm.userIdSupervisor,
