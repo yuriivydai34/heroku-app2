@@ -1,0 +1,65 @@
+interface TaskTemplateData {
+  id?: string;
+  title: string;
+  description: string;
+}
+
+interface CreateTaskTemplateFormProps {
+  handleCreateTemplate: (e: React.FormEvent) => void;
+  newTemplate: TaskTemplateData;
+  setNewTemplate: React.Dispatch<React.SetStateAction<TaskTemplateData>>;
+  setShowCreateForm: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const CreateTaskTemplatesForm = ({ handleCreateTemplate, newTemplate, setNewTemplate, setShowCreateForm }: CreateTaskTemplateFormProps) => {
+  return (
+    <form onSubmit={handleCreateTemplate} className="space-y-4">
+      <div>
+        <label htmlFor="title" className="block text-sm font-medium text-gray-700">
+          Title *
+        </label>
+        <input
+          type="text"
+          id="title"
+          value={newTemplate.title}
+          onChange={(e) => setNewTemplate({ ...newTemplate, title: e.target.value })}
+          className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+          placeholder="Enter template title"
+          style={{ color: 'black' }}
+          required
+        />
+      </div>
+      <div>
+        <label htmlFor="description" className="block text-sm font-medium text-gray-700">
+          Description
+        </label>
+        <textarea
+          id="description"
+          value={newTemplate.description}
+          onChange={(e) => setNewTemplate({ ...newTemplate, description: e.target.value })}
+          rows={3}
+          className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+          placeholder="Enter template description"
+          style={{ color: 'black' }}
+        />
+      </div>
+      <div className="flex justify-end space-x-3">
+        <button
+          type="button"
+          onClick={() => setShowCreateForm(false)}
+          className="bg-gray-300 hover:bg-gray-400 text-gray-700 px-4 py-2 rounded-md text-sm font-medium transition-colors"
+        >
+          Cancel
+        </button>
+        <button
+          type="submit"
+          className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
+        >
+          Create Template
+        </button>
+      </div>
+    </form>
+  );
+};
+
+export default CreateTaskTemplatesForm;

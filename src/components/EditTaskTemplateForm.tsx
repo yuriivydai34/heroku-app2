@@ -1,0 +1,74 @@
+interface TaskTemplateData {
+  id?: string;
+  title: string;
+  description: string;
+}
+
+interface EditTaskTemplateFormProps {
+  editForm: TaskTemplateData;
+  setEditForm: React.Dispatch<React.SetStateAction<{
+    title: string;
+    description: string;
+  }>>
+  handleUpdateTemplate: (e: React.FormEvent) => void;
+  setIsEditing: (value: boolean) => void;
+}
+
+const EditTaskTemplateForm = ({
+  editForm,
+  setEditForm,
+  handleUpdateTemplate,
+  setIsEditing
+}: EditTaskTemplateFormProps) => {
+  return (
+    <form onSubmit={handleUpdateTemplate} className="space-y-6">
+      <div>
+        <label htmlFor="title" className="block text-sm font-medium text-gray-700">
+          Title *
+        </label>
+        <input
+          type="text"
+          id="title"
+          value={editForm.title}
+          onChange={(e) => setEditForm({ ...editForm, title: e.target.value, description: editForm.description ?? "" })}
+          className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+          style={{ color: 'black' }}
+          required
+        />
+      </div>
+      <div>
+        <label htmlFor="description" className="block text-sm font-medium text-gray-700">
+          Description
+        </label>
+        <textarea
+          id="description"
+          value={editForm.description}
+          onChange={(e) => setEditForm({
+            ...editForm,
+            description: e.target.value ?? "",
+          })}
+          rows={4}
+          className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+          style={{ color: 'black' }}
+        />
+      </div>
+      <div className="flex justify-end space-x-3">
+        <button
+          type="button"
+          onClick={() => setIsEditing(false)}
+          className="bg-gray-300 hover:bg-gray-400 text-gray-700 px-4 py-2 rounded-md text-sm font-medium transition-colors"
+        >
+          Cancel
+        </button>
+        <button
+          type="submit"
+          className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
+        >
+          Update Template
+        </button>
+      </div>
+    </form>
+  );
+}
+
+export default EditTaskTemplateForm;

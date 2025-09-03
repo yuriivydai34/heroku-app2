@@ -97,11 +97,11 @@ export default function TasksPage() {
       return;
     }
 
-const deadlineValue = newTask.deadline
-  ? moment(newTask.deadline).isValid()
-    ? moment(newTask.deadline).format('YYYY-MM-DDTHH:mm:ss[Z]')
-    : undefined
-  : undefined;
+    const deadlineValue = newTask.deadline
+      ? moment(newTask.deadline).isValid()
+        ? moment(newTask.deadline).format('YYYY-MM-DDTHH:mm:ss[Z]')
+        : undefined
+      : undefined;
 
     try {
       const response = await taskService.createTask({
@@ -196,17 +196,17 @@ const deadlineValue = newTask.deadline
                 <h3 className="text-lg leading-6 font-medium text-gray-900 mb-4">
                   Create New Task
                 </h3>
-            <CreateTaskForm
-              handleCreateTask={handleCreateTask} newTask={newTask} 
-              setNewTask={setNewTask} users={users} setShowCreateForm={setShowCreateForm}
-            /></div>
+                <CreateTaskForm
+                  handleCreateTask={handleCreateTask} newTask={newTask}
+                  setNewTask={setNewTask} users={users} setShowCreateForm={setShowCreateForm}
+                /></div>
             </div>
           )}
 
           {/* Tasks List */}
-          <TasksList 
-            setShowCreateForm={setShowCreateForm} showCreateForm={showCreateForm} 
-            tasks={tasks} loadTasks={loadTasks} handleToggleComplete={handleToggleComplete} 
+          <TasksList
+            setShowCreateForm={setShowCreateForm} showCreateForm={showCreateForm}
+            tasks={tasks} loadTasks={loadTasks} handleToggleComplete={handleToggleComplete}
             handleDeleteTask={handleDeleteTask} users={users}
           />
         </div>
