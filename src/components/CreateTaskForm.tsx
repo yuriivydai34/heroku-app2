@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 interface UserData {
   id: string;
   username: string;
@@ -16,17 +18,56 @@ interface TaskData {
   userIdSupervisor: number;
 }
 
+interface TaskTemplateData {
+  id?: string;
+  title: string;
+  description: string;
+  createdAt?: string;
+}
+
 interface CreateTaskFormProps {
   handleCreateTask: (e: React.FormEvent) => void;
   newTask: TaskData;
   setNewTask: React.Dispatch<React.SetStateAction<TaskData>>;
   users: UserData[];
   setShowCreateForm: React.Dispatch<React.SetStateAction<boolean>>;
+  templates: TaskTemplateData[];
 }
 
-const CreateTaskForm = ({ handleCreateTask, newTask, setNewTask, users, setShowCreateForm }: CreateTaskFormProps) => {
+const CreateTaskForm = ({ handleCreateTask, newTask, setNewTask, users, setShowCreateForm, templates }: CreateTaskFormProps) => {
+  const [templateSelected, setTemplateSelected] = useState<TaskTemplateData | null>(null);
+  
+  const onSelectTemplate = (template: TaskTemplateData) => {
+    setTemplateSelected(template);
+    setNewTask({ ...newTask, title: template.title, description: template.description });
+  };
+  
   return (
     <form onSubmit={handleCreateTask} className="space-y-4">
+      <div>
+        <label htmlFor="template" className="block text-sm font-medium text-gray-700">
+          Template
+        </label>
+        <select
+          id="template"
+          value={templateSelected?.id || 0}
+          onChange={(e) => {
+            const selectedTemplate = templates.find(template => String(template.id) === e.target.value);
+            if (selectedTemplate) {
+              onSelectTemplate(selectedTemplate);
+            }
+          }}
+          className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+          style={{ color: 'black' }}
+        >
+          <option value={0}>Select template</option>
+          {templates.map((template) => (
+            <option key={template.id} value={template.id}>
+              {template.title} (ID: {template.id})
+            </option>
+          ))}
+        </select>
+      </div>
       <div>
         <label htmlFor="title" className="block text-sm font-medium text-gray-700">
           Title *

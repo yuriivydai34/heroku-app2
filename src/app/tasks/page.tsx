@@ -10,6 +10,7 @@ import CreateTaskForm from '@/components/CreateTaskForm';
 import moment from 'moment';
 import TasksList from '@/components/TasksList';
 import ErrorMessage from '@/components/ErrorMessage';
+import { taskTemplateService } from '@/services/taskTemplate.service';
 
 interface UserData {
   id: string;
@@ -27,6 +28,13 @@ interface TaskData {
   userIdCreator: number;
   usersIdAssociate: number[];
   userIdSupervisor: number;
+}
+
+interface TaskTemplateData {
+  id?: string;
+  title: string;
+  description: string;
+  createdAt?: string;
 }
 
 export default function TasksPage() {
@@ -59,6 +67,7 @@ export default function TasksPage() {
     userIdSupervisor: 0,
     completed: false
   });
+  const [templates, setTemplates] = useState<TaskTemplateData[]>([]);
 
   useEffect(() => {
     // Check authentication status
@@ -68,6 +77,7 @@ export default function TasksPage() {
     }
 
     loadTasks();
+    loadTemplates();
   }, [router]);
 
   const loadTasks = async () => {
@@ -84,6 +94,25 @@ export default function TasksPage() {
       }
     } catch (err) {
       setError('An error occurred while loading tasks');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const loadTemplates = async () => {
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      const response = await taskTemplateService.fetchTaskTemplates();
+
+      if (response.success && Array.isArray(response.data)) {
+        setTemplates(response.data);
+      } else {
+        setError(response.message || 'Failed to load templates');
+      }
+    } catch (err) {
+      setError('An error occurred while loading templates');
     } finally {
       setIsLoading(false);
     }
@@ -199,6 +228,7 @@ export default function TasksPage() {
                 <CreateTaskForm
                   handleCreateTask={handleCreateTask} newTask={newTask}
                   setNewTask={setNewTask} users={users} setShowCreateForm={setShowCreateForm}
+                  templates={templates}
                 /></div>
             </div>
           )}
