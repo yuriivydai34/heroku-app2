@@ -115,7 +115,16 @@ class AuthService {
   }
 
   isAuthenticated(): boolean {
-    return !!this.getToken();
+    const token = this.getToken();
+    if (!token) return false;
+
+    const tokenPart = token.split('.')[1];
+    if (!tokenPart) return false;
+
+    const decodedToken = JSON.parse(atob(tokenPart));
+    const currentTime = Date.now() / 1000; // Convert to seconds
+
+    return decodedToken.exp > currentTime;
   }
 
   getAuthHeaders(): Record<string, string> {
