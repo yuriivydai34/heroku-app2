@@ -1,3 +1,4 @@
+import moment from "moment";
 import { useRouter } from "next/navigation";
 
 interface TaskData {
@@ -89,6 +90,12 @@ const TasksList = ({ setShowCreateForm, showCreateForm, tasks,
                         <p className={`mt-1 text-sm ${task.active ? 'text-gray-400' : 'text-gray-600'
                           }`}>
                           Deadline: {task.deadline}
+                        </p>
+                      )}
+                      {task.deadline && (
+                        <p className={`mt-1 text-sm ${task.active ? 'text-gray-400' : 'text-gray-600'
+                          }`}>
+                          Hours until deadline: {moment(task.deadline).diff(moment(), 'hours')} hours
                         </p>
                       )}
                       <div className="mt-2 flex items-center space-x-4 text-xs text-gray-500">

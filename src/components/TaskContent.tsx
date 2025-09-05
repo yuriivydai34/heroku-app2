@@ -1,3 +1,4 @@
+import moment from 'moment';
 import EditTaskForm from './EditTaskForm';
 
 interface TaskData {
@@ -104,6 +105,13 @@ const TaskContent = ({
               <div>
                 <h3 className="text-lg font-medium text-gray-900 mb-2">Deadline</h3>
                 <p className="text-gray-600 whitespace-pre-wrap">{task.deadline}</p>
+              </div>
+            )}
+
+            {task.deadline && (
+              <div>
+                <h3 className="text-lg font-medium text-gray-900 mb-2">Hours until deadline</h3>
+                <p className="text-gray-600 whitespace-pre-wrap">{moment(task.deadline).diff(moment(), 'hours')} hours</p>
               </div>
             )}
 
