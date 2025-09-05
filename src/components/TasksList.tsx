@@ -89,7 +89,7 @@ const TasksList = ({ setShowCreateForm, showCreateForm, tasks,
                       {task.deadline && (
                         <p className={`mt-1 text-sm ${task.active ? 'text-gray-400' : 'text-gray-600'
                           }`}>
-                          Deadline: {task.deadline}
+                          Deadline: {moment(task.deadline).utc().format('MMMM Do YYYY, h:mm:ss a')}
                         </p>
                       )}
                       {task.deadline && (
