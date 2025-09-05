@@ -21,7 +21,7 @@ interface TaskData {
   id?: string;
   title: string;
   description?: string;
-  completed?: boolean;
+  active?: boolean;
   deadline?: string;
   createdAt?: string;
   updatedAt?: string;
@@ -65,7 +65,7 @@ export default function TasksPage() {
     userIdCreator: 0,
     usersIdAssociate: [],
     userIdSupervisor: 0,
-    completed: false
+    active: true
   });
   const [templates, setTemplates] = useState<TaskTemplateData[]>([]);
 
@@ -154,22 +154,6 @@ export default function TasksPage() {
     }
   };
 
-  const handleToggleComplete = async (taskId: string, currentStatus: boolean) => {
-    try {
-      const response = await taskService.updateTask(taskId, {
-        completed: !currentStatus
-      });
-
-      if (response.success) {
-        loadTasks(); // Reload tasks
-      } else {
-        setError(response.message || 'Failed to update task');
-      }
-    } catch (err) {
-      setError('An error occurred while updating the task');
-    }
-  };
-
   const handleDeleteTask = async (taskId: string) => {
     if (!confirm('Are you sure you want to delete this task?')) {
       return;
@@ -236,7 +220,7 @@ export default function TasksPage() {
           {/* Tasks List */}
           <TasksList
             setShowCreateForm={setShowCreateForm} showCreateForm={showCreateForm}
-            tasks={tasks} loadTasks={loadTasks} handleToggleComplete={handleToggleComplete}
+            tasks={tasks} loadTasks={loadTasks}
             handleDeleteTask={handleDeleteTask} users={users}
           />
         </div>

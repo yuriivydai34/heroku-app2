@@ -4,7 +4,7 @@ interface TaskData {
   id?: string;
   title: string;
   description?: string;
-  completed?: boolean;
+  active?: boolean;
   deadline?: string;
   createdAt?: string;
   updatedAt?: string;
@@ -23,13 +23,12 @@ interface TasksListProps {
   showCreateForm: boolean;
   tasks: TaskData[];
   loadTasks: () => void;
-  handleToggleComplete: (taskId: string, currentStatus: boolean) => void;
   handleDeleteTask: (taskId: string) => void;
   users: UserData[];
 }
 
 const TasksList = ({ setShowCreateForm, showCreateForm, tasks, 
-  loadTasks, handleToggleComplete, handleDeleteTask, users }: TasksListProps) => {
+  loadTasks, handleDeleteTask, users }: TasksListProps) => {
   const router = useRouter();
 
   return (
@@ -68,33 +67,26 @@ const TasksList = ({ setShowCreateForm, showCreateForm, tasks,
             {tasks.map((task) => (
               <div
                 key={task.id}
-                className={`border rounded-lg p-4 ${task.completed ? 'bg-green-50 border-green-200' : 'bg-white border-gray-200'
+                className={`border rounded-lg p-4 ${task.active ? 'bg-green-50 border-green-200' : 'bg-white border-gray-200'
                   }`}
               >
                 <div className="flex items-start justify-between">
                   <div className="flex items-start space-x-3">
-                    <input
-                      type="checkbox"
-                      checked={task.completed || false}
-                      onChange={() => handleToggleComplete(task.id!, task.completed || false)}
-                      className="mt-1 h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-                    />
                     <div className="flex-1">
                       <button
                         onClick={() => router.push(`/tasks/${task.id}`)}
-                        className={`font-medium text-left hover:underline ${task.completed ? 'line-through text-gray-500' : 'text-gray-900 hover:text-blue-600'
-                          }`}
+                        className={`font-medium text-left hover:underline text-gray-900 hover:text-blue-600`}
                       >
                         {task.title}
                       </button>
                       {task.description && (
-                        <p className={`mt-1 text-sm ${task.completed ? 'text-gray-400' : 'text-gray-600'
+                        <p className={`mt-1 text-sm ${task.active ? 'text-gray-400' : 'text-gray-600'
                           }`}>
                           {task.description}
                         </p>
                       )}
                       {task.deadline && (
-                        <p className={`mt-1 text-sm ${task.completed ? 'text-gray-400' : 'text-gray-600'
+                        <p className={`mt-1 text-sm ${task.active ? 'text-gray-400' : 'text-gray-600'
                           }`}>
                           Deadline: {task.deadline}
                         </p>

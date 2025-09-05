@@ -2,7 +2,7 @@ interface TaskData {
   id?: string;
   title: string;
   description?: string;
-  completed?: boolean;
+  active?: boolean;
   deadline?: string;
   createdAt?: string;
   updatedAt?: string;

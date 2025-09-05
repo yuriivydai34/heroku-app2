@@ -16,7 +16,7 @@ interface TaskData {
   id?: string;
   title: string;
   description?: string;
-  completed?: boolean;
+  active?: boolean;
   deadline?: string;
   createdAt?: string;
   updatedAt?: string;
@@ -194,12 +194,12 @@ export default function TaskDetailPage() {
     }
   };
 
-  const handleToggleComplete = async () => {
+  const handleToggleActive = async () => {
     if (!task?.id) return;
 
     try {
       const response = await taskService.updateTask(task.id, {
-        completed: !task.completed
+        active: !task.active
       });
 
       if (response.success) {
@@ -311,7 +311,7 @@ export default function TaskDetailPage() {
             setIsEditing={setIsEditing} 
             handleUpdateTask={handleUpdateTask} editForm={editForm} 
             setEditForm={setEditForm} users={users}
-            handleToggleComplete={handleToggleComplete}
+            handleToggleActive={handleToggleActive}
             handleFilesClick={handleFilesClick}
             handleDeleteTask={handleDeleteTask} />
 

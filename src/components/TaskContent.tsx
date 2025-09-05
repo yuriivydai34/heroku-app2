@@ -4,7 +4,7 @@ interface TaskData {
   id?: string;
   title: string;
   description?: string;
-  completed?: boolean;
+  active?: boolean;
   deadline?: string;
   createdAt?: string;
   updatedAt?: string;
@@ -33,7 +33,7 @@ interface TaskContentProps {
     userIdSupervisor: number;
   }>>
   users: UserData[];
-  handleToggleComplete: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  handleToggleActive: (event: React.ChangeEvent<HTMLInputElement>) => void;
   handleFilesClick: () => void;
   handleDeleteTask: () => void;
 }
@@ -46,7 +46,7 @@ const TaskContent = ({
   editForm,
   setEditForm,
   users,
-  handleToggleComplete,
+  handleToggleActive,
   handleFilesClick,
   handleDeleteTask
 }: TaskContentProps) => {
@@ -70,27 +70,26 @@ const TaskContent = ({
           <div className="space-y-6">
             <div className="flex items-start justify-between">
               <div className="flex-1">
-                <h2 className={`text-2xl font-bold ${task.completed ? 'line-through text-gray-500' : 'text-gray-900'
-                  }`}>
+                <h2 className={`text-2xl font-bold text-gray-900`}>
                   {task.title}
                 </h2>
                 <div className="mt-2 flex items-center space-x-4">
-                  <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${task.completed
+                  <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${task.active
                     ? 'bg-green-100 text-green-800'
                     : 'bg-yellow-100 text-yellow-800'
                     }`}>
-                    {task.completed ? 'Completed' : 'Pending'}
+                    {task.active ? 'Active' : 'Inactive'}
                   </span>
                 </div>
               </div>
               <div className="flex items-center space-x-2">
                 <input
                   type="checkbox"
-                  checked={task.completed || false}
-                  onChange={handleToggleComplete}
+                  checked={task.active || false}
+                  onChange={handleToggleActive}
                   className="h-5 w-5 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
                 />
-                <label className="text-sm text-gray-600">Mark as completed</label>
+                <label className="text-sm text-gray-600">Active</label>
               </div>
             </div>
 

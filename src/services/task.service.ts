@@ -4,7 +4,7 @@ interface TaskData {
   id?: string;
   title: string;
   description?: string;
-  completed?: boolean;
+  active?: boolean;
   deadline?: string;
   createdAt?: string;
   updatedAt?: string;
@@ -194,18 +194,6 @@ class TaskService {
         message: error instanceof Error ? error.message : 'Failed to delete task',
       };
     }
-  }
-
-  async markTaskComplete(taskId: string): Promise<TaskResponse> {
-    return this.updateTask(taskId, { status: 'completed' });
-  }
-
-  async markTaskInProgress(taskId: string): Promise<TaskResponse> {
-    return this.updateTask(taskId, { status: 'in-progress' });
-  }
-
-  async markTaskPending(taskId: string): Promise<TaskResponse> {
-    return this.updateTask(taskId, { status: 'pending' });
   }
 }
 
