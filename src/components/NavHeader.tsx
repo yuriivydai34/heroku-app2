@@ -7,6 +7,7 @@ import Notification from '../components/Notification';
 
 import notificationService from "../services/notification.service";
 import authService from '../services/auth.service';
+import profileService from "@/services/profile.service";
 
 type NotificationData = {
   id: string;
@@ -16,12 +17,21 @@ type NotificationData = {
   createdAt: string;
 };
 
+interface ProfileData {
+  firstName?: string;
+  lastName?: string;
+  email?: string;
+  [key: string]: any; // Allow for additional profile fields
+}
+
 const NavHeader = () => {
   const router = useRouter();
 
   const [showNotifications, setShowNotifications] = useState(false);
 
   const [notifications, setNotifications] = useState<NotificationData[]>([]);
+
+  const [profile, setProfile] = useState<ProfileData>();
 
   const handleLogout = async () => {
     await authService.logout();
@@ -40,8 +50,14 @@ const NavHeader = () => {
     setNotifications(notificationsData);
   };
 
+  const fetchProfile = async () => {
+    const response = await profileService.fetchProfile();
+    setProfile(response.data);
+  };
+
   useEffect(() => {
     fetchNotifications();
+    fetchProfile();
   }, []);
 
   return (
@@ -73,7 +89,7 @@ const NavHeader = () => {
               >
                 Вийти
               </button>
-              <span className="text-gray-600">{authService.getCurrentUser()?.username}</span>
+              <span className="text-gray-600">{profile?.firstName} {profile?.lastName}</span>
             </div>
             {/* Notifications Popup */}
             {showNotifications && (

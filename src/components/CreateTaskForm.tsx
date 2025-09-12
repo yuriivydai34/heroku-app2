@@ -150,7 +150,7 @@ const CreateTaskForm = ({ handleCreateTask, newTask, setNewTask, users, setShowC
             </option>
           ))}
         </select>
-        <p className="text-xs text-gray-500 mt-1">Hold Ctrl (Windows) or Cmd (Mac) to select multiple associates.</p>
+        <p className="text-xs text-gray-500 mt-1">Затисніть Ctrl (Windows) або Cmd (Mac) щоб обрати декілька колег.</p>
       </div>
       <div className="flex justify-end space-x-3">
         <button
