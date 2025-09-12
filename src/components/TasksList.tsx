@@ -1,4 +1,5 @@
 import moment from "moment";
+import 'moment/locale/uk'; // Import the Ukrainian locale
 import { useRouter } from "next/navigation";
 
 interface TaskData {
@@ -28,6 +29,8 @@ interface TasksListProps {
   users: UserData[];
 }
 
+moment.locale('uk');
+
 const TasksList = ({ setShowCreateForm, showCreateForm, tasks, 
   loadTasks, handleDeleteTask, users }: TasksListProps) => {
   const router = useRouter();
@@ -39,28 +42,28 @@ const TasksList = ({ setShowCreateForm, showCreateForm, tasks,
           onClick={() => setShowCreateForm(!showCreateForm)}
           className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
         >
-          {showCreateForm ? 'Cancel' : 'New Task'}
+          {showCreateForm ? 'Скасувати' : 'Нова задача'}
         </button>
         <div className="flex justify-between items-center mb-4">
           <h3 className="text-lg leading-6 font-medium text-gray-900">
-            Your Tasks ({tasks.length})
+            Нова задача ({tasks.length})
           </h3>
           <button
             onClick={loadTasks}
             className="text-blue-600 hover:text-blue-800 text-sm font-medium"
           >
-            🔄 Refresh
+            🔄 Оновити
           </button>
         </div>
 
         {tasks.length === 0 ? (
           <div className="text-center py-8">
-            <p className="text-gray-500">No tasks found.</p>
+            <p className="text-gray-500">Не знайдено задач.</p>
             <button
               onClick={() => setShowCreateForm(true)}
               className="mt-2 text-blue-600 hover:text-blue-800 text-sm font-medium"
             >
-              Create your first task
+              Створити задачу
             </button>
           </div>
         ) : (
@@ -89,32 +92,32 @@ const TasksList = ({ setShowCreateForm, showCreateForm, tasks,
                       {task.deadline && (
                         <p className={`mt-1 text-sm ${task.active ? 'text-gray-400' : 'text-gray-600'
                           }`}>
-                          Deadline: {moment(task.deadline).utc().format('MMMM Do YYYY, h:mm:ss a')}
+                          Зробити до: {moment(task.deadline).utc().format('MMMM Do YYYY, h:mm:ss a')}
                         </p>
                       )}
                       {task.deadline && (
                         <p className={`mt-1 text-sm ${task.active ? 'text-gray-400' : 'text-gray-600'
                           }`}>
-                          Hours until deadline: {moment(task.deadline).diff(moment(), 'hours')} hours
+                          Лишилось годин до кінця: {moment(task.deadline).diff(moment(), 'hours')} годин
                         </p>
                       )}
                       <div className="mt-2 flex items-center space-x-4 text-xs text-gray-500">
                         {task.createdAt && (
-                          <span>Created: {new Date(task.createdAt).toLocaleDateString()}</span>
+                          <span>Створено: {new Date(task.createdAt).toLocaleDateString()}</span>
                         )}
                         {task.userIdCreator && (
                           <span>
-                            Created by: {users.find(u => String(u.id) === String(task.userIdCreator))?.username || task.userIdCreator}
+                            Створено: {users.find(u => String(u.id) === String(task.userIdCreator))?.username || task.userIdCreator}
                           </span>
                         )}
                         {task.usersIdAssociate && (
                           <span>
-                            Assigned to: {task.usersIdAssociate.map(id => users.find(u => String(u.id) === String(id))?.username || id).join(', ')}
+                            Колега: {task.usersIdAssociate.map(id => users.find(u => String(u.id) === String(id))?.username || id).join(', ')}
                           </span>
                         )}
                         {task.userIdSupervisor && (
                           <span>
-                            Supervised by: {users.find(u => String(u.id) === String(task.userIdSupervisor))?.username || task.userIdSupervisor}
+                            Наглядач: {users.find(u => String(u.id) === String(task.userIdSupervisor))?.username || task.userIdSupervisor}
                           </span>
                         )}
                       </div>

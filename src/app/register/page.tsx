@@ -122,7 +122,7 @@ export default function RegisterPage() {
       <div className="max-w-md w-full space-y-8">
         <div>
           <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-            Create your account
+            Реєстрація
           </h2>
         </div>
         <div className="bg-white rounded-lg shadow-md p-6">
@@ -130,7 +130,7 @@ export default function RegisterPage() {
             {/* Username */}
             <div>
               <label htmlFor="username" className="block text-sm font-medium text-gray-700 mb-1">
-                Username
+                Користувач
               </label>
               <input
                 type="text"
@@ -139,7 +139,7 @@ export default function RegisterPage() {
                 value={formData.username}
                 onChange={handleInputChange}
                 className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.username ? 'border-red-500' : 'border-gray-300'} text-black`}
-                placeholder="Enter your username"
+                placeholder="Введіть ім'я користувача"
               />
               {errors.username && (
                 <p className="mt-1 text-sm text-red-600">{errors.username}</p>
@@ -149,7 +149,7 @@ export default function RegisterPage() {
             {/* Password */}
             <div>
               <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
-                Password
+                Пароль
               </label>
               <input
                 type="password"
@@ -158,7 +158,7 @@ export default function RegisterPage() {
                 value={formData.password}
                 onChange={handleInputChange}
                 className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.password ? 'border-red-500' : 'border-gray-300'} text-black`}
-                placeholder="Enter your password"
+                placeholder="Введіть пароль"
               />
               {errors.password && (
                 <p className="mt-1 text-sm text-red-600">{errors.password}</p>
@@ -168,7 +168,7 @@ export default function RegisterPage() {
             {/* Confirm Password */}
             <div>
               <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 mb-1">
-                Confirm Password
+                Підтвердіть пароль
               </label>
               <input
                 type="password"
@@ -177,7 +177,7 @@ export default function RegisterPage() {
                 value={formData.confirmPassword}
                 onChange={handleInputChange}
                 className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.confirmPassword ? 'border-red-500' : 'border-gray-300'} text-black`}
-                placeholder="Confirm your password"
+                placeholder="Підтвердіть ваш пароль"
               />
               {errors.confirmPassword && (
                 <p className="mt-1 text-sm text-red-600">{errors.confirmPassword}</p>
@@ -193,7 +193,7 @@ export default function RegisterPage() {
                 : 'bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2'
                 } text-white`}
             >
-              {isSubmitting ? 'Creating Account...' : 'Create Account'}
+              {isSubmitting ? 'Creating Account...' : 'Створити користувача'}
             </button>
 
             {/* Submit Message */}
@@ -208,12 +208,12 @@ export default function RegisterPage() {
           {/* Login Link */}
           <div className="mt-6 text-center">
             <p className="text-sm text-gray-600">
-              Already have an account?{' '}
+              Вже є зареєструвались?{' '}
               <button
                 onClick={handleLoginRedirect}
                 className="text-blue-600 hover:text-blue-500 font-medium underline"
               >
-                Sign in
+                Увійти
               </button>
             </p>
           </div>

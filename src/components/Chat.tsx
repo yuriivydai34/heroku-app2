@@ -111,7 +111,7 @@ const Chat = () => {
 
   return (
     <div style={{ color: 'black' }}>
-      messages: {messages.length}
+      повідомлення: {messages.length}
       <ul>
         {messages.map((message, idx) => (
           <li key={idx} style={{ color: 'black' }}>
@@ -120,7 +120,7 @@ const Chat = () => {
         ))}
       </ul>
       <form onSubmit={handleSendMessage}>
-        Send Message To:
+        Надіслати повідомлення:
         <select
           name="receiverId"
           style={{ color: 'black' }}
@@ -134,7 +134,7 @@ const Chat = () => {
         </select>
         <textarea
           name="message"
-          placeholder="Type your message..."
+          placeholder="Напишіть повідомлення..."
           className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
           style={{ color: 'black' }}
           value={messageInput}
@@ -145,7 +145,7 @@ const Chat = () => {
           className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
           disabled={!receiverInput || !messageInput.trim()}
         >
-          Send
+          Надіслати
         </button>
       </form>
     </div>

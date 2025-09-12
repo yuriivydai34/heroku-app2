@@ -91,7 +91,7 @@ export default function TaskTemplateDetailPage() {
   };
 
   const handleDeleteTemplate = async () => {
-    if (!template?.id || !confirm('Are you sure you want to delete this template?')) {
+    if (!template?.id || !confirm('Ви впевнені що хочете видалити?')) {
       return;
     }
 

@@ -83,7 +83,7 @@ export default function TaskTemplatePage() {
   };
 
     const handleDeleteTemplate = async (templateId: string) => {
-      if (!confirm('Are you sure you want to delete this template?')) {
+      if (!confirm('Ви впевнені що хочете видалити?')) {
         return;
       }
   
@@ -132,10 +132,10 @@ export default function TaskTemplatePage() {
                   onClick={() => setShowCreateForm(!showCreateForm)}
                   className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
                 >
-                  {showCreateForm ? 'Cancel' : 'New Task Template'}
+                  {showCreateForm ? 'Скасувати' : 'New Task Template'}
                 </button>
                 <h3 className="text-lg leading-6 font-medium text-gray-900 mb-4">
-                  Create New Task Template
+                  Cтворення нового шаблона
                 </h3>
                 <CreateTaskTemplatesForm
                   handleCreateTemplate={handleCreateTemplate} newTemplate={newTemplate}

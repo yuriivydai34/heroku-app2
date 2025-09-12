@@ -28,7 +28,7 @@ export default function UploadForTaskPage() {
       <div className="min-h-screen bg-gray-100 flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
-          <p className="mt-4 text-gray-600">Loading tasks...</p>
+          <p className="mt-4 text-gray-600">Завантажується...</p>
         </div>
       </div>
     );
@@ -39,14 +39,14 @@ export default function UploadForTaskPage() {
       {/* Header */}
       <NavHeader />
 
-      <h1>Upload Files for Task {taskId}</h1>
+      <h1>Завантажити файли для задачі {taskId}</h1>
       {/* Upload form goes here */}
 
       {/* FileUpload Section */}
       <div className="bg-white shadow rounded-lg">
         <div className="px-4 py-5 sm:p-6">
           <h3 className="text-lg leading-6 font-medium text-gray-900 mb-4">
-            File Upload
+            Завантажити файли
           </h3>
           <TaskFileUpload taskId={taskId} />
         </div>
@@ -56,7 +56,7 @@ export default function UploadForTaskPage() {
       <div className="bg-white shadow rounded-lg">
         <div className="px-4 py-5 sm:p-6">
           <h3 className="text-lg leading-6 font-medium text-gray-900 mb-4">
-            Files List
+            Список
           </h3>
           <TaskFilesList taskId={taskId} />
         </div>

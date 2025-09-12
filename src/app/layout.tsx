@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "CRM tasks next",
-  description: "CRM tasks next app",
+  title: "CRM задачі",
+  description: "CRM задачі",
 };
 
 export default function RootLayout({

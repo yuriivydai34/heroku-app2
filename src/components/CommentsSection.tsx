@@ -50,7 +50,7 @@ const CommentsSection = ({
     <div className="mt-6 bg-white shadow rounded-lg">
       <div className="px-4 py-5 sm:p-6">
         <h3 className="text-lg leading-6 font-medium text-gray-900 mb-4">
-          Comments ({comments.length})
+          Коментарі ({comments.length})
         </h3>
 
         {/* Comments Error */}
@@ -79,7 +79,7 @@ const CommentsSection = ({
         <form onSubmit={handleSubmitComment} className="mb-6">
           <div>
             <label htmlFor="comment" className="block text-sm font-medium text-gray-700 mb-2">
-              Add a comment
+              Додайте коментар
             </label>
             <textarea
               id="comment"
@@ -87,7 +87,7 @@ const CommentsSection = ({
               onChange={(e) => setNewComment(e.target.value)}
               rows={3}
               className="block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
-              placeholder="Write your comment here..."
+              placeholder="Напишіть коментар..."
               disabled={isSubmittingComment}
               style={{ color: 'black' }}
             />
@@ -98,7 +98,7 @@ const CommentsSection = ({
               disabled={isSubmittingComment || !newComment.trim()}
               className="bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
             >
-              {isSubmittingComment ? 'Posting...' : 'Post Comment'}
+              {isSubmittingComment ? 'Додається...' : 'Додати коментар'}
             </button>
           </div>
         </form>
@@ -107,12 +107,12 @@ const CommentsSection = ({
         {commentsLoading ? (
           <div className="text-center py-4">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
-            <p className="mt-2 text-gray-600">Loading comments...</p>
+            <p className="mt-2 text-gray-600">Завантажується...</p>
           </div>
         ) : comments.length === 0 ? (
           <div className="text-center py-8">
-            <p className="text-gray-500">No comments yet.</p>
-            <p className="text-sm text-gray-400 mt-1">Be the first to add a comment!</p>
+            <p className="text-gray-500">Немає коментарів.</p>
+            <p className="text-sm text-gray-400 mt-1">Додайте коментар.</p>
           </div>
         ) : (
           <div className="space-y-4">
@@ -139,13 +139,13 @@ const CommentsSection = ({
                     onClick={() => handleCommentFilesClick(comment.id!)}
                     className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
                   >
-                    Files
+                    Файли
                   </button>
                   {comment.id && (
                     <button
                       onClick={() => handleDeleteComment(comment.id!)}
                       className="text-red-500 hover:text-red-700 text-sm ml-4"
-                      title="Delete comment"
+                      title="Видалити коментар"
                     >
                       🗑️
                     </button>
@@ -163,7 +163,7 @@ const CommentsSection = ({
             disabled={commentsLoading}
             className="text-blue-600 hover:text-blue-800 text-sm font-medium disabled:text-gray-400"
           >
-            🔄 {commentsLoading ? 'Loading...' : 'Refresh Comments'}
+            🔄 {commentsLoading ? 'Завантажується...' : 'Оновити'}
           </button>
         </div>
       </div>

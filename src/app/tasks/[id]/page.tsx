@@ -177,7 +177,7 @@ export default function TaskDetailPage() {
   };
 
   const handleDeleteComment = async (commentId: string) => {
-    if (!confirm('Are you sure you want to delete this comment?')) {
+    if (!confirm('Ви впевнені що хочете видалити?')) {
       return;
     }
 
@@ -247,7 +247,7 @@ export default function TaskDetailPage() {
   };
 
   const handleDeleteTask = async () => {
-    if (!task?.id || !confirm('Are you sure you want to delete this task?')) {
+    if (!task?.id || !confirm('Ви впевнені що хочете видалити?')) {
       return;
     }
 

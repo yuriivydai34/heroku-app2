@@ -101,7 +101,7 @@ export default function LoginPage() {
       <div className="max-w-md w-full space-y-8">
         <div>
           <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-            Sign in to your account
+            Увійдіть до системи
           </h2>
         </div>
         <div className="bg-white rounded-lg shadow-md p-6">
@@ -109,7 +109,7 @@ export default function LoginPage() {
             {/* Username */}
             <div>
               <label htmlFor="username" className="block text-sm font-medium text-gray-700 mb-1">
-                Username
+                Користувач
               </label>
               <input
                 type="text"
@@ -118,7 +118,7 @@ export default function LoginPage() {
                 value={formData.username}
                 onChange={handleInputChange}
                 className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.username ? 'border-red-500' : 'border-gray-300'} text-black`}
-                placeholder="Enter your username"
+                placeholder="Введіть ім'я користувача"
               />
               {errors.username && (
                 <p className="mt-1 text-sm text-red-600">{errors.username}</p>
@@ -128,7 +128,7 @@ export default function LoginPage() {
             {/* Password */}
             <div>
               <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
-                Password
+                Пароль
               </label>
               <input
                 type="password"
@@ -137,7 +137,7 @@ export default function LoginPage() {
                 value={formData.password}
                 onChange={handleInputChange}
                 className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.password ? 'border-red-500' : 'border-gray-300'} text-black`}
-                placeholder="Enter your password"
+                placeholder="Введіть пароль"
               />
               {errors.password && (
                 <p className="mt-1 text-sm text-red-600">{errors.password}</p>
@@ -153,7 +153,7 @@ export default function LoginPage() {
                 : 'bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2'
                 } text-white`}
             >
-              {isSubmitting ? 'Signing In...' : 'Sign In'}
+              {isSubmitting ? 'Входимо...' : 'Увійти'}
             </button>
 
             {/* Submit Message */}
@@ -168,12 +168,12 @@ export default function LoginPage() {
           {/* Register Link */}
           <div className="mt-6 text-center">
             <p className="text-sm text-gray-600">
-              Don't have an account?{' '}
+              Ще не зареєстровані ?{' '}
               <button
                 onClick={handleRegisterRedirect}
                 className="text-blue-600 hover:text-blue-500 font-medium underline"
               >
-                Create account
+                Створіть користувача
               </button>
             </p>
           </div>

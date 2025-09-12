@@ -241,13 +241,13 @@ export default function FileUpload({
 
           <div>
             <p className="text-lg font-medium text-gray-900">
-              Drop files here or click to upload
+              Додайте файли сюди
             </p>
             <p className="text-sm text-gray-500 mt-1">
-              Up to {maxFiles} files, max {maxSize}MB each
+              До {maxFiles} файлів, максимум {maxSize}MB кожен
             </p>
             <p className="text-xs text-gray-400 mt-1">
-              Supported: {acceptedTypes.join(', ')}
+              Формат:{acceptedTypes.join(', ')}
             </p>
           </div>
 
@@ -256,7 +256,7 @@ export default function FileUpload({
             onClick={() => fileInputRef.current?.click()}
             className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors"
           >
-            Choose Files
+            Обрати файли
           </button>
         </div>
 
@@ -275,13 +275,13 @@ export default function FileUpload({
         <div className="mt-6 space-y-3">
           <div className="flex justify-between items-center">
             <h3 className="text-lg font-medium text-gray-900">
-              Selected Files ({files.length}/{maxFiles})
+              Файли ({files.length}/{maxFiles})
             </h3>
             <button
               onClick={clearAll}
               className="text-sm text-red-600 hover:text-red-800"
             >
-              Clear All
+              Очистити
             </button>
           </div>
 
@@ -334,7 +334,7 @@ export default function FileUpload({
                 )}
                 {file.uploaded && file.uploadedData && (
                   <p className="text-xs text-green-600 mt-1">
-                    Uploaded successfully
+                    Завантажено успішно
                     {file.uploadedData.url && (
                       <a
                         href={file.uploadedData.url}
@@ -386,7 +386,7 @@ export default function FileUpload({
                     : 'bg-green-600 hover:bg-green-700'
                   } text-white`}
               >
-                {uploading ? 'Uploading...' : 'Upload Files'}
+                {uploading ? 'Uploading...' : 'Завантажити файли'}
               </button>
             </div>
           )}

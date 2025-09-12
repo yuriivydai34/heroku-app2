@@ -16,7 +16,7 @@ const CreateTaskTemplatesForm = ({ handleCreateTemplate, newTemplate, setNewTemp
     <form onSubmit={handleCreateTemplate} className="space-y-4">
       <div>
         <label htmlFor="title" className="block text-sm font-medium text-gray-700">
-          Title *
+          Назва *
         </label>
         <input
           type="text"
@@ -24,14 +24,14 @@ const CreateTaskTemplatesForm = ({ handleCreateTemplate, newTemplate, setNewTemp
           value={newTemplate.title}
           onChange={(e) => setNewTemplate({ ...newTemplate, title: e.target.value })}
           className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
-          placeholder="Enter template title"
+          placeholder="Введіть назву шаблона"
           style={{ color: 'black' }}
           required
         />
       </div>
       <div>
         <label htmlFor="description" className="block text-sm font-medium text-gray-700">
-          Description
+          Опис
         </label>
         <textarea
           id="description"
@@ -39,7 +39,7 @@ const CreateTaskTemplatesForm = ({ handleCreateTemplate, newTemplate, setNewTemp
           onChange={(e) => setNewTemplate({ ...newTemplate, description: e.target.value })}
           rows={3}
           className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
-          placeholder="Enter template description"
+          placeholder="Введіть опис шаблона"
           style={{ color: 'black' }}
         />
       </div>
@@ -49,13 +49,13 @@ const CreateTaskTemplatesForm = ({ handleCreateTemplate, newTemplate, setNewTemp
           onClick={() => setShowCreateForm(false)}
           className="bg-gray-300 hover:bg-gray-400 text-gray-700 px-4 py-2 rounded-md text-sm font-medium transition-colors"
         >
-          Cancel
+          Скасувати
         </button>
         <button
           type="submit"
           className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
         >
-          Create Template
+          Створити
         </button>
       </div>
     </form>

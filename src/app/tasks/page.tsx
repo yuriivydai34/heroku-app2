@@ -8,6 +8,7 @@ import userService from '../../services/user.service';
 import NavHeader from '@/components/NavHeader';
 import CreateTaskForm from '@/components/CreateTaskForm';
 import moment from 'moment';
+import 'moment/locale/uk'; // Import the Ukrainian locale
 import TasksList from '@/components/TasksList';
 import ErrorMessage from '@/components/ErrorMessage';
 import { taskTemplateService } from '@/services/taskTemplate.service';
@@ -36,6 +37,8 @@ interface TaskTemplateData {
   description: string;
   createdAt?: string;
 }
+
+moment.locale('uk');
 
 export default function TasksPage() {
   const [users, setUsers] = useState<UserData[]>([]);
@@ -155,7 +158,7 @@ export default function TasksPage() {
   };
 
   const handleDeleteTask = async (taskId: string) => {
-    if (!confirm('Are you sure you want to delete this task?')) {
+    if (!confirm('Ви впевнені що хочете видалити?')) {
       return;
     }
 
@@ -204,10 +207,10 @@ export default function TasksPage() {
                   onClick={() => setShowCreateForm(!showCreateForm)}
                   className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
                 >
-                  {showCreateForm ? 'Cancel' : 'New Task'}
+                  {showCreateForm ? 'Скасувати' : 'Нова задача'}
                 </button>
                 <h3 className="text-lg leading-6 font-medium text-gray-900 mb-4">
-                  Create New Task
+                  Нова задача
                 </h3>
                 <CreateTaskForm
                   handleCreateTask={handleCreateTask} newTask={newTask}

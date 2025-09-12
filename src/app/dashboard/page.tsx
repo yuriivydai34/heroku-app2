@@ -26,7 +26,7 @@ export default function DashboardPage() {
       <div className="min-h-screen bg-gray-100 flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
-          <p className="mt-4 text-gray-600">Loading...</p>
+          <p className="mt-4 text-gray-600">Завантажується...</p>
         </div>
       </div>
     );
@@ -53,14 +53,14 @@ export default function DashboardPage() {
                   <div className="ml-5 w-0 flex-1">
                     <dl>
                       <dt className="text-sm font-medium text-gray-500 truncate">
-                        Profile
+                        Профіль
                       </dt>
                       <dd className="text-lg font-medium text-gray-900">
                         <button
                           onClick={() => router.push('/profile')}
                           className="text-blue-600 hover:text-blue-800 font-medium"
                         >
-                          Manage Profile
+                          Редагувати профіль
                         </button>
                       </dd>
                     </dl>
@@ -80,14 +80,14 @@ export default function DashboardPage() {
                   <div className="ml-5 w-0 flex-1">
                     <dl>
                       <dt className="text-sm font-medium text-gray-500 truncate">
-                        Tasks
+                        Задачі
                       </dt>
                       <dd className="text-lg font-medium text-gray-900">
                         <button
                           onClick={() => router.push('/tasks')}
                           className="text-blue-600 hover:text-blue-800 font-medium"
                         >
-                          Manage Tasks
+                          Управляти задачами
                         </button>
                       </dd>
                     </dl>
@@ -107,14 +107,14 @@ export default function DashboardPage() {
                   <div className="ml-5 w-0 flex-1">
                     <dl>
                       <dt className="text-sm font-medium text-gray-500 truncate">
-                        Chat
+                        Чат
                       </dt>
                       <dd className="text-lg font-medium text-gray-900">
                         <button
                           onClick={() => router.push('/chat')}
                           className="text-blue-600 hover:text-blue-800 font-medium"
                         >
-                          Chat with Users
+                          Чат з користувачами
                         </button>
                       </dd>
                     </dl>
@@ -134,14 +134,14 @@ export default function DashboardPage() {
                   <div className="ml-5 w-0 flex-1">
                     <dl>
                       <dt className="text-sm font-medium text-gray-500 truncate">
-                        Task Templates
+                        Шаблони задач
                       </dt>
                       <dd className="text-lg font-medium text-gray-900">
                         <button
                           onClick={() => router.push('/task-template')}
                           className="text-blue-600 hover:text-blue-800 font-medium"
                         >
-                          Task Templates
+                          Шаблони задач
                         </button>
                       </dd>
                     </dl>

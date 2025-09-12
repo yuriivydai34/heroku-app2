@@ -141,14 +141,14 @@ export default function UserProfilePage() {
             <div className="px-4 py-5 sm:p-6">
               <div className="flex justify-between items-center mb-6">
                 <h3 className="text-lg leading-6 font-medium text-gray-900">
-                  Profile Information
+                  Інфомація про користувача
                 </h3>
                 {!isEditing && (
                   <button
                     onClick={handleStartEdit}
                     className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
                   >
-                    Edit Profile
+                    Редагувати профіль
                   </button>
                 )}
               </div>
@@ -159,7 +159,7 @@ export default function UserProfilePage() {
                   <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
                     <div>
                       <label htmlFor="firstName" className="block text-sm font-medium text-gray-700">
-                        First Name
+                        Ім'я
                       </label>
                       <input
                         type="text"
@@ -173,7 +173,7 @@ export default function UserProfilePage() {
                     </div>
                     <div>
                       <label htmlFor="lastName" className="block text-sm font-medium text-gray-700">
-                        Last Name
+                        Фамілія
                       </label>
                       <input
                         type="text"
@@ -188,7 +188,7 @@ export default function UserProfilePage() {
                   </div>
                   <div>
                     <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-                      Email Address
+                      Елекронна пошта
                     </label>
                     <input
                       type="email"
@@ -207,14 +207,14 @@ export default function UserProfilePage() {
                       disabled={isSubmitting}
                       className="bg-gray-300 hover:bg-gray-400 disabled:bg-gray-200 text-gray-700 px-4 py-2 rounded-md text-sm font-medium transition-colors"
                     >
-                      Cancel
+                      Скасувати
                     </button>
                     <button
                       type="submit"
                       disabled={isSubmitting}
                       className="bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
                     >
-                      {isSubmitting ? 'Saving...' : 'Save Changes'}
+                      {isSubmitting ? 'Saving...' : 'Зберегти зміни'}
                     </button>
                   </div>
                 </form>
@@ -223,20 +223,20 @@ export default function UserProfilePage() {
                 <div className="space-y-6">
                   <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
                     <div>
-                      <dt className="text-sm font-medium text-gray-500">First Name</dt>
+                      <dt className="text-sm font-medium text-gray-500">Ім'я</dt>
                       <dd className="mt-1 text-sm text-gray-900">
                         {profile.firstName || 'Not provided'}
                       </dd>
                     </div>
                     <div>
-                      <dt className="text-sm font-medium text-gray-500">Last Name</dt>
+                      <dt className="text-sm font-medium text-gray-500">Фамілія</dt>
                       <dd className="mt-1 text-sm text-gray-900">
                         {profile.lastName || 'Not provided'}
                       </dd>
                     </div>
                   </div>
                   <div>
-                    <dt className="text-sm font-medium text-gray-500">Email Address</dt>
+                    <dt className="text-sm font-medium text-gray-500">Електронна пошта</dt>
                     <dd className="mt-1 text-sm text-gray-900">
                       {profile.email || 'Not provided'}
                     </dd>

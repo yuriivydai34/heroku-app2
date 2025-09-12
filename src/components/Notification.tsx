@@ -44,8 +44,8 @@ const Notification = () => {
 
   return (
     <div>
-      <h2>Notifications: {notifications.length} New: {notifications.filter(n => !n.read).length}</h2>
-      <button onClick={() => markAllAsRead()}>Read all</button>
+      <h2>Сповіщення: {notifications.length} Нові: {notifications.filter(n => !n.read).length}</h2>
+      <button onClick={() => markAllAsRead()}>Прочитати всі</button>
       <ul>
         {notifications.map((notification) => (
           <li key={notification.id}>

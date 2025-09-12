@@ -51,27 +51,27 @@ const NavHeader = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-6">
             <div>
-              <h1 onClick={() => router.push('/dashboard')} className="text-3xl font-bold text-gray-900">CRM tasks</h1>
+              <h1 onClick={() => router.push('/dashboard')} className="text-3xl font-bold text-gray-900">CRM задачі</h1>
             </div>
             <div className="flex items-center space-x-4">
               <button type="button"
                 onClick={() => router.back()}
                 className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
               >
-                Go Back
+                Назад
               </button>
               <button
                 onClick={() => setShowNotifications(true)}
                 className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
                 title="Show notifications"
               >
-                🔔 Notifications ({notifications.filter(n => !n.read).length})
+                🔔 Сповіщення ({notifications.filter(n => !n.read).length})
               </button>
               <button
                 onClick={handleLogout}
                 className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
               >
-                Logout
+                Вийти
               </button>
               <span className="text-gray-600">{authService.getCurrentUser()?.username}</span>
             </div>
@@ -82,11 +82,11 @@ const NavHeader = () => {
                   <button
                     onClick={() => setShowNotifications(false)}
                     className="absolute top-2 right-2 text-gray-400 hover:text-gray-700 text-xl font-bold"
-                    title="Close"
+                    title="Закрити"
                   >
                     ×
                   </button>
-                  <h2 className="text-lg font-semibold mb-4 text-gray-900">Notifications</h2>
+                  <h2 className="text-lg font-semibold mb-4 text-gray-900">Сповіщення</h2>
                   <div className="text-gray-600 text-sm">
                     <Notification />
                   </div>

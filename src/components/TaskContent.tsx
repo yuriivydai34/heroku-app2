@@ -1,4 +1,5 @@
 import moment from 'moment';
+import 'moment/locale/uk'; // Import the Ukrainian locale
 import EditTaskForm from './EditTaskForm';
 
 interface TaskData {
@@ -39,6 +40,8 @@ interface TaskContentProps {
   handleDeleteTask: () => void;
 }
 
+moment.locale('uk');
+
 const TaskContent = ({
   task,
   isEditing,
@@ -58,7 +61,7 @@ const TaskContent = ({
           onClick={() => setIsEditing(!isEditing)}
           className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
         >
-          {isEditing ? 'Cancel Edit' : 'Edit Task'}
+          {isEditing ? 'Скасувати' : 'Редагувати'}
         </button>
         {isEditing ? (
           /* Edit Form */
@@ -79,7 +82,7 @@ const TaskContent = ({
                     ? 'bg-green-100 text-green-800'
                     : 'bg-yellow-100 text-yellow-800'
                     }`}>
-                    {task.active ? 'Active' : 'Inactive'}
+                    {task.active ? 'Активна' : 'Не активна'}
                   </span>
                 </div>
               </div>
@@ -90,54 +93,54 @@ const TaskContent = ({
                   onChange={handleToggleActive}
                   className="h-5 w-5 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
                 />
-                <label className="text-sm text-gray-600">Active</label>
+                <label className="text-sm text-gray-600">Активна</label>
               </div>
             </div>
 
             {task.description && (
               <div>
-                <h3 className="text-lg font-medium text-gray-900 mb-2">Description</h3>
+                <h3 className="text-lg font-medium text-gray-900 mb-2">Опис</h3>
                 <p className="text-gray-600 whitespace-pre-wrap">{task.description}</p>
               </div>
             )}
 
             {task.deadline && (
               <div>
-                <h3 className="text-lg font-medium text-gray-900 mb-2">Deadline</h3>
+                <h3 className="text-lg font-medium text-gray-900 mb-2">Зробити до</h3>
                 <p className="text-gray-600 whitespace-pre-wrap">{moment(task.deadline).utc().format('MMMM Do YYYY, h:mm:ss a')}</p>
               </div>
             )}
 
             {task.deadline && (
               <div>
-                <h3 className="text-lg font-medium text-gray-900 mb-2">Hours until deadline</h3>
-                <p className="text-gray-600 whitespace-pre-wrap">{moment(task.deadline).diff(moment(), 'hours')} hours</p>
+                <h3 className="text-lg font-medium text-gray-900 mb-2">Лишилось годин до кінця</h3>
+                <p className="text-gray-600 whitespace-pre-wrap">{moment(task.deadline).diff(moment(), 'hours')} годин</p>
               </div>
             )}
 
             <div className="border-t pt-6">
               <dl className="grid grid-cols-1 gap-x-4 gap-y-6 sm:grid-cols-2">
                 <div>
-                  <dt className="text-sm font-medium text-gray-500">Creator</dt>
+                  <dt className="text-sm font-medium text-gray-500">Автор</dt>
                   <dd className="mt-1 text-sm text-gray-900">
                     {users.find(u => String(u.id) === String(task.userIdCreator))?.username || task.userIdCreator}
                   </dd>
                 </div>
                 <div>
-                  <dt className="text-sm font-medium text-gray-500">Supervisor</dt>
+                  <dt className="text-sm font-medium text-gray-500">Наглядач</dt>
                   <dd className="mt-1 text-sm text-gray-900">
                     {users.find(u => String(u.id) === String(task.userIdSupervisor))?.username || task.userIdSupervisor}
                   </dd>
                 </div>
                 <div>
-                  <dt className="text-sm font-medium text-gray-500">Associate</dt>
+                  <dt className="text-sm font-medium text-gray-500">Колега</dt>
                   <dd className="mt-1 text-sm text-gray-900">
                     {task.usersIdAssociate.map(id => users.find(u => String(u.id) === String(id))?.username || id).join(', ')}
                   </dd>
                 </div>
                 {task.createdAt && (
                   <div>
-                    <dt className="text-sm font-medium text-gray-500">Created</dt>
+                    <dt className="text-sm font-medium text-gray-500">Створено</dt>
                     <dd className="mt-1 text-sm text-gray-900">
                       {new Date(task.createdAt).toLocaleString()}
                     </dd>
@@ -145,7 +148,7 @@ const TaskContent = ({
                 )}
                 {task.updatedAt && (
                   <div>
-                    <dt className="text-sm font-medium text-gray-500">Last Updated</dt>
+                    <dt className="text-sm font-medium text-gray-500">Оновлено</dt>
                     <dd className="mt-1 text-sm text-gray-900">
                       {new Date(task.updatedAt).toLocaleString()}
                     </dd>
@@ -153,7 +156,7 @@ const TaskContent = ({
                 )}
                 {task.id && (
                   <div>
-                    <dt className="text-sm font-medium text-gray-500">Task ID</dt>
+                    <dt className="text-sm font-medium text-gray-500">ID Задачі</dt>
                     <dd className="mt-1 text-sm text-gray-900">{task.id}</dd>
                   </div>
                 )}
@@ -165,13 +168,13 @@ const TaskContent = ({
                 onClick={handleFilesClick}
                 className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
               >
-                Files
+                Файли
               </button>
               <button
                 onClick={handleDeleteTask}
                 className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
               >
-                Delete Task
+                Видалити
               </button>
             </div>
           </div>

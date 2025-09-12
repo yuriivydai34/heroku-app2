@@ -24,7 +24,7 @@ const EditTaskTemplateForm = ({
     <form onSubmit={handleUpdateTemplate} className="space-y-6">
       <div>
         <label htmlFor="title" className="block text-sm font-medium text-gray-700">
-          Title *
+          Назва *
         </label>
         <input
           type="text"
@@ -38,7 +38,7 @@ const EditTaskTemplateForm = ({
       </div>
       <div>
         <label htmlFor="description" className="block text-sm font-medium text-gray-700">
-          Description
+          Опис
         </label>
         <textarea
           id="description"
@@ -58,13 +58,13 @@ const EditTaskTemplateForm = ({
           onClick={() => setIsEditing(false)}
           className="bg-gray-300 hover:bg-gray-400 text-gray-700 px-4 py-2 rounded-md text-sm font-medium transition-colors"
         >
-          Cancel
+          Скасувати
         </button>
         <button
           type="submit"
           className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
         >
-          Update Template
+          Оновити
         </button>
       </div>
     </form>

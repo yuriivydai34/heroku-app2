@@ -36,7 +36,7 @@ const TaskTemplateContent = ({
           onClick={() => setIsEditing(!isEditing)}
           className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
         >
-          {isEditing ? 'Cancel Edit' : 'Edit Template'}
+          {isEditing ? 'Скасувати' : 'Редагувати'}
         </button>
         {isEditing ? (
           /* Edit Form */
@@ -57,7 +57,7 @@ const TaskTemplateContent = ({
 
             {template.description && (
               <div>
-                <h3 className="text-lg font-medium text-gray-900 mb-2">Description</h3>
+                <h3 className="text-lg font-medium text-gray-900 mb-2">Опис</h3>
                 <p className="text-gray-600 whitespace-pre-wrap">{template.description}</p>
               </div>
             )}
@@ -66,7 +66,7 @@ const TaskTemplateContent = ({
               <dl className="grid grid-cols-1 gap-x-4 gap-y-6 sm:grid-cols-2">
                 {template.createdAt && (
                   <div>
-                    <dt className="text-sm font-medium text-gray-500">Created</dt>
+                    <dt className="text-sm font-medium text-gray-500">Створено</dt>
                     <dd className="mt-1 text-sm text-gray-900">
                       {new Date(template.createdAt).toLocaleString()}
                     </dd>
@@ -74,7 +74,7 @@ const TaskTemplateContent = ({
                 )}
                 {template.id && (
                   <div>
-                    <dt className="text-sm font-medium text-gray-500">Template ID</dt>
+                    <dt className="text-sm font-medium text-gray-500">ID Шаблона</dt>
                     <dd className="mt-1 text-sm text-gray-900">{template.id}</dd>
                   </div>
                 )}
@@ -86,7 +86,7 @@ const TaskTemplateContent = ({
                 onClick={handleDeleteTemplate}
                 className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
               >
-                Delete Template
+                Видалити
               </button>
             </div>
           </div>
