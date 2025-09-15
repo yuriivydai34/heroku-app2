@@ -1,3 +1,4 @@
+import { Button } from "@heroui/react";
 import { useState } from "react";
 
 interface UserData {
@@ -153,19 +154,19 @@ const CreateTaskForm = ({ handleCreateTask, newTask, setNewTask, users, setShowC
         <p className="text-xs text-gray-500 mt-1">Затисніть Ctrl (Windows) або Cmd (Mac) щоб обрати декілька колег.</p>
       </div>
       <div className="flex justify-end space-x-3">
-        <button
+        <Button
           type="button"
           onClick={() => setShowCreateForm(false)}
           className="bg-gray-300 hover:bg-gray-400 text-gray-700 px-4 py-2 rounded-md text-sm font-medium transition-colors"
         >
           Скасувати
-        </button>
-        <button
+        </Button>
+        <Button
           type="submit"
           className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
         >
           Створити
-        </button>
+        </Button>
       </div>
     </form>
   );

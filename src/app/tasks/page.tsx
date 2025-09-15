@@ -12,6 +12,7 @@ import 'moment/locale/uk'; // Import the Ukrainian locale
 import TasksList from '@/components/TasksList';
 import ErrorMessage from '@/components/ErrorMessage';
 import { taskTemplateService } from '@/services/taskTemplate.service';
+import { Button } from '@heroui/react';
 
 interface UserData {
   id: string;
@@ -203,12 +204,12 @@ export default function TasksPage() {
           {showCreateForm && (
             <div className="mb-6 bg-white shadow rounded-lg">
               <div className="px-4 py-5 sm:p-6">
-                <button
+                <Button
                   onClick={() => setShowCreateForm(!showCreateForm)}
                   className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
                 >
                   {showCreateForm ? 'Скасувати' : 'Нова задача'}
-                </button>
+                </Button>
                 <h3 className="text-lg leading-6 font-medium text-gray-900 mb-4">
                   Нова задача
                 </h3>

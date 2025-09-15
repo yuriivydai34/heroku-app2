@@ -1,6 +1,7 @@
 import moment from 'moment';
 import 'moment/locale/uk'; // Import the Ukrainian locale
 import EditTaskForm from './EditTaskForm';
+import { Button } from '@heroui/react';
 
 interface TaskData {
   id?: string;
@@ -57,12 +58,12 @@ const TaskContent = ({
   return (
     <div className="bg-white shadow rounded-lg">
       <div className="px-4 py-5 sm:p-6">
-        <button
+        <Button
           onClick={() => setIsEditing(!isEditing)}
           className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
         >
           {isEditing ? 'Скасувати' : 'Редагувати'}
-        </button>
+        </Button>
         {isEditing ? (
           /* Edit Form */
           <EditTaskForm 
@@ -164,18 +165,18 @@ const TaskContent = ({
             </div>
 
             <div className="border-t pt-6 flex justify-end space-x-3">
-              <button
+              <Button
                 onClick={handleFilesClick}
                 className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
               >
                 Файли
-              </button>
-              <button
+              </Button>
+              <Button
                 onClick={handleDeleteTask}
                 className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
               >
                 Видалити
-              </button>
+              </Button>
             </div>
           </div>
         )}

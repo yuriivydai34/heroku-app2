@@ -7,6 +7,7 @@ import NavHeader from '@/components/NavHeader';
 import ErrorMessage from '@/components/ErrorMessage';
 import taskTemplateService from '@/services/taskTemplate.service';
 import TaskTemplateContent from '@/components/TaskTemplateContent';
+import { Button } from '@heroui/react';
 
 interface TaskTemplateData {
   id?: string;
@@ -125,12 +126,12 @@ export default function TaskTemplateDetailPage() {
         <div className="text-center">
           <h2 className="text-2xl font-bold text-gray-900 mb-4">Template Not Found</h2>
           <p className="text-gray-600 mb-6">The template you're looking for doesn't exist.</p>
-          <button
+          <Button
             onClick={() => router.push('/task-template')}
             className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
           >
             Back to Templates
-          </button>
+          </Button>
         </div>
       </div>
     );

@@ -6,6 +6,7 @@ import { userService } from "@/services/user.service";
 import { authService } from "@/services/auth.service";
 
 import { io, Socket } from "socket.io-client";
+import { Button } from "@heroui/react";
 
 type MessageData = {
   id: string;
@@ -140,13 +141,13 @@ const Chat = () => {
           value={messageInput}
           onChange={e => setMessageInput(e.target.value)}
         />
-        <button
+        <Button
           type="submit"
           className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
           disabled={!receiverInput || !messageInput.trim()}
         >
           Надіслати
-        </button>
+        </Button>
       </form>
     </div>
   );

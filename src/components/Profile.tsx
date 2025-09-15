@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import authService from '../services/auth.service';
 import profileService from '../services/profile.service';
+import { Button } from '@heroui/react';
 
 const Profile = () => {
   const [profile, setProfile] = useState<any>(null);
@@ -63,12 +64,12 @@ const Profile = () => {
         <div className="text-center">
           <h2 className="text-xl font-semibold text-gray-800 mb-4">Profile</h2>
           <p className="text-red-600 mb-4">{error}</p>
-          <button
+          <Button
             onClick={() => window.location.reload()}
             className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
           >
-            Try Again
-          </button>
+            Спробувати ще раз
+          </Button>
         </div>
       </div>
     );

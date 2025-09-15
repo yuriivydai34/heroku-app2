@@ -1,3 +1,4 @@
+import { Button } from "@heroui/react";
 import { useRouter } from "next/navigation";
 
 interface CommentData {
@@ -64,12 +65,12 @@ const CommentsSection = ({
                 <p className="text-sm text-red-700">{commentsError}</p>
               </div>
               <div className="ml-auto pl-3">
-                <button
+                <Button
                   onClick={() => setCommentsError(null)}
                   className="text-red-400 hover:text-red-600"
                 >
                   ✕
-                </button>
+                </Button>
               </div>
             </div>
           </div>
@@ -93,13 +94,13 @@ const CommentsSection = ({
             />
           </div>
           <div className="mt-3 flex justify-end">
-            <button
+            <Button
               type="submit"
               disabled={isSubmittingComment || !newComment.trim()}
               className="bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
             >
               {isSubmittingComment ? 'Додається...' : 'Додати коментар'}
-            </button>
+            </Button>
           </div>
         </form>
 
@@ -135,20 +136,20 @@ const CommentsSection = ({
                       )}
                     </div>
                   </div>
-                  <button
+                  <Button
                     onClick={() => handleCommentFilesClick(comment.id!)}
                     className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
                   >
                     Файли
-                  </button>
+                  </Button>
                   {comment.id && (
-                    <button
+                    <Button
                       onClick={() => handleDeleteComment(comment.id!)}
                       className="text-red-500 hover:text-red-700 text-sm ml-4"
                       title="Видалити коментар"
                     >
                       🗑️
-                    </button>
+                    </Button>
                   )}
                 </div>
               </div>
@@ -158,13 +159,13 @@ const CommentsSection = ({
 
         {/* Refresh Comments Button */}
         <div className="mt-4 flex justify-center">
-          <button
+          <Button
             onClick={loadComments}
             disabled={commentsLoading}
             className="text-blue-600 hover:text-blue-800 text-sm font-medium disabled:text-gray-400"
           >
             🔄 {commentsLoading ? 'Завантажується...' : 'Оновити'}
-          </button>
+          </Button>
         </div>
       </div>
     </div>

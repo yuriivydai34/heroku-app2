@@ -90,6 +90,13 @@ const NavHeader = () => {
               >
                 Вийти
               </Button>
+              <Button type="button"
+                onClick={() => router.push('/profile')}
+                className="bg-gray-200 hover:bg-gray-300 text-gray-800 px-4 py-2 rounded-md text-sm font-medium transition-colors"
+                title="Profile"
+              >
+                👤
+              </Button>
               <span className="text-gray-600">{profile?.firstName} {profile?.lastName}</span>
             </div>
             {/* Notifications Popup */}

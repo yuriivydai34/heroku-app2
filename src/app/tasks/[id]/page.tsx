@@ -11,6 +11,7 @@ import TaskContent from '@/components/TaskContent';
 import CommentsSection from '@/components/CommentsSection';
 import ErrorMessage from '@/components/ErrorMessage';
 import moment from 'moment';
+import { Button } from '@heroui/react';
 
 interface TaskData {
   id?: string;
@@ -281,12 +282,12 @@ export default function TaskDetailPage() {
         <div className="text-center">
           <h2 className="text-2xl font-bold text-gray-900 mb-4">Task Not Found</h2>
           <p className="text-gray-600 mb-6">The task you're looking for doesn't exist.</p>
-          <button
+          <Button
             onClick={() => router.push('/tasks')}
             className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
           >
             Back to Tasks
-          </button>
+          </Button>
         </div>
       </div>
     );

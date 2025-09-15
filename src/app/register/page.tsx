@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import authService from '../../services/auth.service';
+import { Button } from '@heroui/react';
 
 interface FormData {
   username: string;
@@ -185,7 +186,7 @@ export default function RegisterPage() {
             </div>
 
             {/* Submit Button */}
-            <button
+            <Button
               type="submit"
               disabled={isSubmitting}
               className={`w-full py-2 px-4 rounded-md font-medium transition-colors ${isSubmitting
@@ -194,7 +195,7 @@ export default function RegisterPage() {
                 } text-white`}
             >
               {isSubmitting ? 'Creating Account...' : 'Створити користувача'}
-            </button>
+            </Button>
 
             {/* Submit Message */}
             {submitMessage && (
@@ -209,12 +210,12 @@ export default function RegisterPage() {
           <div className="mt-6 text-center">
             <p className="text-sm text-gray-600">
               Вже є зареєструвались?{' '}
-              <button
+              <Button
                 onClick={handleLoginRedirect}
                 className="text-blue-600 hover:text-blue-500 font-medium underline"
               >
                 Увійти
-              </button>
+              </Button>
             </p>
           </div>
         </div>

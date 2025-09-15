@@ -1,3 +1,4 @@
+import { Button } from '@heroui/react';
 import EditTaskTemplateForm from './EditTaskTemplateForm';
 
 interface TaskTemplateData {
@@ -32,12 +33,12 @@ const TaskTemplateContent = ({
   return (
     <div className="bg-white shadow rounded-lg">
       <div className="px-4 py-5 sm:p-6">
-        <button
+        <Button
           onClick={() => setIsEditing(!isEditing)}
           className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
         >
           {isEditing ? 'Скасувати' : 'Редагувати'}
-        </button>
+        </Button>
         {isEditing ? (
           /* Edit Form */
           <EditTaskTemplateForm
@@ -82,12 +83,12 @@ const TaskTemplateContent = ({
             </div>
 
             <div className="border-t pt-6 flex justify-end space-x-3">
-              <button
+              <Button
                 onClick={handleDeleteTemplate}
                 className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
               >
                 Видалити
-              </button>
+              </Button>
             </div>
           </div>
         )}

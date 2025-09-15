@@ -1,3 +1,4 @@
+import { Button } from "@heroui/react";
 import moment from "moment";
 import 'moment/locale/uk'; // Import the Ukrainian locale
 import { useRouter } from "next/navigation";
@@ -38,33 +39,33 @@ const TasksList = ({ setShowCreateForm, showCreateForm, tasks,
   return (
     <div className="bg-white shadow rounded-lg">
       <div className="px-4 py-5 sm:p-6">
-        <button
+        <Button
           onClick={() => setShowCreateForm(!showCreateForm)}
           className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
         >
           {showCreateForm ? 'Скасувати' : 'Нова задача'}
-        </button>
+        </Button>
         <div className="flex justify-between items-center mb-4">
           <h3 className="text-lg leading-6 font-medium text-gray-900">
             Нова задача ({tasks.length})
           </h3>
-          <button
+          <Button
             onClick={loadTasks}
             className="text-blue-600 hover:text-blue-800 text-sm font-medium"
           >
             🔄 Оновити
-          </button>
+          </Button>
         </div>
 
         {tasks.length === 0 ? (
           <div className="text-center py-8">
             <p className="text-gray-500">Не знайдено задач.</p>
-            <button
+            <Button
               onClick={() => setShowCreateForm(true)}
               className="mt-2 text-blue-600 hover:text-blue-800 text-sm font-medium"
             >
               Створити задачу
-            </button>
+            </Button>
           </div>
         ) : (
           <div className="space-y-4">
@@ -77,12 +78,18 @@ const TasksList = ({ setShowCreateForm, showCreateForm, tasks,
                 <div className="flex items-start justify-between">
                   <div className="flex items-start space-x-3">
                     <div className="flex-1">
-                      <button
+                      <Button
                         onClick={() => router.push(`/tasks/${task.id}`)}
-                        className={`font-medium text-left hover:underline text-gray-900 hover:text-blue-600`}
+                        className="bg-gray-400 hover:bg-green-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
                       >
-                        {task.title}
-                      </button>
+                        Дивитись
+                      </Button>
+                      {task.title && (
+                        <h4 className={`text-xl font-bold ${task.active ? 'text-gray-900' : 'text-gray-400'
+                          }`}>
+                          {task.title}
+                        </h4>
+                      )}
                       {task.description && (
                         <p className={`mt-1 text-sm ${task.active ? 'text-gray-400' : 'text-gray-600'
                           }`}>
@@ -123,13 +130,13 @@ const TasksList = ({ setShowCreateForm, showCreateForm, tasks,
                       </div>
                     </div>
                   </div>
-                  <button
+                  <Button
                     onClick={() => handleDeleteTask(task.id!)}
                     className="text-red-500 hover:text-red-700 text-sm font-medium ml-4"
                     title="Delete task"
                   >
                     🗑️
-                  </button>
+                  </Button>
                 </div>
               </div>
             ))}

@@ -6,6 +6,7 @@ import authService from '../../services/auth.service';
 import profileService from '../../services/profile.service';
 import NavHeader from '@/components/NavHeader';
 import ErrorMessage from '@/components/ErrorMessage';
+import { Button } from '@heroui/react';
 
 interface ProfileData {
   firstName?: string;
@@ -120,12 +121,12 @@ export default function UserProfilePage() {
                   <p className="text-sm text-green-700">{success}</p>
                 </div>
                 <div className="ml-auto pl-3">
-                  <button
+                  <Button
                     onClick={() => setSuccess(null)}
                     className="text-green-400 hover:text-green-600"
                   >
                     ✕
-                  </button>
+                  </Button>
                 </div>
               </div>
             </div>
@@ -144,12 +145,12 @@ export default function UserProfilePage() {
                   Інфомація про користувача
                 </h3>
                 {!isEditing && (
-                  <button
+                  <Button
                     onClick={handleStartEdit}
                     className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
                   >
                     Редагувати профіль
-                  </button>
+                  </Button>
                 )}
               </div>
 
@@ -201,21 +202,21 @@ export default function UserProfilePage() {
                     />
                   </div>
                   <div className="flex justify-end space-x-3">
-                    <button
+                    <Button
                       type="button"
                       onClick={handleCancelEdit}
                       disabled={isSubmitting}
                       className="bg-gray-300 hover:bg-gray-400 disabled:bg-gray-200 text-gray-700 px-4 py-2 rounded-md text-sm font-medium transition-colors"
                     >
                       Скасувати
-                    </button>
-                    <button
+                    </Button>
+                    <Button
                       type="submit"
                       disabled={isSubmitting}
                       className="bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
                     >
                       {isSubmitting ? 'Saving...' : 'Зберегти зміни'}
-                    </button>
+                    </Button>
                   </div>
                 </form>
               ) : (

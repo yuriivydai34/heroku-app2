@@ -2,6 +2,7 @@
 
 import React, { useState, useRef, DragEvent, ChangeEvent } from 'react';
 import commentFileUploadService from '../services/commentFileUpload.service';
+import { Button } from '@heroui/react';
 
 interface FileUploadProps {
   onFileSelect?: (files: File[]) => void;
@@ -251,13 +252,13 @@ export default function FileUpload({
             </p>
           </div>
 
-          <button
+          <Button
             type="button"
             onClick={() => fileInputRef.current?.click()}
             className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors"
           >
             Обрати файли
-          </button>
+          </Button>
         </div>
 
         <input
@@ -277,12 +278,12 @@ export default function FileUpload({
             <h3 className="text-lg font-medium text-gray-900">
               Файли ({files.length}/{maxFiles})
             </h3>
-            <button
+            <Button
               onClick={clearAll}
               className="text-sm text-red-600 hover:text-red-800"
             >
               Очистити
-            </button>
+            </Button>
           </div>
 
           {files.map((file) => (
@@ -362,14 +363,14 @@ export default function FileUpload({
                   </div>
                 )}
                 {!file.error && (
-                  <button
+                  <Button
                     onClick={() => removeFile(file.id)}
                     className="text-red-600 hover:text-red-800"
                   >
                     <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                       <path d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" />
                     </svg>
-                  </button>
+                  </Button>
                 )}
               </div>
             </div>
@@ -378,7 +379,7 @@ export default function FileUpload({
           {/* Upload Button */}
           {files.some(f => !f.error && !f.uploaded) && (
             <div className="flex justify-center">
-              <button
+              <Button
                 onClick={uploadFiles}
                 disabled={uploading}
                 className={`px-6 py-2 rounded-md font-medium transition-colors ${uploading
@@ -387,7 +388,7 @@ export default function FileUpload({
                   } text-white`}
               >
                 {uploading ? 'Uploading...' : 'Завантажити файли'}
-              </button>
+              </Button>
             </div>
           )}
         </div>

@@ -1,3 +1,5 @@
+import { Button } from "@heroui/react";
+
 interface TaskTemplateData {
   id?: string;
   title: string;
@@ -44,19 +46,19 @@ const CreateTaskTemplatesForm = ({ handleCreateTemplate, newTemplate, setNewTemp
         />
       </div>
       <div className="flex justify-end space-x-3">
-        <button
+        <Button
           type="button"
           onClick={() => setShowCreateForm(false)}
           className="bg-gray-300 hover:bg-gray-400 text-gray-700 px-4 py-2 rounded-md text-sm font-medium transition-colors"
         >
           Скасувати
-        </button>
-        <button
+        </Button>
+        <Button
           type="submit"
           className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
         >
           Створити
-        </button>
+        </Button>
       </div>
     </form>
   );

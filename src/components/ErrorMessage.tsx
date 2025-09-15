@@ -1,3 +1,5 @@
+import { Button } from "@heroui/react";
+
 interface ErrorMessageProps {
   error: string | null;
   setError: (error: string | null) => void;
@@ -14,12 +16,12 @@ const ErrorMessage = ({ error, setError }: ErrorMessageProps) => {
           <p className="text-sm text-red-700">{error}</p>
         </div>
         <div className="ml-auto pl-3">
-          <button
+          <Button
             onClick={() => setError(null)}
             className="text-red-400 hover:text-red-600"
           >
             ✕
-          </button>
+          </Button>
         </div>
       </div>
     </div>

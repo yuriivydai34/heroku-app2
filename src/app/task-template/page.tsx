@@ -8,6 +8,7 @@ import authService from '../../services/auth.service';
 import { useRouter } from 'next/navigation';
 import TaskTemplatesList from "@/components/TaskTemplatesList";
 import CreateTaskTemplatesForm from "@/components/CreateTaskTemplatesForm";
+import { Button } from "@heroui/react";
 
 // Define TaskTemplateData type or import it from the correct location
 type TaskTemplateData = {
@@ -128,12 +129,12 @@ export default function TaskTemplatePage() {
           {showCreateForm && (
             <div className="mb-6 bg-white shadow rounded-lg">
               <div className="px-4 py-5 sm:p-6">
-                <button
+                <Button
                   onClick={() => setShowCreateForm(!showCreateForm)}
                   className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
                 >
                   {showCreateForm ? 'Скасувати' : 'New Task Template'}
-                </button>
+                </Button>
                 <h3 className="text-lg leading-6 font-medium text-gray-900 mb-4">
                   Cтворення нового шаблона
                 </h3>

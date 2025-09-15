@@ -1,3 +1,4 @@
+import { Button } from "@heroui/react";
 import { useRouter } from "next/navigation";
 
 interface TaskTemplateData {
@@ -22,33 +23,33 @@ const TaskTemplatesList = ({ setShowCreateForm, showCreateForm, templates,
   return (
     <div className="bg-white shadow rounded-lg">
       <div className="px-4 py-5 sm:p-6">
-        <button
+        <Button
           onClick={() => setShowCreateForm(!showCreateForm)}
           className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
         >
           {showCreateForm ? 'Скасувати' : 'Новий шаблон'}
-        </button>
+        </Button>
         <div className="flex justify-between items-center mb-4">
           <h3 className="text-lg leading-6 font-medium text-gray-900">
             Шаблони задач ({templates.length})
           </h3>
-          <button
+          <Button
             onClick={loadTemplates}
             className="text-blue-600 hover:text-blue-800 text-sm font-medium"
           >
             🔄 Оновити
-          </button>
+          </Button>
         </div>
 
         {templates.length === 0 ? (
           <div className="text-center py-8">
             <p className="text-gray-500">Шаблони не знайдені.</p>
-            <button
+            <Button
               onClick={() => setShowCreateForm(true)}
               className="mt-2 text-blue-600 hover:text-blue-800 text-sm font-medium"
             >
               Створіть перший шаблон
-            </button>
+            </Button>
           </div>
         ) : (
           <div className="space-y-4">
@@ -61,12 +62,12 @@ const TaskTemplatesList = ({ setShowCreateForm, showCreateForm, templates,
                   <div className="flex items-start space-x-3">
 
                     <div className="flex-1">
-                      <button
+                      <Button
                         onClick={() => router.push(`/task-template/${template.id}`)}
                         className={`font-medium text-left hover:underline text-gray-900 hover:text-blue-600`}
                       >
                         {template.title}
-                      </button>
+                      </Button>
                       <div className="mt-2 flex items-center space-x-4 text-xs text-gray-500">
                         {template.createdAt && (
                           <span>Створено: {new Date(template.createdAt).toLocaleDateString()}</span>
@@ -74,13 +75,13 @@ const TaskTemplatesList = ({ setShowCreateForm, showCreateForm, templates,
                       </div>
                     </div>
                   </div>
-                  <button
+                  <Button
                     onClick={() => handleDeleteTemplate(template.id!)}
                     className="text-red-500 hover:text-red-700 text-sm font-medium ml-4"
                     title="Delete task"
                   >
                     🗑️
-                  </button>
+                  </Button>
                 </div>
               </div>
             ))}

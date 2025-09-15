@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import authService from '../../services/auth.service';
 
 import NavHeader from '@/components/NavHeader';
+import { Button } from '@heroui/react';
 
 export default function DashboardPage() {
   const router = useRouter();
@@ -56,12 +57,12 @@ export default function DashboardPage() {
                         Профіль
                       </dt>
                       <dd className="text-lg font-medium text-gray-900">
-                        <button
+                        <Button
                           onClick={() => router.push('/profile')}
                           className="text-blue-600 hover:text-blue-800 font-medium"
                         >
                           Редагувати профіль
-                        </button>
+                        </Button>
                       </dd>
                     </dl>
                   </div>
@@ -83,12 +84,12 @@ export default function DashboardPage() {
                         Задачі
                       </dt>
                       <dd className="text-lg font-medium text-gray-900">
-                        <button
+                        <Button
                           onClick={() => router.push('/tasks')}
                           className="text-blue-600 hover:text-blue-800 font-medium"
                         >
                           Управляти задачами
-                        </button>
+                        </Button>
                       </dd>
                     </dl>
                   </div>
@@ -110,12 +111,12 @@ export default function DashboardPage() {
                         Чат
                       </dt>
                       <dd className="text-lg font-medium text-gray-900">
-                        <button
+                        <Button
                           onClick={() => router.push('/chat')}
                           className="text-blue-600 hover:text-blue-800 font-medium"
                         >
                           Чат з користувачами
-                        </button>
+                        </Button>
                       </dd>
                     </dl>
                   </div>
@@ -137,12 +138,12 @@ export default function DashboardPage() {
                         Шаблони задач
                       </dt>
                       <dd className="text-lg font-medium text-gray-900">
-                        <button
+                        <Button
                           onClick={() => router.push('/task-template')}
                           className="text-blue-600 hover:text-blue-800 font-medium"
                         >
                           Шаблони задач
-                        </button>
+                        </Button>
                       </dd>
                     </dl>
                   </div>
