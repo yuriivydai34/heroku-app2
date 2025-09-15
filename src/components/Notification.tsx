@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import notificationService from "../services/notification.service";
+import { Button } from "@heroui/react";
 
 type NotificationData = {
   id: string;
@@ -43,9 +44,9 @@ const Notification = () => {
   }
 
   return (
-    <div>
+    <div style={{ maxHeight: '400px', overflowY: 'auto' }}>
       <h2>Сповіщення: {notifications.length} Нові: {notifications.filter(n => !n.read).length}</h2>
-      <button onClick={() => markAllAsRead()}>Прочитати всі</button>
+      <Button onClick={() => markAllAsRead()}>Прочитати всі</Button>
       <ul>
         {notifications.map((notification) => (
           <li key={notification.id}>
