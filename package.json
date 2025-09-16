@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@heroui/react": "^2.8.4",
+    "@iconify/react": "^6.0.2",
     "framer-motion": "^12.23.12",
     "moment": "^2.30.1",
     "next": "15.4.6",
