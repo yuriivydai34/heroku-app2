@@ -4,7 +4,7 @@ export interface Task {
   description?: string;
   active?: boolean;
   deadline?: string;
-  priority: 'High' | 'Medium' | 'Low';
+  priority?: 'High' | 'Medium' | 'Low';
   createdAt?: string;
   updatedAt?: string;
   userIdCreator: number;

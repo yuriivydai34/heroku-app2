@@ -18,7 +18,7 @@ const priorityOptions = [
 export function TaskForm({ isOpen, onClose, onSave, editTask }: TaskFormProps) {
   const [title, setTitle] = React.useState("");
   const [description, setDescription] = React.useState("");
-  const [priority, setPriority] = React.useState("Medium");
+  const [priority, setPriority] = React.useState<'High' | 'Medium' | 'Low'>("Medium");
   const [dueDate, setDueDate] = React.useState("");
 
   // Reset form or populate with task data when editTask changes
@@ -26,8 +26,8 @@ export function TaskForm({ isOpen, onClose, onSave, editTask }: TaskFormProps) {
     if (editTask) {
       setTitle(editTask.title);
       setDescription(editTask.description || "");
-      setPriority(editTask.priority);
-      setDueDate(formatDateForInput(editTask.dueDate));
+      setPriority(editTask.priority ?? "Medium");
+      setDueDate(editTask.deadline ? formatDateForInput(editTask.deadline) : "");
     } else {
       resetForm();
     }
@@ -47,10 +47,13 @@ export function TaskForm({ isOpen, onClose, onSave, editTask }: TaskFormProps) {
       id: editTask?.id || crypto.randomUUID(),
       title,
       description,
-      priority,
-      dueDate: new Date(dueDate).toISOString(),
-      completed: editTask?.completed || false,
+      priority: priority ?? "Medium",
+      deadline: new Date(dueDate).toISOString(),
+      active: editTask?.active || false,
       createdAt: editTask?.createdAt || new Date().toISOString(),
+      userIdCreator: editTask?.userIdCreator || 1, // Provide default or get from context
+      usersIdAssociate: editTask?.usersIdAssociate || [2], // Provide default or get from context
+      userIdSupervisor: editTask?.userIdSupervisor || 3, // Provide default or get from context
     };
 
     onSave(task);

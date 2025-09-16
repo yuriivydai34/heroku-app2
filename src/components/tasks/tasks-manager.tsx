@@ -32,7 +32,7 @@ export function TasksManager() {
     onOpen();
   };
 
-  const handleSaveTask = (task: Task) => {
+  const handleSaveTask = async (task: Task) => {
     if (editTask) {
       // Update existing task
       setTasks(tasks.map((t) => (t.id === task.id ? task : t)));
@@ -44,6 +44,9 @@ export function TasksManager() {
     } else {
       // Add new task
       setTasks([...tasks, task]);
+
+      await taskService.createTask(task);
+
       addToast({
         title: "Task created",
         description: "New task has been created successfully",
