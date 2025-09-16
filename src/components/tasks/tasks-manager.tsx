@@ -36,6 +36,17 @@ export function TasksManager() {
     if (editTask) {
       // Update existing task
       setTasks(tasks.map((t) => (t.id === task.id ? task : t)));
+
+      if (task.id) {
+        await taskService.updateTask(task.id, task);
+      } else {
+        addToast({
+          title: "Task update failed",
+          description: "Task ID is missing or invalid",
+          severity: "danger",
+        });
+      }
+
       addToast({
         title: "Task updated",
         description: "The task has been updated successfully",
