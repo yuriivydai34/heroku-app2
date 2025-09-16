@@ -37,12 +37,12 @@ export function TaskList({ tasks, onEdit, onDelete, onStatusChange }: TaskListPr
                   }`}
               >
                 <span className="w-1.5 h-1.5 rounded-full mr-1.5 bg-current"></span>
-                {task.active ? "active" : "Pending"}
+                {task.active ? "active" : "inactive"}
               </div>
             </TableCell>
             <TableCell>
               <div className="flex items-center gap-2">
-                <Tooltip content={task.active ? "Mark as pending" : "Mark as active"}>
+                <Tooltip content={task.active ? "Mark as inactive" : "Mark as active"}>
                   <Button
                     isIconOnly
                     size="sm"

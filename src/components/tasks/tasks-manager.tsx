@@ -66,8 +66,11 @@ export function TasksManager() {
     }
   };
 
-  const handleDeleteTask = (id: string) => {
+  const handleDeleteTask = async (id: string) => {
     setTasks(tasks.filter((task) => task.id !== id));
+
+    await taskService.deleteTask(id);
+
     addToast({
       title: "Task deleted",
       description: "The task has been deleted successfully",
@@ -75,15 +78,18 @@ export function TasksManager() {
     });
   };
 
-  const handleStatusChange = (id: string, completed: boolean) => {
+  const handleStatusChange = async (id: string, active: boolean) => {
     setTasks(
       tasks.map((task) =>
-        task.id === id ? { ...task, completed } : task
+        task.id === id ? { ...task, active } : task
       )
     );
+
+    await taskService.updateTask(id, { active });
+
     addToast({
-      title: `Task ${completed ? "completed" : "reopened"}`,
-      description: `The task has been marked as ${completed ? "completed" : "pending"}`,
+      title: `Task ${active ? "active" : "inactive"}`,
+      description: `The task has been marked as ${active ? "active" : "inactive"}`,
       severity: "success",
     });
   };
