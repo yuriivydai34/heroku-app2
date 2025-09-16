@@ -18,60 +18,47 @@ export default function LoginPage() {
 
     try {
       const response = await authService.login({ username, password } as LoginData);
-      // Handle successful login (e.g., redirect or show a success message)
       if (response.success) {
         router.push('/dashboard');
-        console.log('Login successful:', response);
       } else {
         setError(response.message ?? 'Login failed');
       }
     } catch (error) {
-      console.error('Login error:', error);
+      setError('Login error');
     }
   };
 
   return (
-    <div className="min-h-screen bg-gray-900 flex items-center justify-center">
-      <Card className="p-8 w-full max-w-md">
-        {error !== null && <Error message={error} />}
-        <h1 className="text-4xl text-white mb-8 text-center">Login Page</h1>
+    <div className="min-h-screen flex items-center justify-center">
+      <Card className="p-8 w-full max-w-md shadow-xl">
+        <h2 className="text-3xl font-bold text-center text-white mb-8">Sign in to your account</h2>
+        {error && <Error message={error} />}
         <form className="space-y-6" onSubmit={handleSubmit}>
-          <div>
-            <label htmlFor="username" className="block text-sm font-medium text-gray-300 mb-1">
-              Username
-            </label>
-            <Input
-              id="username"
-              name="username"
-              type="text"
-              required
-              placeholder="your_username"
-              variant="flat"
-              color="primary"
-              className="w-full"
-            />
-          </div>
-          <div>
-            <label htmlFor="password" className="block text-sm font-medium text-gray-300 mb-1">
-              Password
-            </label>
-            <Input
-              id="password"
-              name="password"
-              type="password"
-              required
-              placeholder="••••••••"
-              variant="flat"
-              color="primary"
-              className="w-full"
-            />
-          </div>
+          <Input
+            name="username"
+            type="text"
+            label="Username"
+            placeholder="Enter your username"
+            required
+            variant="flat"
+            className="w-full"
+          />
+          <Input
+            name="password"
+            type="password"
+            label="Password"
+            placeholder="Enter your password"
+            required
+            variant="flat"
+            className="w-full"
+          />
           <Button
             type="submit"
             color="primary"
-            className="w-full"
+            size="lg"
+            className="w-full mt-4"
           >
-            Sign in
+            Login
           </Button>
         </form>
       </Card>
