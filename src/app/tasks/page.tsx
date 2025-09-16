@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import authService from '../../services/auth.service';
 import taskService from '../../services/task.service';
 import userService from '../../services/user.service';
 import NavHeader from '@/components/NavHeader';
@@ -74,12 +73,6 @@ export default function TasksPage() {
   const [templates, setTemplates] = useState<TaskTemplateData[]>([]);
 
   useEffect(() => {
-    // Check authentication status
-    if (!authService.isAuthenticated()) {
-      router.push('/login');
-      return;
-    }
-
     loadTasks();
     loadTemplates();
   }, [router]);

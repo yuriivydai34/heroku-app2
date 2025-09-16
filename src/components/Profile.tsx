@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import authService from '../services/auth.service';
 import profileService from '../services/profile.service';
 import { Button } from '@heroui/react';
 
@@ -37,21 +36,6 @@ const Profile = () => {
         <div className="text-center">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
           <p className="mt-2 text-gray-600">Loading profile...</p>
-        </div>
-      </div>
-    );
-  }
-
-  // Show login prompt if not authenticated
-  if (!authService.isAuthenticated()) {
-    return (
-      <div className="max-w-md mx-auto mt-8 p-6 bg-white rounded-lg shadow-md">
-        <div className="text-center">
-          <h2 className="text-xl font-semibold text-gray-800 mb-4">Profile</h2>
-          <p className="text-gray-600 mb-4">Please log in to view your profile.</p>
-          <div className="text-sm text-blue-600">
-            Use the login form above to access your profile.
-          </div>
         </div>
       </div>
     );

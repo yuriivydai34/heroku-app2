@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import authService from '../../services/auth.service';
 import profileService from '../../services/profile.service';
 import NavHeader from '@/components/NavHeader';
 import ErrorMessage from '@/components/ErrorMessage';
@@ -26,13 +25,7 @@ export default function UserProfilePage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
-    // Check authentication status
-    if (!authService.isAuthenticated()) {
-      // Redirect to login if not authenticated
-      router.push('/login');
-    } else {
-      loadProfile();
-    }
+    loadProfile();
   }, [router]);
 
   const loadProfile = async () => {

@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter, useParams } from 'next/navigation';
-import authService from '../../../services/auth.service';
 import taskService from '../../../services/task.service';
 import commentService from '../../../services/comment.service';
 import { userService } from '@/services/user.service';
@@ -81,12 +80,6 @@ export default function TaskDetailPage() {
   }, []);
 
   useEffect(() => {
-    // Check authentication status
-    if (!authService.isAuthenticated()) {
-      router.push('/login');
-      return;
-    }
-
     if (taskId) {
       loadTask();
       loadComments();
@@ -161,7 +154,7 @@ export default function TaskDetailPage() {
     try {
       const response = await commentService.createComment({
         content: newComment.trim(),
-        taskId: taskId,
+        taskId: Number(taskId),
       });
 
       if (response.success) {

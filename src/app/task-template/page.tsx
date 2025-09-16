@@ -4,7 +4,6 @@ import ErrorMessage from "@/components/ErrorMessage";
 import NavHeader from "@/components/NavHeader";
 import taskTemplateService from "@/services/taskTemplate.service";
 import { useEffect, useState } from "react";
-import authService from '../../services/auth.service';
 import { useRouter } from 'next/navigation';
 import TaskTemplatesList from "@/components/TaskTemplatesList";
 import CreateTaskTemplatesForm from "@/components/CreateTaskTemplatesForm";
@@ -29,12 +28,6 @@ export default function TaskTemplatePage() {
     });
 
  useEffect(() => {
-    // Check authentication status
-    if (!authService.isAuthenticated()) {
-      router.push('/login');
-      return;
-    }
-
     loadTemplates();
   }, [router]);
 
