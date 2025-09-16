@@ -3,7 +3,7 @@ interface RegisterData {
   password: string;
 }
 
-interface LoginData {
+export interface LoginData {
   username: string;
   password: string;
 }
