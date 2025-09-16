@@ -5,29 +5,19 @@ import { useRouter } from 'next/navigation';
 import authService from '../../services/auth.service';
 import { Button } from '@heroui/react';
 
-interface FormData {
-  username: string;
-  password: string;
-}
-
-interface FormErrors {
-  username?: string;
-  password?: string;
-}
-
 export default function LoginPage() {
   const router = useRouter();
-  const [formData, setFormData] = useState<FormData>({
+  const [formData, setFormData] = useState<LoginFormData>({
     username: '',
     password: '',
   });
 
-  const [errors, setErrors] = useState<FormErrors>({});
+  const [errors, setErrors] = useState<LoginFormErrors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitMessage, setSubmitMessage] = useState('');
 
   const validateForm = (): boolean => {
-    const newErrors: FormErrors = {};
+    const newErrors: LoginFormErrors = {};
 
     // Username validation
     if (!formData.username.trim()) {
@@ -51,7 +41,7 @@ export default function LoginPage() {
     }));
 
     // Clear error for this field when user starts typing
-    if (errors[name as keyof FormErrors]) {
+    if (errors[name as keyof LoginFormErrors]) {
       setErrors(prev => ({
         ...prev,
         [name]: undefined,
