@@ -1,18 +1,5 @@
 import authService from './auth.service';
-
-interface TaskData {
-  id?: string;
-  title: string;
-  description?: string;
-  active?: boolean;
-  deadline?: string;
-  createdAt?: string;
-  updatedAt?: string;
-  userIdCreator: number;
-  usersIdAssociate: number[];
-  userIdSupervisor: number;
-  [key: string]: any; // Allow for additional task fields
-}
+import { Task as TaskData } from '@/types/task';
 
 interface TaskResponse {
   success: boolean;

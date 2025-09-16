@@ -1,9 +1,13 @@
 export interface Task {
-  id: string;
+  id?: string;
   title: string;
   description?: string;
-  priority: string;
-  dueDate: string;
-  completed: boolean;
-  createdAt: string;
+  active?: boolean;
+  deadline?: string;
+  priority: 'High' | 'Medium' | 'Low';
+  createdAt?: string;
+  updatedAt?: string;
+  userIdCreator: number;
+  usersIdAssociate: number[];
+  userIdSupervisor: number;
 }

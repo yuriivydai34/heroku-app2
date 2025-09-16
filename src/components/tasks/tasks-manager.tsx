@@ -1,46 +1,26 @@
-import React from "react";
+'use client';
+
+import React, { useEffect } from "react";
 import { Card, CardHeader, CardBody, Button, useDisclosure, Tooltip } from "@heroui/react";
 import { Icon } from "@iconify/react";
 import { TaskList } from "./task-list";
 import { TaskForm } from "./task-form";
 import { Task } from "@/types/task";
 import { addToast } from "@heroui/react";
-
-// Sample initial tasks
-const initialTasks: Task[] = [
-  {
-    id: "1",
-    title: "Complete dashboard design",
-    description: "Finish the UI design for the analytics dashboard",
-    priority: "High",
-    dueDate: "2024-06-15T00:00:00.000Z",
-    completed: false,
-    createdAt: "2024-06-01T00:00:00.000Z",
-  },
-  {
-    id: "2",
-    title: "Review pull requests",
-    description: "Review and merge pending pull requests",
-    priority: "Medium",
-    dueDate: "2024-06-10T00:00:00.000Z",
-    completed: true,
-    createdAt: "2024-06-02T00:00:00.000Z",
-  },
-  {
-    id: "3",
-    title: "Update documentation",
-    description: "Update API documentation with new endpoints",
-    priority: "Low",
-    dueDate: "2024-06-20T00:00:00.000Z",
-    completed: false,
-    createdAt: "2024-06-03T00:00:00.000Z",
-  },
-];
+import taskService from "@/services/task.service";
 
 export function TasksManager() {
-  const [tasks, setTasks] = React.useState<Task[]>(initialTasks);
+  const [tasks, setTasks] = React.useState<Task[]>([]);
   const [editTask, setEditTask] = React.useState<Task | null>(null);
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
+
+  useEffect(() => {
+    const fetchTasks = async () => {
+      const response = await taskService.fetchTasks();
+      setTasks(response.data as Task[] || []);
+    };
+    fetchTasks();
+  }, []);
 
   const handleAddTask = () => {
     setEditTask(null);
