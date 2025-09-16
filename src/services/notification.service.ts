@@ -1,19 +1,5 @@
 import { authService } from "./auth.service";
 
-interface NotificationData {
-  id?: string;
-  content: string;
-  userId: number;
-  read: boolean;
-  createdAt?: string;
-}
-
-interface NotificationResponse {
-  success: boolean;
-  data?: NotificationData;
-  message?: string;
-}
-
 class NotificationService {
   private baseUrl: string;
 

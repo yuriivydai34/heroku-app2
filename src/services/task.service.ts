@@ -1,25 +1,5 @@
 import authService from './auth.service';
 
-interface TaskData {
-  id?: string;
-  title: string;
-  description?: string;
-  active?: boolean;
-  deadline?: string;
-  createdAt?: string;
-  updatedAt?: string;
-  userIdCreator: number;
-  usersIdAssociate: number[];
-  userIdSupervisor: number;
-  [key: string]: any; // Allow for additional task fields
-}
-
-interface TaskResponse {
-  success: boolean;
-  data?: TaskData | TaskData[];
-  message?: string;
-}
-
 class TaskService {
   private baseUrl: string;
 

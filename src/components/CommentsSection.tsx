@@ -1,19 +1,6 @@
 import { Button } from "@heroui/react";
 import { useRouter } from "next/navigation";
 
-interface CommentData {
-  id?: string;
-  content: string;
-  taskId?: number;
-  userId?: number;
-  createdAt?: string;
-}
-
-interface UserData {
-  id: string;
-  username: string;
-}
-
 interface CommentsSectionProps {
   comments: CommentData[];
   users: UserData[];

@@ -4,23 +4,6 @@ import React, { useState, useEffect } from 'react';
 import commentFileUploadService from '../services/commentFileUpload.service';
 import { Button } from '@heroui/react';
 
-interface FileItem {
-  id: number;
-  filename: string;
-  originalName: string;
-  size: number;
-  mimetype: string;
-  url?: string;
-  uploadDate?: string;
-}
-
-interface FilesListProps {
-  onFileDeleted?: (id: number) => void;
-  onRefresh?: () => void;
-  className?: string;
-  commentId: string;
-}
-
 const baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL + '/' || '';
 
 export default function FilesList({ 
@@ -28,7 +11,7 @@ export default function FilesList({
   onRefresh, 
   className = '',
   commentId
-}: FilesListProps) {
+}: CommentFilesListProps) {
   const [files, setFiles] = useState<FileItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);

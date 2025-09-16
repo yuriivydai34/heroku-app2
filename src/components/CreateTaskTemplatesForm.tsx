@@ -1,18 +1,5 @@
 import { Button } from "@heroui/react";
 
-interface TaskTemplateData {
-  id?: string;
-  title: string;
-  description: string;
-}
-
-interface CreateTaskTemplateFormProps {
-  handleCreateTemplate: (e: React.FormEvent) => void;
-  newTemplate: TaskTemplateData;
-  setNewTemplate: React.Dispatch<React.SetStateAction<TaskTemplateData>>;
-  setShowCreateForm: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
 const CreateTaskTemplatesForm = ({ handleCreateTemplate, newTemplate, setNewTemplate, setShowCreateForm }: CreateTaskTemplateFormProps) => {
   return (
     <form onSubmit={handleCreateTemplate} className="space-y-4">

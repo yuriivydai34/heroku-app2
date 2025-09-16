@@ -4,16 +4,6 @@ import { useEffect, useState } from "react";
 import notificationService from "../services/notification.service";
 import { Button } from "@heroui/react";
 
-type NotificationData = {
-  id: string;
-  content: string;
-  userId: number;
-  read: boolean;
-  createdAt: string;
-};
-
-const baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL + '/' || '';
-
 const Notification = () => {
   const [notifications, setNotifications] = useState<NotificationData[]>([]);
 

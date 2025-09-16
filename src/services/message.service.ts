@@ -1,19 +1,5 @@
 import { authService } from "./auth.service";
 
-interface MessageData {
-  id?: string;
-  content: string;
-  senderId?: number;
-  receiverId: number;
-  createdAt?: string;
-}
-
-interface MessageResponse {
-  success: boolean;
-  data?: MessageData;
-  message?: string;
-}
-
 class MessageService {
   private baseUrl: string;
 

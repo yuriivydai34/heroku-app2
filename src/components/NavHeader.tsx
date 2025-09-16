@@ -10,21 +10,6 @@ import authService from '../services/auth.service';
 import profileService from "@/services/profile.service";
 import { Button } from "@heroui/react";
 
-type NotificationData = {
-  id: string;
-  content: string;
-  userId: number;
-  read: boolean;
-  createdAt: string;
-};
-
-interface ProfileData {
-  firstName?: string;
-  lastName?: string;
-  email?: string;
-  [key: string]: any; // Allow for additional profile fields
-}
-
 const NavHeader = () => {
   const router = useRouter();
 

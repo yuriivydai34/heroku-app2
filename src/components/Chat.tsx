@@ -1,25 +1,12 @@
 'use client';
 
-import { FormEvent, use, useEffect, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import messageService from "../services/message.service";
 import { userService } from "@/services/user.service";
 import { authService } from "@/services/auth.service";
 
 import { io, Socket } from "socket.io-client";
 import { Button } from "@heroui/react";
-
-type MessageData = {
-  id: string;
-  content: string;
-  senderId: string;
-  receiverId: string;
-  createdAt: string;
-};
-
-interface UserData {
-  id: string;
-  username: string;
-}
 
 const baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL + '/' || '';
 

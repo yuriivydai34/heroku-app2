@@ -1,20 +1,3 @@
-interface RegisterData {
-  username: string;
-  password: string;
-}
-
-interface LoginData {
-  username: string;
-  password: string;
-}
-
-interface AuthResponse {
-  success: boolean;
-  message?: string;
-  username?: string;
-  access_token?: string;
-}
-
 class AuthService {
   private baseUrl: string;
 

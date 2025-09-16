@@ -1,24 +1,5 @@
 import authService from './auth.service';
 
-interface UploadResponse {
-  success: boolean;
-  message?: string;
-  data?: {
-    filename: string;
-    originalName: string;
-    size: number;
-    mimetype: string;
-    url?: string;
-  };
-  error?: string;
-}
-
-interface UploadProgress {
-  loaded: number;
-  total: number;
-  percentage: number;
-}
-
 class TaskFileUploadService {
   private baseUrl: string;
 

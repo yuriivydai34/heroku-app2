@@ -1,20 +1,5 @@
 import authService from './auth.service';
 
-interface CommentData {
-  id?: string;
-  content: string;
-  taskId?: number;
-  userId?: number;
-  createdAt?: string;
-  [key: string]: any; // Allow for additional comment fields
-}
-
-interface CommentResponse {
-  success: boolean;
-  data?: CommentData | CommentData[];
-  message?: string;
-}
-
 class CommentService {
   private baseUrl: string;
 
@@ -196,7 +181,7 @@ class CommentService {
   async createTaskComment(taskId: string, content: string): Promise<CommentResponse> {
     return this.createComment({
       content,
-      taskId,
+      taskId: Number(taskId),
     });
   }
 }

@@ -4,26 +4,6 @@ import React, { useState, useRef, DragEvent, ChangeEvent } from 'react';
 import taskFileUploadService from '../services/taskFileUpload.service';
 import { Button } from '@heroui/react';
 
-interface FileUploadProps {
-  onFileSelect?: (files: File[]) => void;
-  maxFiles?: number;
-  maxSize?: number; // in MB
-  acceptedTypes?: string[];
-  className?: string;
-  taskId: string;
-}
-
-interface UploadedFile {
-  file: File;
-  id: string;
-  preview?: string;
-  uploading?: boolean;
-  uploaded?: boolean;
-  error?: string;
-  progress?: number;
-  uploadedData?: any;
-}
-
 export default function FileUpload({
   onFileSelect,
   maxFiles = 5,
@@ -31,7 +11,7 @@ export default function FileUpload({
   acceptedTypes = ['image/*', 'application/pdf', '.doc', '.docx', '.txt'],
   className = '',
   taskId,
-}: FileUploadProps) {
+}: TaskFileUploadProps) {
   const [files, setFiles] = useState<UploadedFile[]>([]);
   const [dragOver, setDragOver] = useState(false);
   const [uploading, setUploading] = useState(false);

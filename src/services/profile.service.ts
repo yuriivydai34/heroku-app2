@@ -1,18 +1,5 @@
 import authService from './auth.service';
 
-interface ProfileData {
-  firstName?: string;
-  lastName?: string;
-  email?: string;
-  [key: string]: any; // Allow for additional profile fields
-}
-
-interface ProfileResponse {
-  success: boolean;
-  data?: ProfileData;
-  message?: string;
-}
-
 class ProfileService {
   private baseUrl: string;
 

@@ -1,10 +1,5 @@
 import { Button } from "@heroui/react";
 
-interface ErrorMessageProps {
-  error: string | null;
-  setError: (error: string | null) => void;
-}
-
 const ErrorMessage = ({ error, setError }: ErrorMessageProps) => {
   return (
     <div className="mb-6 bg-red-50 border border-red-200 rounded-md p-4">

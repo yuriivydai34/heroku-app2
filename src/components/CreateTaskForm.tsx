@@ -1,40 +1,6 @@
 import { Button } from "@heroui/react";
 import { useState } from "react";
 
-interface UserData {
-  id: string;
-  username: string;
-}
-
-interface TaskData {
-  id?: string;
-  title: string;
-  description?: string;
-  active?: boolean;
-  deadline?: string;
-  createdAt?: string;
-  updatedAt?: string;
-  userIdCreator: number;
-  usersIdAssociate: number[];
-  userIdSupervisor: number;
-}
-
-interface TaskTemplateData {
-  id?: string;
-  title: string;
-  description: string;
-  createdAt?: string;
-}
-
-interface CreateTaskFormProps {
-  handleCreateTask: (e: React.FormEvent) => void;
-  newTask: TaskData;
-  setNewTask: React.Dispatch<React.SetStateAction<TaskData>>;
-  users: UserData[];
-  setShowCreateForm: React.Dispatch<React.SetStateAction<boolean>>;
-  templates: TaskTemplateData[];
-}
-
 const CreateTaskForm = ({ handleCreateTask, newTask, setNewTask, users, setShowCreateForm, templates }: CreateTaskFormProps) => {
   const [templateSelected, setTemplateSelected] = useState<TaskTemplateData | null>(null);
   

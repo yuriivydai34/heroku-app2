@@ -3,33 +3,6 @@ import moment from "moment";
 import 'moment/locale/uk'; // Import the Ukrainian locale
 import { useRouter } from "next/navigation";
 
-interface TaskData {
-  id?: string;
-  title: string;
-  description?: string;
-  active?: boolean;
-  deadline?: string;
-  createdAt?: string;
-  updatedAt?: string;
-  userIdCreator: number;
-  usersIdAssociate: number[];
-  userIdSupervisor: number;
-}
-
-interface UserData {
-  id: string;
-  username: string;
-}
-
-interface TasksListProps {
-  setShowCreateForm: (value: boolean) => void;
-  showCreateForm: boolean;
-  tasks: TaskData[];
-  loadTasks: () => void;
-  handleDeleteTask: (taskId: string) => void;
-  users: UserData[];
-}
-
 moment.locale('uk');
 
 const TasksList = ({ setShowCreateForm, showCreateForm, tasks, 

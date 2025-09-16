@@ -1,8 +1,3 @@
-interface UserData {
-  id: string;
-  username: string;
-}
-
 class UserService {
   private baseUrl: string;
 

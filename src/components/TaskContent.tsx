@@ -3,44 +3,6 @@ import 'moment/locale/uk'; // Import the Ukrainian locale
 import EditTaskForm from './EditTaskForm';
 import { Button } from '@heroui/react';
 
-interface TaskData {
-  id?: string;
-  title: string;
-  description?: string;
-  active?: boolean;
-  deadline?: string;
-  createdAt?: string;
-  updatedAt?: string;
-  userIdCreator: number;
-  userIdSupervisor: number;
-  usersIdAssociate: number[];
-}
-
-interface UserData {
-  id: string;
-  username: string;
-}
-
-interface TaskContentProps {
-  task: TaskData;
-  isEditing: boolean;
-  setIsEditing: (value: boolean) => void;
-  handleUpdateTask: (e: React.FormEvent) => void;
-  editForm: TaskData;
-  setEditForm: React.Dispatch<React.SetStateAction<{
-    title: string;
-    description: string;
-    deadline: string;
-    userIdCreator: number;
-    usersIdAssociate: number[];
-    userIdSupervisor: number;
-  }>>
-  users: UserData[];
-  handleToggleActive: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  handleFilesClick: () => void;
-  handleDeleteTask: () => void;
-}
-
 moment.locale('uk');
 
 const TaskContent = ({

@@ -2,11 +2,6 @@ import { Card, CardHeader, CardBody } from "@heroui/react";
 import { Avatar } from "@heroui/react";
 import { Badge } from "@heroui/react";
 
-interface UserData {
-  id: string;
-  username: string;
-}
-
 const UsersList = ({ users }: { users: UserData[] }) => {
   return (
     <div className="max-w-2xl mx-auto py-8">

@@ -1,21 +1,5 @@
 import { Button } from "@heroui/react";
 
-interface TaskTemplateData {
-  id?: string;
-  title: string;
-  description: string;
-}
-
-interface EditTaskTemplateFormProps {
-  editForm: TaskTemplateData;
-  setEditForm: React.Dispatch<React.SetStateAction<{
-    title: string;
-    description: string;
-  }>>
-  handleUpdateTemplate: (e: React.FormEvent) => void;
-  setIsEditing: (value: boolean) => void;
-}
-
 const EditTaskTemplateForm = ({
   editForm,
   setEditForm,

@@ -1,38 +1,5 @@
 import { Button } from "@heroui/react";
 
-interface TaskData {
-  id?: string;
-  title: string;
-  description?: string;
-  active?: boolean;
-  deadline?: string;
-  createdAt?: string;
-  updatedAt?: string;
-  userIdCreator: number;
-  userIdSupervisor: number;
-  usersIdAssociate: number[];
-}
-
-interface UserData {
-  id: string;
-  username: string;
-}
-
-interface EditTaskFormProps {
-  editForm: TaskData;
-  setEditForm: React.Dispatch<React.SetStateAction<{
-    title: string;
-    description: string;
-    deadline: string;
-    userIdCreator: number;
-    usersIdAssociate: number[];
-    userIdSupervisor: number;
-  }>>
-  users: UserData[];
-  handleUpdateTask: (e: React.FormEvent) => void;
-  setIsEditing: (value: boolean) => void;
-}
-
 const EditTaskForm = ({
   editForm,
   setEditForm,

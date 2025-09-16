@@ -1,21 +1,6 @@
 import { Button } from "@heroui/react";
 import { useRouter } from "next/navigation";
 
-interface TaskTemplateData {
-  id?: string;
-  title: string;
-  description: string;
-  createdAt?: string;
-}
-
-interface TaskTemplatesListProps {
-  setShowCreateForm: (value: boolean) => void;
-  showCreateForm: boolean;
-  templates: TaskTemplateData[];
-  loadTemplates: () => void;
-  handleDeleteTemplate: (taskId: string) => void;
-}
-
 const TaskTemplatesList = ({ setShowCreateForm, showCreateForm, templates,
   loadTemplates, handleDeleteTemplate }: TaskTemplatesListProps) => {
   const router = useRouter();
