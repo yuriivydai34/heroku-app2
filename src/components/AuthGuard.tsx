@@ -15,7 +15,9 @@ export default function AuthGuard({ children }: { children: React.ReactNode }) {
         router.push("/dashboard");
       }
     } else {
-      router.push("/login");
+      if (pathname !== "/login" && pathname !== "/register") {
+        router.push("/login");
+      }
     }
   }, [router, pathname]);
 
