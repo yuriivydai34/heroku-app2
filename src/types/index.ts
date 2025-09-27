@@ -71,3 +71,23 @@ export interface LoginFormErrors {
   username?: string;
   password?: string;
 }
+
+export interface ChecklistItem {
+  id?: number;
+  text: string;
+  completed: boolean;
+}
+
+export interface Checklist {
+  id?: number;
+  title: string;
+  taskId?: number;
+
+  checklistItems?: ChecklistItem[];
+}
+
+export interface TaskChecklistResponse {
+  success: boolean;
+  data?: Checklist | Checklist[];
+  message?: string;
+}

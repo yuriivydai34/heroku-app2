@@ -1,10 +1,10 @@
 import React from "react";
-import { 
-  Input, 
-  Textarea, 
-  Button, 
-  Switch, 
-  Select, 
+import {
+  Input,
+  Textarea,
+  Button,
+  Switch,
+  Select,
   SelectItem,
   Checkbox,
   CheckboxGroup,
@@ -27,6 +27,7 @@ import { useFileContext } from "@/context/file-context";
 import { mockUsers } from "@/data/mock-users";
 import { FileUploader } from "./file-uploader";
 import { format } from "date-fns";
+import { TaskChecklists } from "./checklist/task-checklists";
 
 interface TaskFormProps {
   task?: Task | null;
@@ -38,10 +39,10 @@ export const TaskForm: React.FC<TaskFormProps> = ({ task, onClose }) => {
   const { files, selectedFiles, setSelectedFiles, clearSelectedFiles, toggleFileSelection } = useFileContext();
   const isEditMode = !!task;
 
-  const { 
-    isOpen: isFileModalOpen, 
-    onOpen: onFileModalOpen, 
-    onOpenChange: onFileModalOpenChange 
+  const {
+    isOpen: isFileModalOpen,
+    onOpen: onFileModalOpen,
+    onOpenChange: onFileModalOpenChange
   } = useDisclosure();
 
   const [formData, setFormData] = React.useState<Task>({
@@ -65,7 +66,7 @@ export const TaskForm: React.FC<TaskFormProps> = ({ task, onClose }) => {
         ...task,
         deadline: task.deadline ? format(new Date(task.deadline), "yyyy-MM-dd") : "",
       });
-      
+
       // Set selected files based on task files
       if (task.files && task.files.length > 0) {
         setSelectedFiles(task.files);
@@ -79,19 +80,19 @@ export const TaskForm: React.FC<TaskFormProps> = ({ task, onClose }) => {
 
   const validateForm = (): boolean => {
     const newErrors: Record<string, string> = {};
-    
+
     if (!formData.title.trim()) {
       newErrors.title = "Title is required";
     }
-    
+
     if (!formData.userIdCreator) {
       newErrors.userIdCreator = "Creator is required";
     }
-    
+
     if (!formData.userIdSupervisor) {
       newErrors.userIdSupervisor = "Supervisor is required";
     }
-    
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -99,7 +100,7 @@ export const TaskForm: React.FC<TaskFormProps> = ({ task, onClose }) => {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
-    
+
     // Clear error for this field if it exists
     if (errors[name]) {
       setErrors(prev => {
@@ -116,7 +117,7 @@ export const TaskForm: React.FC<TaskFormProps> = ({ task, onClose }) => {
 
   const handleCreatorChange = (value: string) => {
     setFormData(prev => ({ ...prev, userIdCreator: parseInt(value) }));
-    
+
     // Clear error if it exists
     if (errors.userIdCreator) {
       setErrors(prev => {
@@ -129,7 +130,7 @@ export const TaskForm: React.FC<TaskFormProps> = ({ task, onClose }) => {
 
   const handleSupervisorChange = (value: string) => {
     setFormData(prev => ({ ...prev, userIdSupervisor: parseInt(value) }));
-    
+
     // Clear error if it exists
     if (errors.userIdSupervisor) {
       setErrors(prev => {
@@ -147,26 +148,26 @@ export const TaskForm: React.FC<TaskFormProps> = ({ task, onClose }) => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!validateForm()) {
       return;
     }
-    
+
     setLoading(true);
-    
+
     try {
       // Add selected files to the task
       const taskWithFiles: Task = {
         ...formData,
         files: selectedFiles
       };
-      
+
       if (isEditMode) {
         await updateTask(taskWithFiles);
       } else {
         await createTask(taskWithFiles);
       }
-      
+
       onClose();
     } catch (error) {
       console.error("Error saving task:", error);
@@ -190,7 +191,7 @@ export const TaskForm: React.FC<TaskFormProps> = ({ task, onClose }) => {
         isInvalid={!!errors.title}
         errorMessage={errors.title}
       />
-      
+
       <Textarea
         label="Description"
         name="description"
@@ -198,7 +199,7 @@ export const TaskForm: React.FC<TaskFormProps> = ({ task, onClose }) => {
         onChange={handleInputChange}
         minRows={3}
       />
-      
+
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <Input
           label="Deadline"
@@ -207,7 +208,7 @@ export const TaskForm: React.FC<TaskFormProps> = ({ task, onClose }) => {
           value={formData.deadline || ""}
           onChange={handleInputChange}
         />
-        
+
         <div className="flex items-center h-full pt-6">
           <Switch
             isSelected={formData.active}
@@ -217,7 +218,7 @@ export const TaskForm: React.FC<TaskFormProps> = ({ task, onClose }) => {
           </Switch>
         </div>
       </div>
-      
+
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <Select
           label="Creator"
@@ -233,7 +234,7 @@ export const TaskForm: React.FC<TaskFormProps> = ({ task, onClose }) => {
             </SelectItem>
           ))}
         </Select>
-        
+
         <Select
           label="Supervisor"
           selectedKeys={[formData.userIdSupervisor.toString()]}
@@ -249,7 +250,7 @@ export const TaskForm: React.FC<TaskFormProps> = ({ task, onClose }) => {
           ))}
         </Select>
       </div>
-      
+
       <div>
         <p className="text-sm font-medium mb-2">Associates</p>
         <CheckboxGroup
@@ -264,15 +265,17 @@ export const TaskForm: React.FC<TaskFormProps> = ({ task, onClose }) => {
           ))}
         </CheckboxGroup>
       </div>
-      
+
       <Divider />
-      
+
+      {/* <TaskChecklists /> */}
+
       <div>
         <div className="flex justify-between items-center mb-2">
           <p className="text-sm font-medium">Attached Files</p>
-          <Button 
-            size="sm" 
-            variant="flat" 
+          <Button
+            size="sm"
+            variant="flat"
             color="primary"
             onPress={onFileModalOpen}
             startContent={<Icon icon="lucide:paperclip" />}
@@ -280,7 +283,7 @@ export const TaskForm: React.FC<TaskFormProps> = ({ task, onClose }) => {
             Manage Files
           </Button>
         </div>
-        
+
         {selectedFiles.length === 0 ? (
           <p className="text-default-400 text-sm">No files attached</p>
         ) : (
@@ -299,20 +302,20 @@ export const TaskForm: React.FC<TaskFormProps> = ({ task, onClose }) => {
           </div>
         )}
       </div>
-      
+
       <div className="flex justify-end gap-2 pt-4">
         <Button variant="flat" onPress={onClose}>
           Cancel
         </Button>
-        <Button 
-          color="primary" 
-          type="submit" 
+        <Button
+          color="primary"
+          type="submit"
           isLoading={loading}
         >
           {isEditMode ? "Update Task" : "Create Task"}
         </Button>
       </div>
-      
+
       {/* File Selection Modal */}
       <Modal isOpen={isFileModalOpen} onOpenChange={onFileModalOpenChange} size="3xl">
         <ModalContent>
@@ -322,9 +325,9 @@ export const TaskForm: React.FC<TaskFormProps> = ({ task, onClose }) => {
               <ModalBody>
                 <div className="space-y-6">
                   <FileUploader />
-                  
+
                   <Divider />
-                  
+
                   <div>
                     <h3 className="text-lg font-medium mb-4">Select from Existing Files</h3>
                     {files.length === 0 ? (
@@ -337,10 +340,10 @@ export const TaskForm: React.FC<TaskFormProps> = ({ task, onClose }) => {
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         {files.map((file) => {
                           const isSelected = selectedFiles.some(f => f.id === file.id);
-                          
+
                           return (
-                            <Card 
-                              key={file.id} 
+                            <Card
+                              key={file.id}
                               className={`border ${isSelected ? 'border-primary bg-primary-50' : 'border-default-200'}`}
                               isPressable
                               onPress={() => toggleFileSelection(file)}
@@ -354,17 +357,17 @@ export const TaskForm: React.FC<TaskFormProps> = ({ task, onClose }) => {
                                   />
                                   <div className="flex-grow">
                                     <div className="flex items-center gap-2 mb-2">
-                                      <Icon 
-                                        icon={getFileIcon(file.mimetype)} 
-                                        className="text-default-600" 
-                                        width={20} 
-                                        height={20} 
+                                      <Icon
+                                        icon={getFileIcon(file.mimetype)}
+                                        className="text-default-600"
+                                        width={20}
+                                        height={20}
                                       />
                                       <span className="font-medium truncate" title={file.originalName}>
                                         {file.originalName}
                                       </span>
                                     </div>
-                                    
+
                                     <div className="text-xs text-default-400">
                                       {formatFileSize(file.size)} • {file.mimetype.split('/')[1].toUpperCase()}
                                     </div>
