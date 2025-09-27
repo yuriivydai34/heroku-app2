@@ -9,18 +9,34 @@ import { FileProvider } from "@/context/file-context";
 import { CommentProvider } from "@/context/comment-context";
 import { ChatProvider } from "@/context/chat-context";
 import { ChatPage } from "@/components/chat/chat-page";
-import NavHeader from "@/components/NavHeader";
+import { NavbarComponent } from "@/components/navbar";
+import { authService } from "@/services/auth.service";
+import { useRouter } from "next/navigation";
+import { useTranslations } from 'next-intl';
 
 export default function App() {
+  const router = useRouter();
+
   const [selected, setSelected] = React.useState("tasks");
+
+  const t = useTranslations('DashboardPage');
+
+  const handleLogout = async () => {
+    // Clear any authentication tokens or session data here
+    await authService.logout();
+
+    // Redirect to login page
+    router.push('/login');
+  }
 
   return (
     <div className="min-h-screen bg-background p-4 md:p-8">
-      {/* Navigation Header */}
-      <NavHeader />
+      {/* Navbar */}
+      <NavbarComponent onLogout={handleLogout} />
+
       {/* Main Content */}
       <div className="container mx-auto max-w-6xl">
-        <h1 className="text-3xl font-semibold mb-6">Task Management System</h1>
+        <h1 className="text-3xl font-semibold mb-6">{t('title')}</h1>
 
         <FileProvider>
           <TaskProvider>

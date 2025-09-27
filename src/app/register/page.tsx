@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import authService from '@/services/auth.service';
-import { Button } from '@heroui/react';
+import { Button, Input, Card } from '@heroui/react';
 
 interface FormData {
   username: string;
@@ -32,21 +32,18 @@ export default function RegisterPage() {
   const validateForm = (): boolean => {
     const newErrors: FormErrors = {};
 
-    // Username validation
     if (!formData.username.trim()) {
       newErrors.username = 'Username is required';
     } else if (formData.username.length < 3) {
       newErrors.username = 'Username must be at least 3 characters long';
     }
 
-    // Password validation
     if (!formData.password) {
       newErrors.password = 'Password is required';
     } else if (formData.password.length < 6) {
       newErrors.password = 'Password must be at least 6 characters long';
     }
 
-    // Confirm password validation
     if (!formData.confirmPassword) {
       newErrors.confirmPassword = 'Please confirm your password';
     } else if (formData.password !== formData.confirmPassword) {
@@ -64,7 +61,6 @@ export default function RegisterPage() {
       [name]: value,
     }));
 
-    // Clear error for this field when user starts typing
     if (errors[name as keyof FormErrors]) {
       setErrors(prev => ({
         ...prev,
@@ -76,9 +72,7 @@ export default function RegisterPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!validateForm()) {
-      return;
-    }
+    if (!validateForm()) return;
 
     setIsSubmitting(true);
     setSubmitMessage('');
@@ -94,15 +88,12 @@ export default function RegisterPage() {
       }
 
       setSubmitMessage('Registration successful! Redirecting to login...');
-
-      // Reset form
       setFormData({
         username: '',
         password: '',
         confirmPassword: '',
       });
 
-      // Redirect to login after successful registration
       setTimeout(() => {
         router.push('/login');
       }, 2000);
@@ -119,107 +110,74 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8">
-        <div>
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-            Реєстрація
-          </h2>
+    <div className="min-h-screen flex items-center justify-center bg-content1">
+      <Card>
+        <h2 className="mb-8 text-center text-3xl font-extrabold" style={{ color: "#000" }}>
+          Реєстрація
+        </h2>
+        <form onSubmit={handleSubmit}>
+          <Input
+            label="Користувач"
+            name="username"
+            value={formData.username}
+            onChange={handleInputChange}
+            placeholder="Введіть ім'я користувача"
+            isRequired
+            color={errors.username ? "danger" : "default"}
+            variant="bordered"
+            autoFocus
+          />
+          {errors.username && <div style={{ color: "#d32f2f" }}>{errors.username}</div>}
+          <Input
+            label="Пароль"
+            name="password"
+            type="password"
+            value={formData.password}
+            onChange={handleInputChange}
+            placeholder="Введіть пароль"
+            isRequired
+            color={errors.password ? "danger" : "default"}
+            variant="bordered"
+          />
+          {errors.password && <div style={{ color: "#d32f2f" }}>{errors.password}</div>}
+          <Input
+            label="Підтвердіть пароль"
+            name="confirmPassword"
+            type="password"
+            value={formData.confirmPassword}
+            onChange={handleInputChange}
+            placeholder="Підтвердіть ваш пароль"
+            isRequired
+            color={errors.confirmPassword ? "danger" : "default"}
+            variant="bordered"
+          />
+          {errors.confirmPassword && <div style={{ color: "#d32f2f" }}>{errors.confirmPassword}</div>}
+          <Button
+            type="submit"
+            color="primary"
+            isLoading={isSubmitting}
+            className="w-full"
+          >
+            {isSubmitting ? 'Створюємо...' : 'Створити користувача'}
+          </Button>
+          {submitMessage && <div className="text-center" style={{ color: submitMessage.includes('successful') ? "#388e3c" : "#d32f2f" }}>
+            {submitMessage}
+          </div>}
+        </form>
+        <div className="mt-6 text-center">
+          <span className="text-sm" style={{ color: "#000" }}>
+            Вже є зареєструвались?{' '}
+          </span>
+          <Button
+            variant="light"
+            color="primary"
+            onClick={handleLoginRedirect}
+            className="font-medium underline"
+          >
+            Увійти
+          </Button>
         </div>
-        <div className="bg-white rounded-lg shadow-md p-6">
-          <form onSubmit={handleSubmit} className="space-y-4">
-            {/* Username */}
-            <div>
-              <label htmlFor="username" className="block text-sm font-medium text-gray-700 mb-1">
-                Користувач
-              </label>
-              <input
-                type="text"
-                id="username"
-                name="username"
-                value={formData.username}
-                onChange={handleInputChange}
-                className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.username ? 'border-red-500' : 'border-gray-300'} text-black`}
-                placeholder="Введіть ім'я користувача"
-              />
-              {errors.username && (
-                <p className="mt-1 text-sm text-red-600">{errors.username}</p>
-              )}
-            </div>
-
-            {/* Password */}
-            <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
-                Пароль
-              </label>
-              <input
-                type="password"
-                id="password"
-                name="password"
-                value={formData.password}
-                onChange={handleInputChange}
-                className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.password ? 'border-red-500' : 'border-gray-300'} text-black`}
-                placeholder="Введіть пароль"
-              />
-              {errors.password && (
-                <p className="mt-1 text-sm text-red-600">{errors.password}</p>
-              )}
-            </div>
-
-            {/* Confirm Password */}
-            <div>
-              <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 mb-1">
-                Підтвердіть пароль
-              </label>
-              <input
-                type="password"
-                id="confirmPassword"
-                name="confirmPassword"
-                value={formData.confirmPassword}
-                onChange={handleInputChange}
-                className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.confirmPassword ? 'border-red-500' : 'border-gray-300'} text-black`}
-                placeholder="Підтвердіть ваш пароль"
-              />
-              {errors.confirmPassword && (
-                <p className="mt-1 text-sm text-red-600">{errors.confirmPassword}</p>
-              )}
-            </div>
-
-            {/* Submit Button */}
-            <Button
-              type="submit"
-              disabled={isSubmitting}
-              className={`w-full py-2 px-4 rounded-md font-medium transition-colors ${isSubmitting
-                ? 'bg-gray-400 cursor-not-allowed'
-                : 'bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2'
-                } text-white`}
-            >
-              {isSubmitting ? 'Creating Account...' : 'Створити користувача'}
-            </Button>
-
-            {/* Submit Message */}
-            {submitMessage && (
-              <div className={`text-center text-sm ${submitMessage.includes('successful') ? 'text-green-600' : 'text-red-600'
-                }`}>
-                {submitMessage}
-              </div>
-            )}
-          </form>
-
-          {/* Login Link */}
-          <div className="mt-6 text-center">
-            <p className="text-sm text-gray-600">
-              Вже є зареєструвались?{' '}
-              <Button
-                onClick={handleLoginRedirect}
-                className="text-blue-600 hover:text-blue-500 font-medium underline"
-              >
-                Увійти
-              </Button>
-            </p>
-          </div>
-        </div>
-      </div>
+      </Card>
     </div>
   );
 }
