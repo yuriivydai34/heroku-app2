@@ -2,8 +2,18 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import authService from '../../services/auth.service';
+import authService from '@/services/auth.service';
 import { Button } from '@heroui/react';
+
+type LoginFormData = {
+  username: string;
+  password: string;
+};
+
+type LoginFormErrors = {
+  username?: string;
+  password?: string;
+};
 
 export default function LoginPage() {
   const router = useRouter();

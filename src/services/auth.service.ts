@@ -1,3 +1,22 @@
+interface AuthResponse {
+  success: boolean;
+  message: string;
+  username?: string;
+}
+
+// Define RegisterData type (adjust fields as needed)
+export interface RegisterData {
+  username: string;
+  password: string;
+  email?: string;
+}
+
+// Define LoginData type (since it's also used)
+export interface LoginData {
+  username: string;
+  password: string;
+}
+
 class AuthService {
   private baseUrl: string;
 
