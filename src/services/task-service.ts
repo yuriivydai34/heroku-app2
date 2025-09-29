@@ -1,122 +1,97 @@
 import { Task } from "../types";
 import { v4 as uuidv4 } from "uuid";
+import authService from "./auth.service";
 
-// Mock storage for tasks
-let tasks: Task[] = [
-  {
-    id: "1",
-    title: "Complete project documentation",
-    description: "Write comprehensive documentation for the new project",
-    active: true,
-    deadline: "2024-08-15",
-    createdAt: "2024-07-01T10:00:00Z",
-    updatedAt: "2024-07-01T10:00:00Z",
-    userIdCreator: 1,
-    usersIdAssociate: [2, 3],
-    userIdSupervisor: 4,
-    files: []
-  },
-  {
-    id: "2",
-    title: "Design new user interface",
-    description: "Create wireframes and mockups for the new UI",
-    active: true,
-    deadline: "2024-07-30",
-    createdAt: "2024-07-05T09:30:00Z",
-    updatedAt: "2024-07-05T09:30:00Z",
-    userIdCreator: 2,
-    usersIdAssociate: [1, 3],
-    userIdSupervisor: 4,
-    files: []
-  }
-];
+const baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3000';
 
 export const TaskService = {
   // Get all tasks
-  getAllTasks: (): Promise<Task[]> => {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve([...tasks]);
-      }, 500);
+  getAllTasks: async (): Promise<Task[]> => {
+    const url = new URL(`${baseUrl}/tasks`);
+
+    const response = await fetch(url.toString(), {
+      method: 'GET',
+      headers: authService.getAuthHeaders(),
     });
+
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      throw new Error(errorData.message || 'Failed to fetch tasks');
+    }
+
+    const data = await response.json();
+
+    // Ensure always return an array
+    if (data && Array.isArray(data)) {
+      return data as Task[];
+    }
+    return [];
   },
 
   // Get task by ID
-  getTaskById: (id: string): Promise<Task | undefined> => {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        const task = tasks.find(t => t.id === id);
-        resolve(task ? { ...task } : undefined);
-      }, 300);
+  getTaskById: async (id: string): Promise<Task | undefined> => {
+    const response = await fetch(`${baseUrl}/tasks/${id}`, {
+      method: 'GET',
+      headers: authService.getAuthHeaders(),
     });
+
+    if (!response.ok) {
+      return undefined;
+    }
+
+    const task = await response.json();
+    return task as Task | undefined;
   },
 
   // Create a new task
-  createTask: (task: Task): Promise<Task> => {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        const newTask: Task = {
-          ...task,
-          id: uuidv4(),
-          createdAt: new Date().toISOString(),
-          updatedAt: new Date().toISOString(),
-          active: task.active !== undefined ? task.active : true,
-          files: task.files || []
-        };
-        tasks = [...tasks, newTask];
-        resolve({ ...newTask });
-      }, 500);
+  createTask: async (task: Task): Promise<Task> => {
+    const response = await fetch(`${baseUrl}/tasks`, {
+      method: 'POST',
+      headers: {
+        ...authService.getAuthHeaders(),
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(task),
     });
+
+    if (!response.ok) {
+      throw new Error('Failed to create task');
+    }
+
+    const newTask = await response.json();
+    return newTask as Task;
   },
 
   // Update an existing task
-  updateTask: (task: Task): Promise<Task> => {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        if (!task.id) {
-          reject(new Error("Task ID is required for update"));
-          return;
-        }
-        
-        const index = tasks.findIndex(t => t.id === task.id);
-        if (index === -1) {
-          reject(new Error(`Task with ID ${task.id} not found`));
-          return;
-        }
-        
-        const updatedTask: Task = {
-          ...task,
-          updatedAt: new Date().toISOString()
-        };
-        
-        tasks = [
-          ...tasks.slice(0, index),
-          updatedTask,
-          ...tasks.slice(index + 1)
-        ];
-        
-        resolve({ ...updatedTask });
-      }, 500);
+  updateTask: async (task: Task): Promise<Task> => {
+    const response = await fetch(`${baseUrl}/tasks/${task.id}`, {
+      method: 'PUT',
+      headers: {
+        ...authService.getAuthHeaders(),
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(task),
     });
+
+    if (!response.ok) {
+      throw new Error('Failed to update task');
+    }
+
+    const updatedTask = await response.json();
+    return updatedTask as Task;
   },
 
   // Delete a task
-  deleteTask: (id: string): Promise<boolean> => {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        const index = tasks.findIndex(t => t.id === id);
-        if (index === -1) {
-          reject(new Error(`Task with ID ${id} not found`));
-          return;
-        }
-        
-        tasks = [
-          ...tasks.slice(0, index),
-          ...tasks.slice(index + 1)
-        ];
-        
-        resolve(true);
-      }, 500);
+  deleteTask: async (id: string): Promise<boolean> => {
+    const response = await fetch(`${baseUrl}/tasks/${id}`, {
+      method: 'DELETE',
+      headers: authService.getAuthHeaders(),
     });
-  }
+
+    if (!response.ok) {
+      throw new Error('Failed to delete task');
+    }
+
+    return true;
+  },
 };
