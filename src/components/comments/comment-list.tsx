@@ -15,6 +15,8 @@ import { Comment } from "../../types";
 import { useCommentContext } from "../../context/comment-context";
 import { useUserContext } from "@/context/user-context";
 
+const baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:3000";
+
 interface CommentListProps {
   taskId: string;
 }
@@ -142,7 +144,7 @@ export const CommentList: React.FC<CommentListProps> = ({ taskId }) => {
                               {formatFileSize(file.size)}
                             </span>
                             <a
-                              href={file.url}
+                              href={`${baseUrl}/${file.url}`}
                               target="_blank"
                               rel="noopener noreferrer"
                               className="text-primary"

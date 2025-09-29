@@ -42,10 +42,11 @@ export const TaskService = {
 
   // Create a new task
   createTask: async (task: Task): Promise<Task> => {
+    const fileIds = task.files?.map(file => file.id) || [];
     const response = await fetch(`${baseUrl}/tasks`, {
       method: 'POST',
       headers: authService.getAuthHeaders(),
-      body: JSON.stringify(task),
+      body: JSON.stringify({ ...task, files: fileIds }),
     });
 
     if (!response.ok) {

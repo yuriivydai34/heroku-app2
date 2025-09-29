@@ -18,10 +18,11 @@ export const CommentService = {
 
   // Create a new comment
   createComment: async (comment: Comment): Promise<Comment> => {
+    const fileIds = comment.files?.map(file => file.id) || [];
     const response = await fetch(`${baseUrl}/comments`, {
       method: 'POST',
       headers: authService.getAuthHeaders(),
-      body: JSON.stringify(comment),
+      body: JSON.stringify({ ...comment, files: fileIds }),
     });
     if (!response.ok) {
       throw new Error("Failed to create comment");
