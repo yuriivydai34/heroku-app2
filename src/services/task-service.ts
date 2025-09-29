@@ -44,10 +44,7 @@ export const TaskService = {
   createTask: async (task: Task): Promise<Task> => {
     const response = await fetch(`${baseUrl}/tasks`, {
       method: 'POST',
-      headers: {
-        ...authService.getAuthHeaders(),
-        'Content-Type': 'application/json',
-      },
+      headers: authService.getAuthHeaders(),
       body: JSON.stringify(task),
     });
 
@@ -63,10 +60,7 @@ export const TaskService = {
   updateTask: async (task: Task): Promise<Task> => {
     const response = await fetch(`${baseUrl}/tasks/${task.id}`, {
       method: 'PUT',
-      headers: {
-        ...authService.getAuthHeaders(),
-        'Content-Type': 'application/json',
-      },
+      headers: authService.getAuthHeaders(),
       body: JSON.stringify(task),
     });
 

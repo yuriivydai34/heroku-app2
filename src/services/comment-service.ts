@@ -1,70 +1,44 @@
 import { Comment } from "../types";
-import { v4 as uuidv4 } from "uuid";
+import authService from "./auth.service";
 
-// Mock storage for comments
-let comments: Comment[] = [
-  {
-    id: "1",
-    taskId: "1",
-    text: "Started working on the documentation structure",
-    userId: 1,
-    createdAt: "2024-07-02T09:15:00Z",
-    files: []
-  },
-  {
-    id: "2",
-    taskId: "1",
-    text: "Added initial sections for API documentation",
-    userId: 3,
-    createdAt: "2024-07-03T14:30:00Z",
-    files: []
-  }
-];
+const baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3000';
 
 export const CommentService = {
   // Get comments by task ID
-  getCommentsByTaskId: (taskId: string): Promise<Comment[]> => {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        const taskComments = comments.filter(c => c.taskId === taskId);
-        resolve([...taskComments]);
-      }, 300);
+  getCommentsByTaskId: async (taskId: string): Promise<Comment[]> => {
+    const response = await fetch(`${baseUrl}/comments/find-by-task/${taskId}`, {
+      method: 'GET',
+      headers: authService.getAuthHeaders(),
     });
+    if (!response.ok) {
+      throw new Error("Failed to fetch comments");
+    }
+    return response.json();
   },
 
   // Create a new comment
-  createComment: (comment: Comment): Promise<Comment> => {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        const newComment: Comment = {
-          ...comment,
-          id: uuidv4(),
-          createdAt: new Date().toISOString(),
-          files: comment.files || []
-        };
-        comments = [...comments, newComment];
-        resolve({ ...newComment });
-      }, 300);
+  createComment: async (comment: Comment): Promise<Comment> => {
+    const response = await fetch(`${baseUrl}/comments`, {
+      method: 'POST',
+      headers: authService.getAuthHeaders(),
+      body: JSON.stringify(comment),
     });
+    if (!response.ok) {
+      throw new Error("Failed to create comment");
+    }
+    const newComment = await response.json();
+    return newComment;
   },
 
   // Delete a comment
-  deleteComment: (id: string): Promise<boolean> => {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        const index = comments.findIndex(c => c.id === id);
-        if (index === -1) {
-          reject(new Error(`Comment with ID ${id} not found`));
-          return;
-        }
-        
-        comments = [
-          ...comments.slice(0, index),
-          ...comments.slice(index + 1)
-        ];
-        
-        resolve(true);
-      }, 300);
+  deleteComment: async (id: string): Promise<boolean> => {
+    const response = await fetch(`${baseUrl}/comments/${id}`, {
+      method: 'DELETE',
+      headers: authService.getAuthHeaders(),
     });
+    if (!response.ok) {
+      throw new Error("Failed to delete comment");
+    }
+    return true;
   }
 };
