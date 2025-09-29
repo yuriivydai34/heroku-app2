@@ -19,10 +19,10 @@ import {
 } from "@heroui/react";
 import { Icon } from "@iconify/react";
 import { format } from "date-fns";
-import { useTaskContext } from "../context/task-context";
+import { useTaskContext } from "@/context/task-context";
 import { TaskForm } from "./task-form";
 import { TaskDetail } from "./task-detail";
-import { useUserContext } from "../context/user-context";
+import { useUserContext } from "@/context/user-context";
 
 export const TaskList: React.FC = () => {
   const { 

@@ -1,12 +1,12 @@
 import React from "react";
 import { Button, Card, CardBody, Chip, Divider, Tooltip } from "@heroui/react";
 import { Icon } from "@iconify/react";
-import { Task, UserData } from "../types";
+import { Task, UserData } from "@/types";
 import { format } from "date-fns";
-import { CommentProvider } from "../context/comment-context";
-import { CommentForm } from "./comment-form";
-import { CommentList } from "./comment-list";
-import { useUserContext } from "../context/user-context";
+import { CommentProvider } from "@/context/comment-context";
+import { CommentForm } from "../comment-form";
+import { CommentList } from "../comment-list";
+import { useUserContext } from "@/context/user-context";
 
 interface TaskDetailProps {
   task: Task;

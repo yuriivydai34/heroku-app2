@@ -2,7 +2,7 @@
 
 import React from "react";
 import { Tabs, Tab, Card, CardBody } from "@heroui/react";
-import { TaskList } from "@/components/task-list";
+import { TaskList } from "@/components/tasks/task-list";
 import { FileManager } from "@/components/file-manager";
 import { TaskProvider } from "@/context/task-context";
 import { FileProvider } from "@/context/file-context";

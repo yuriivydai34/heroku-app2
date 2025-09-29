@@ -24,9 +24,9 @@ import { Icon } from "@iconify/react";
 import { Task, UploadedFile } from "@/types";
 import { useTaskContext } from "@/context/task-context";
 import { useFileContext } from "@/context/file-context";
-import { FileUploader } from "./file-uploader";
+import { FileUploader } from "../file-uploader";
 import { format } from "date-fns";
-import { TaskChecklists } from "./checklist/task-checklists";
+import { TaskChecklists } from "../checklist/task-checklists";
 import { useUserContext } from "@/context/user-context";
 
 interface TaskFormProps {
