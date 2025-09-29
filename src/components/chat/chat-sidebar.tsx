@@ -18,7 +18,7 @@ import {
 } from "@heroui/react";
 import { Icon } from "@iconify/react";
 import { useChatContext } from "@/context/chat-context";
-import { mockUsers } from "@/data/mock-users";
+import { useUserContext } from "@/context/user-context";
 import { ChatRoom } from "@/types";
 
 export const ChatSidebar: React.FC = () => {
@@ -33,6 +33,8 @@ export const ChatSidebar: React.FC = () => {
     createRoom,
     getCurrentUserId
   } = useChatContext();
+
+  const { users } = useUserContext();
 
   const [searchQuery, setSearchQuery] = React.useState("");
   const [selectedTab, setSelectedTab] = React.useState("rooms");
@@ -58,11 +60,11 @@ export const ChatSidebar: React.FC = () => {
 
   // Filter users by search query
   const filteredUsers = React.useMemo(() => {
-    return mockUsers
+    return users
       .filter(user => user.id !== currentUserId) // Don't show current user
       .filter(user =>
-        user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        user.role.toLowerCase().includes(searchQuery.toLowerCase())
+        (user.UserProfile?.name ?? "").toLowerCase().includes(searchQuery.toLowerCase()) ||
+        (user.UserProfile?.role ?? "").toLowerCase().includes(searchQuery.toLowerCase())
       );
   }, [searchQuery, currentUserId]);
 
@@ -198,7 +200,7 @@ export const ChatSidebar: React.FC = () => {
                     startContent={
                       <div className="relative">
                         <Avatar
-                          name={user.name}
+                          name={user.UserProfile?.name}
                           src={`https://img.heroui.chat/image/avatar?w=200&h=200&u=${user.id}`}
                           size="sm"
                         />
@@ -213,9 +215,9 @@ export const ChatSidebar: React.FC = () => {
                     }
                   >
                     <div className="text-left truncate">
-                      <p className="font-medium truncate">{user.name}</p>
+                      <p className="font-medium truncate">{user.UserProfile?.name}</p>
                       <p className="text-xs text-default-500 truncate">
-                        {user.role}
+                        {user.UserProfile?.role}
                       </p>
                     </div>
                   </Button>
@@ -252,17 +254,17 @@ export const ChatSidebar: React.FC = () => {
                   onValueChange={setSelectedMembers}
                   className="gap-1"
                 >
-                  {mockUsers
+                  {users
                     .filter(user => user.id !== currentUserId)
                     .map((user) => (
                       <Checkbox key={user.id} value={user.id.toString()}>
                         <div className="flex items-center gap-2">
                           <Avatar
-                            name={user.name}
+                            name={user.UserProfile?.name}
                             src={`https://img.heroui.chat/image/avatar?w=200&h=200&u=${user.id}`}
                             size="sm"
                           />
-                          <span>{user.name}</span>
+                          <span>{user.UserProfile?.name}</span>
                         </div>
                       </Checkbox>
                     ))}

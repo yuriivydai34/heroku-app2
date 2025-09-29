@@ -20,8 +20,10 @@ import { Icon } from "@iconify/react";
 import { format } from "date-fns";
 import { useChatContext } from "@/context/chat-context";
 import { useFileContext } from "@/context/file-context";
-import { mockUsers } from "@/data/mock-users";
+import { useUserContext } from "@/context/user-context";
 import { Message, UploadedFile } from "@/types";
+
+const baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:3000";
 
 export const ChatArea: React.FC = () => {
   const {
@@ -42,6 +44,8 @@ export const ChatArea: React.FC = () => {
     clearSelectedFiles,
     toggleFileSelection
   } = useFileContext();
+
+  const { users } = useUserContext();
 
   const [messageText, setMessageText] = React.useState("");
   const messagesEndRef = React.useRef<HTMLDivElement>(null);
@@ -69,7 +73,7 @@ export const ChatArea: React.FC = () => {
 
   const activeUser = React.useMemo(() => {
     if (activeDirectUserId) {
-      return mockUsers.find(user => user.id === activeDirectUserId);
+      return users.find(user => user.id === activeDirectUserId);
     }
     return null;
   }, [activeDirectUserId]);
@@ -79,7 +83,7 @@ export const ChatArea: React.FC = () => {
     if (activeRoom) {
       return activeRoom.name;
     } else if (activeUser) {
-      return activeUser.name;
+      return activeUser.UserProfile?.name;
     }
     return "Chat";
   }, [activeRoom, activeUser]);
@@ -87,7 +91,7 @@ export const ChatArea: React.FC = () => {
   const chatMembers = React.useMemo(() => {
     if (activeRoom) {
       return activeRoom.members.map(id =>
-        mockUsers.find(user => user.id === id)
+        users.find(user => user.id === id)
       ).filter(Boolean);
     }
     return [];
@@ -199,7 +203,7 @@ export const ChatArea: React.FC = () => {
             )}
             {activeUser && (
               <p className="text-xs text-default-500">
-                {activeUser.role}
+                {activeUser.UserProfile?.role}
               </p>
             )}
           </div>
@@ -233,7 +237,7 @@ export const ChatArea: React.FC = () => {
           <div className="space-y-4">
             {groupedMessages.map((group, groupIndex) => {
               const firstMessage = group[0];
-              const sender = mockUsers.find(u => u.id === firstMessage.senderId);
+              const sender = users.find(u => u.id === firstMessage.senderId);
               const isCurrentUser = firstMessage.senderId === currentUserId;
 
               return (
@@ -241,7 +245,7 @@ export const ChatArea: React.FC = () => {
                   <div className={`flex ${isCurrentUser ? 'flex-row-reverse' : 'flex-row'} gap-2 max-w-[80%]`}>
                     {!isCurrentUser && (
                       <Avatar
-                        name={sender?.name || `User #${firstMessage.senderId}`}
+                        name={sender?.UserProfile?.name || `User #${firstMessage.senderId}`}
                         src={`https://img.heroui.chat/image/avatar?w=200&h=200&u=${firstMessage.senderId}`}
                         className="mt-1"
                         size="sm"
@@ -251,7 +255,7 @@ export const ChatArea: React.FC = () => {
                     <div className={`flex flex-col ${isCurrentUser ? 'items-end' : 'items-start'}`}>
                       {!isCurrentUser && (
                         <span className="text-xs font-medium mb-1">
-                          {sender?.name || `User #${firstMessage.senderId}`}
+                          {sender?.UserProfile?.name || `User #${firstMessage.senderId}`}
                         </span>
                       )}
 
@@ -294,7 +298,7 @@ export const ChatArea: React.FC = () => {
                                         {formatFileSize(file.size)}
                                       </span>
                                       <a
-                                        href={file.url}
+                                        href={`${baseUrl}/${file.url}`}
                                         target="_blank"
                                         rel="noopener noreferrer"
                                         className={isCurrentUser ? 'text-white' : 'text-primary'}
@@ -404,12 +408,12 @@ export const ChatArea: React.FC = () => {
                     </div>
                   ) : (
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                      {files.map((file) => {
+                      {files.map((file, idx) => {
                         const isSelected = selectedFiles.some(f => f.id === file.id);
 
                         return (
                           <div
-                            key={file.id}
+                            key={idx}
                             className={`border rounded-medium p-3 flex items-center gap-3 cursor-pointer transition-colors ${isSelected ? 'border-primary bg-primary-50' : 'border-default-200'
                               }`}
                             onClick={() => toggleFileSelection(file)}
@@ -471,15 +475,15 @@ export const ChatArea: React.FC = () => {
                       <p className="text-sm font-medium mb-1">Created by</p>
                       <div className="flex items-center gap-2">
                         {(() => {
-                          const creator = mockUsers.find(u => u.id === activeRoom.createdBy);
+                          const creator = users.find(u => u.id === activeRoom.createdBy);
                           return (
                             <>
                               <Avatar
-                                name={creator?.name || `User #${activeRoom.createdBy}`}
+                                name={creator?.UserProfile?.name || `User #${activeRoom.createdBy}`}
                                 src={`https://img.heroui.chat/image/avatar?w=200&h=200&u=${activeRoom.createdBy}`}
                                 size="sm"
                               />
-                              <span>{creator?.name || `User #${activeRoom.createdBy}`}</span>
+                              <span>{creator?.UserProfile?.name || `User #${activeRoom.createdBy}`}</span>
                             </>
                           );
                         })()}
@@ -496,13 +500,13 @@ export const ChatArea: React.FC = () => {
                             <div key={member.id} className="flex items-center justify-between">
                               <div className="flex items-center gap-2">
                                 <Avatar
-                                  name={member.name}
+                                  name={member.UserProfile?.name}
                                   src={`https://img.heroui.chat/image/avatar?w=200&h=200&u=${member.id}`}
                                   size="sm"
                                 />
                                 <div>
-                                  <p className="text-sm">{member.name}</p>
-                                  <p className="text-xs text-default-500">{member.role}</p>
+                                  <p className="text-sm">{member.UserProfile?.name}</p>
+                                  <p className="text-xs text-default-500">{member.UserProfile?.role}</p>
                                 </div>
                               </div>
 
