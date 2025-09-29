@@ -1,18 +1,20 @@
 import React from "react";
-import { Card, CardBody, Chip, Divider, Tooltip } from "@heroui/react";
+import { Button, Card, CardBody, Chip, Divider, Tooltip } from "@heroui/react";
 import { Icon } from "@iconify/react";
-import { Task } from "../types";
-import { mockUsers } from "../data/mock-users";
+import { Task, UserData } from "../types";
 import { format } from "date-fns";
 import { CommentProvider } from "../context/comment-context";
 import { CommentForm } from "./comment-form";
 import { CommentList } from "./comment-list";
+import { useUserContext } from "../context/user-context";
 
 interface TaskDetailProps {
   task: Task;
 }
 
 export const TaskDetail: React.FC<TaskDetailProps> = ({ task }) => {
+  const { users } = useUserContext();
+
   const formatDate = (dateString?: string) => {
     if (!dateString) return "Not set";
     try {
@@ -31,20 +33,22 @@ export const TaskDetail: React.FC<TaskDetailProps> = ({ task }) => {
     }
   };
 
-  const getUserName = (id: number) => {
-    const user = mockUsers.find(u => u.id === id);
-    return user ? user.name : `User #${id}`;
+  const getUserName = (id: number | undefined) => {
+    if (typeof id !== "number") return "Unknown";
+    const user = users.find(u => u.id === id);
+    return user?.UserProfile ? user.UserProfile.name : `User #${id}`;
   };
 
-  const getUserRole = (id: number) => {
-    const user = mockUsers.find(u => u.id === id);
-    return user ? user.role : "Unknown";
+  const getUserRole = (id: number | undefined) => {
+    if (typeof id !== "number") return "Unknown";
+    const user = users.find(u => u.id === id);
+    return user?.UserProfile ? user.UserProfile.role : "Unknown";
   };
 
   const getAssociates = () => {
     return task.usersIdAssociate.map(id => {
-      const user = mockUsers.find(u => u.id === id);
-      return user ? `${user.name} (${user.role})` : `User #${id}`;
+      const user = users.find(u => u.id === id);
+      return user?.UserProfile ? `${user.UserProfile.name} (${user.UserProfile.role})` : `User #${id}`;
     });
   };
 
@@ -200,7 +204,7 @@ export const TaskDetail: React.FC<TaskDetailProps> = ({ task }) => {
       <div>
         <h3 className="text-lg font-semibold mb-4">Comments</h3>
         <CommentProvider>
-          <CommentForm taskId={task.id!} userId={task.userIdCreator} />
+          <CommentForm taskId={task.id!} userId={task.userIdCreator ?? 0} />
           <CommentList taskId={task.id!} />
         </CommentProvider>
       </div>

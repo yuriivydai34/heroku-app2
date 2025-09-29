@@ -6,7 +6,7 @@ export interface Task {
   deadline?: string;
   createdAt?: string;
   updatedAt?: string;
-  userIdCreator: number;
+  userIdCreator?: number;
   usersIdAssociate: number[];
   userIdSupervisor: number;
   files?: UploadedFile[];
@@ -19,12 +19,6 @@ export interface UploadedFile {
   size: number;
   mimetype: string;
   url?: string;
-}
-
-export interface User {
-  id: number;
-  name: string;
-  role: string;
 }
 
 export interface Comment {
@@ -104,14 +98,15 @@ export interface TaskResponse {
 }
 
 export interface UserProfileData {
-  firstName?: string;
-  lastName?: string;
+  name?: string;
   email?: string;
+  role?: string;
+  avatarUrl?: string;
   [key: string]: any; // Allow for additional profile fields
 }
 
 export interface UserData {
-  id: string;
+  id: number;
   username: string;
   UserProfile?: UserProfileData;
 }

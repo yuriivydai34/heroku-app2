@@ -13,7 +13,7 @@ import { Icon } from "@iconify/react";
 import { format } from "date-fns";
 import { Comment } from "../types";
 import { useCommentContext } from "../context/comment-context";
-import { mockUsers } from "../data/mock-users";
+import { useUserContext } from "@/context/user-context";
 
 interface CommentListProps {
   taskId: string;
@@ -21,6 +21,7 @@ interface CommentListProps {
 
 export const CommentList: React.FC<CommentListProps> = ({ taskId }) => {
   const { comments, loading, error, fetchCommentsByTaskId, deleteComment } = useCommentContext();
+  const { users } = useUserContext();
 
   React.useEffect(() => {
     fetchCommentsByTaskId(taskId);
@@ -37,10 +38,10 @@ export const CommentList: React.FC<CommentListProps> = ({ taskId }) => {
   };
 
   const getUserInfo = (userId: number) => {
-    const user = mockUsers.find(u => u.id === userId);
+    const user = users.find(u => u.id === userId);
     return {
-      name: user ? user.name : `User #${userId}`,
-      role: user ? user.role : "Unknown"
+      name: user ? user.UserProfile?.name : `User #${userId}`,
+      role: user ? user.UserProfile?.role : "Unknown"
     };
   };
 

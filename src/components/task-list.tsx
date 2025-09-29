@@ -22,7 +22,7 @@ import { format } from "date-fns";
 import { useTaskContext } from "../context/task-context";
 import { TaskForm } from "./task-form";
 import { TaskDetail } from "./task-detail";
-import { mockUsers } from "../data/mock-users";
+import { useUserContext } from "../context/user-context";
 
 export const TaskList: React.FC = () => {
   const { 
@@ -33,6 +33,8 @@ export const TaskList: React.FC = () => {
     selectTask,
     deleteTask
   } = useTaskContext();
+
+  const { users } = useUserContext();
 
   const { 
     isOpen: isCreateOpen, 
@@ -85,8 +87,8 @@ export const TaskList: React.FC = () => {
   };
 
   const getUserName = (id: number) => {
-    const user = mockUsers.find(u => u.id === id);
-    return user ? user.name : `User #${id}`;
+    const user = users.find(u => u.id === id);
+    return user ? user.UserProfile?.name : `User #${id}`;
   };
 
   const formatDate = (dateString?: string) => {

@@ -24,10 +24,10 @@ import { Icon } from "@iconify/react";
 import { Task, UploadedFile } from "@/types";
 import { useTaskContext } from "@/context/task-context";
 import { useFileContext } from "@/context/file-context";
-import { mockUsers } from "@/data/mock-users";
 import { FileUploader } from "./file-uploader";
 import { format } from "date-fns";
 import { TaskChecklists } from "./checklist/task-checklists";
+import { useUserContext } from "@/context/user-context";
 
 interface TaskFormProps {
   task?: Task | null;
@@ -35,6 +35,7 @@ interface TaskFormProps {
 }
 
 export const TaskForm: React.FC<TaskFormProps> = ({ task, onClose }) => {
+  const { users } = useUserContext();
   const { createTask, updateTask } = useTaskContext();
   const { files, selectedFiles, setSelectedFiles, clearSelectedFiles, toggleFileSelection } = useFileContext();
   const isEditMode = !!task;
@@ -50,9 +51,8 @@ export const TaskForm: React.FC<TaskFormProps> = ({ task, onClose }) => {
     description: "",
     active: true,
     deadline: "",
-    userIdCreator: 1, // Default to first user
     usersIdAssociate: [],
-    userIdSupervisor: 4, // Default to manager
+    userIdSupervisor: 0,
     files: []
   });
 
@@ -85,10 +85,6 @@ export const TaskForm: React.FC<TaskFormProps> = ({ task, onClose }) => {
       newErrors.title = "Title is required";
     }
 
-    if (!formData.userIdCreator) {
-      newErrors.userIdCreator = "Creator is required";
-    }
-
     if (!formData.userIdSupervisor) {
       newErrors.userIdSupervisor = "Supervisor is required";
     }
@@ -113,19 +109,6 @@ export const TaskForm: React.FC<TaskFormProps> = ({ task, onClose }) => {
 
   const handleSwitchChange = (isSelected: boolean) => {
     setFormData(prev => ({ ...prev, active: isSelected }));
-  };
-
-  const handleCreatorChange = (value: string) => {
-    setFormData(prev => ({ ...prev, userIdCreator: parseInt(value) }));
-
-    // Clear error if it exists
-    if (errors.userIdCreator) {
-      setErrors(prev => {
-        const newErrors = { ...prev };
-        delete newErrors.userIdCreator;
-        return newErrors;
-      });
-    }
   };
 
   const handleSupervisorChange = (value: string) => {
@@ -221,21 +204,6 @@ export const TaskForm: React.FC<TaskFormProps> = ({ task, onClose }) => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <Select
-          label="Creator"
-          selectedKeys={[formData.userIdCreator.toString()]}
-          onChange={(e) => handleCreatorChange(e.target.value)}
-          isRequired
-          isInvalid={!!errors.userIdCreator}
-          errorMessage={errors.userIdCreator}
-        >
-          {mockUsers.map((user) => (
-            <SelectItem key={user.id.toString()} value={user.id.toString()}>
-              {user.name} ({user.role})
-            </SelectItem>
-          ))}
-        </Select>
-
-        <Select
           label="Supervisor"
           selectedKeys={[formData.userIdSupervisor.toString()]}
           onChange={(e) => handleSupervisorChange(e.target.value)}
@@ -243,9 +211,9 @@ export const TaskForm: React.FC<TaskFormProps> = ({ task, onClose }) => {
           isInvalid={!!errors.userIdSupervisor}
           errorMessage={errors.userIdSupervisor}
         >
-          {mockUsers.map((user) => (
+          {users.map((user) => (
             <SelectItem key={user.id.toString()} value={user.id.toString()}>
-              {user.name} ({user.role})
+              {user.UserProfile?.name} ({user.UserProfile?.role})
             </SelectItem>
           ))}
         </Select>
@@ -258,9 +226,9 @@ export const TaskForm: React.FC<TaskFormProps> = ({ task, onClose }) => {
           onValueChange={handleAssociatesChange}
           className="gap-1"
         >
-          {mockUsers.map((user) => (
+          {users.map((user) => (
             <Checkbox key={user.id} value={user.id.toString()}>
-              {user.name}
+              {user.UserProfile?.name}
             </Checkbox>
           ))}
         </CheckboxGroup>

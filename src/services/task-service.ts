@@ -1,5 +1,4 @@
 import { Task } from "../types";
-import { v4 as uuidv4 } from "uuid";
 import authService from "./auth.service";
 
 const baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3000';
@@ -7,9 +6,7 @@ const baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3000';
 export const TaskService = {
   // Get all tasks
   getAllTasks: async (): Promise<Task[]> => {
-    const url = new URL(`${baseUrl}/tasks`);
-
-    const response = await fetch(url.toString(), {
+    const response = await fetch(`${baseUrl}/tasks`, {
       method: 'GET',
       headers: authService.getAuthHeaders(),
     });
