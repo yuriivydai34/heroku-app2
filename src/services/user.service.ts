@@ -1,3 +1,5 @@
+import { UserData } from "@/types";
+
 class UserService {
   private baseUrl: string;
 

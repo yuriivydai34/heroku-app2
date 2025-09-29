@@ -91,3 +91,27 @@ export interface TaskChecklistResponse {
   data?: Checklist | Checklist[];
   message?: string;
 }
+
+export interface TaskSort {
+  sortBy: string;
+  sortOrder: 'asc' | 'desc';
+}
+
+export interface TaskResponse {
+  success: boolean;
+  data?: Task[];
+  message?: string;
+}
+
+export interface UserProfileData {
+  firstName?: string;
+  lastName?: string;
+  email?: string;
+  [key: string]: any; // Allow for additional profile fields
+}
+
+export interface UserData {
+  id: string;
+  username: string;
+  UserProfile?: UserProfileData;
+}
