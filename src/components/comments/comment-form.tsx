@@ -152,12 +152,12 @@ export const CommentForm: React.FC<CommentFormProps> = ({ taskId, userId, onComm
                       </div>
                     ) : (
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        {files.map((file) => {
+                        {files.map((file, idx) => {
                           const isSelected = selectedFiles.some(f => f.id === file.id);
 
                           return (
                             <Card
-                              key={file.id}
+                              key={idx}
                               className={`border ${isSelected ? 'border-primary bg-primary-50' : 'border-default-200'}`}
                               isPressable
                               onPress={() => toggleFileSelection(file)}

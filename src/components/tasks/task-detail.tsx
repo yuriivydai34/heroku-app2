@@ -8,6 +8,8 @@ import { CommentForm } from "@/components/comments/comment-form";
 import { CommentList } from "@/components/comments/comment-list";
 import { useUserContext } from "@/context/user-context";
 
+const baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:3000";
+
 interface TaskDetailProps {
   task: Task;
 }
@@ -156,7 +158,7 @@ export const TaskDetail: React.FC<TaskDetailProps> = ({ task }) => {
                     </div>
                     <div className="flex gap-2">
                       <a 
-                        href={file.url} 
+                        href={`${baseUrl}/${file.url}`} 
                         target="_blank" 
                         rel="noopener noreferrer" 
                         className="text-primary"
@@ -173,7 +175,7 @@ export const TaskDetail: React.FC<TaskDetailProps> = ({ task }) => {
                         </Tooltip>
                       </a>
                       <a 
-                        href={file.url} 
+                        href={`${baseUrl}/${file.url}`} 
                         target="_blank" 
                         rel="noopener noreferrer" 
                         className="text-primary"

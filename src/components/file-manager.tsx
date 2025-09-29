@@ -18,6 +18,8 @@ import { Icon } from "@iconify/react";
 import { useFileContext } from "../context/file-context";
 import { FileUploader } from "./file-uploader";
 
+const baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:3000";
+
 export const FileManager: React.FC = () => {
   const {
     files,
@@ -87,11 +89,11 @@ export const FileManager: React.FC = () => {
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {files.map((file) => {
+            {files.map((file, idx) => {
               const isSelected = selectedFiles.some(f => f.id === file.id);
 
               return (
-                <Card key={file.id} className={`border ${isSelected ? 'border-primary' : 'border-default-200'}`}>
+                <Card key={idx} className={`border ${isSelected ? 'border-primary' : 'border-default-200'}`}>
                   <CardBody className="p-4">
                     <div className="flex items-start gap-3">
                       <Checkbox
@@ -113,12 +115,14 @@ export const FileManager: React.FC = () => {
                         </div>
 
                         <div className="text-xs text-default-400 mb-3">
-                          {formatFileSize(file.size)} • {file.mimetype.split('/')[1].toUpperCase()}
+                          {formatFileSize(file.size)} • {typeof file.mimetype === "string" && file.mimetype.includes('/')
+                            ? file.mimetype.split('/')[1].toUpperCase()
+                            : "UNKNOWN"}
                         </div>
 
                         <div className="flex justify-between">
                           <a
-                            href={file.url}
+                            href={`${baseUrl}/${file.url}`}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="text-xs text-primary flex items-center gap-1"
@@ -171,16 +175,16 @@ export const FileManager: React.FC = () => {
 };
 
 // Helper function to get appropriate icon based on file type
-function getFileIcon(mimetype: string): string {
-  if (mimetype.startsWith("image/")) {
+function getFileIcon(mimetype: string | undefined): string {
+  if (typeof mimetype === "string" && mimetype.startsWith("image/")) {
     return "lucide:image";
   } else if (mimetype === "application/pdf") {
     return "lucide:file-text";
-  } else if (mimetype.includes("spreadsheet") || mimetype.includes("excel")) {
+  } else if (typeof mimetype === "string" && (mimetype.includes("spreadsheet") || mimetype.includes("excel"))) {
     return "lucide:file-spreadsheet";
-  } else if (mimetype.includes("word") || mimetype.includes("document")) {
+  } else if (typeof mimetype === "string" && (mimetype.includes("word") || mimetype.includes("document"))) {
     return "lucide:file-text";
-  } else if (mimetype.includes("presentation") || mimetype.includes("powerpoint")) {
+  } else if (typeof mimetype === "string" && (mimetype.includes("presentation") || mimetype.includes("powerpoint"))) {
     return "lucide:file-presentation";
   } else {
     return "lucide:file";
