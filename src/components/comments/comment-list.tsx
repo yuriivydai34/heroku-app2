@@ -11,8 +11,8 @@ import {
 } from "@heroui/react";
 import { Icon } from "@iconify/react";
 import { format } from "date-fns";
-import { Comment } from "../types";
-import { useCommentContext } from "../context/comment-context";
+import { Comment } from "../../types";
+import { useCommentContext } from "../../context/comment-context";
 import { useUserContext } from "@/context/user-context";
 
 interface CommentListProps {

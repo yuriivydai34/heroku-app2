@@ -15,10 +15,10 @@ import {
   Checkbox
 } from "@heroui/react";
 import { Icon } from "@iconify/react";
-import { Comment, UploadedFile } from "../types";
-import { useCommentContext } from "../context/comment-context";
-import { useFileContext } from "../context/file-context";
-import { FileUploader } from "./file-uploader";
+import { Comment, UploadedFile } from "../../types";
+import { useCommentContext } from "../../context/comment-context";
+import { useFileContext } from "../../context/file-context";
+import { FileUploader } from "../file-uploader";
 
 interface CommentFormProps {
   taskId: string;

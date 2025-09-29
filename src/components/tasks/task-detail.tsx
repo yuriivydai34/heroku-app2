@@ -4,8 +4,8 @@ import { Icon } from "@iconify/react";
 import { Task, UserData } from "@/types";
 import { format } from "date-fns";
 import { CommentProvider } from "@/context/comment-context";
-import { CommentForm } from "../comment-form";
-import { CommentList } from "../comment-list";
+import { CommentForm } from "@/components/comments/comment-form";
+import { CommentList } from "@/components/comments/comment-list";
 import { useUserContext } from "@/context/user-context";
 
 interface TaskDetailProps {
