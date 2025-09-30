@@ -1,36 +1,29 @@
-import { he } from "date-fns/locale";
-import { Message, ChatRoom, UserStatus } from "../types";
-import userService from "./user.service";
+import { Message, ChatRoom, UserStatus, UserData } from "../types";
 import authService from "./auth.service";
+import userService from "./user.service";
 
 const baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:3000";
 
-const users = await userService.getUsers({});
-
-const rooms = await fetch(`${baseUrl}/chat-room`).then(res => res.json()) as ChatRoom[];
-
-// Generate direct message rooms for each user pair
-users.forEach((user, i) => {
-  users.slice(i + 1).forEach(otherUser => {
-    const dmRoomId = `dm-${user.id}-${otherUser.id}`;
-    rooms.push({
-      id: dmRoomId,
-      name: `${user.UserProfile?.name} & ${otherUser.UserProfile?.name}`,
-      createdBy: user.id,
-      createdAt: new Date(Date.now() - 3600000 * 100).toISOString(),
-      members: [user.id, otherUser.id],
-      isDirectMessage: true
-    });
-  });
-});
-
-let userStatuses: UserStatus[] = users.map(user => ({
-  userId: user.id,
-  status: Math.random() > 0.3 ? 'online' : 'offline',
-  lastSeen: new Date().toISOString()
-}));
+let userStatuses: UserStatus[] = [];
+let rooms: ChatRoom[] = [];
 
 export const ChatService = {
+  generateDirectRooms: (users: UserData[]): ChatRoom[] => {
+    users.forEach((user, i) => {
+      users.slice(i + 1).forEach(otherUser => {
+        const dmRoomId = `dm-${user.id}-${otherUser.id}`;
+        rooms.push({
+          id: dmRoomId,
+          name: `${user.UserProfile?.name} & ${otherUser.UserProfile?.name}`,
+          createdBy: user.id,
+          createdAt: new Date(Date.now() - 3600000 * 100).toISOString(),
+          members: [user.id, otherUser.id],
+          isDirectMessage: true
+        });
+      });
+    });
+    return rooms;
+  },
   // Get messages for a specific room or direct conversation
   getMessages: async (roomId?: string, userId?: number, otherUserId?: number): Promise<Message[]> => {
     const response = await fetch(`${baseUrl}/message/${roomId ? `room/${roomId}` : `users/${userId}/${otherUserId}`}`, {
@@ -104,12 +97,14 @@ export const ChatService = {
   },
 
   // Get user statuses
-  getUserStatuses: (): Promise<UserStatus[]> => {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve([...userStatuses]);
-      }, 200);
-    });
+  getUserStatuses: async (): Promise<UserStatus[]> => {
+    const response = await userService.getUsers({});
+    userStatuses = response.map(user => ({
+      userId: user.id,
+      status: Math.random() > 0.3 ? 'online' : 'offline',
+      lastSeen: new Date().toISOString()
+    }));
+    return userStatuses;
   },
 
   // Update user status

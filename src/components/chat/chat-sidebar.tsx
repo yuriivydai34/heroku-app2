@@ -19,7 +19,7 @@ import {
 import { Icon } from "@iconify/react";
 import { useChatContext } from "@/context/chat-context";
 import { useUserContext } from "@/context/user-context";
-import { ChatRoom } from "@/types";
+import { ChatService } from "@/services/chat-service";
 
 export const ChatSidebar: React.FC = () => {
   const {
@@ -35,6 +35,7 @@ export const ChatSidebar: React.FC = () => {
   } = useChatContext();
 
   const { users } = useUserContext();
+  const directRooms = ChatService.generateDirectRooms(users);
 
   const [searchQuery, setSearchQuery] = React.useState("");
   const [selectedTab, setSelectedTab] = React.useState("rooms");
