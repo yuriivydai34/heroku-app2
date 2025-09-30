@@ -256,9 +256,9 @@ export const TaskForm: React.FC<TaskFormProps> = ({ task, onClose }) => {
           <p className="text-default-400 text-sm">No files attached</p>
         ) : (
           <div className="flex flex-wrap gap-2">
-            {selectedFiles.map((file) => (
+            {selectedFiles.map((file, idx) => (
               <Chip
-                key={file.id}
+                key={idx}
                 onClose={() => removeSelectedFile(file)}
                 variant="flat"
                 color="default"

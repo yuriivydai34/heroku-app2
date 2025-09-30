@@ -86,7 +86,8 @@ export const TaskList: React.FC = () => {
     }
   };
 
-  const getUserName = (id: number) => {
+  const getUserName = (id?: number) => {
+    if (typeof id !== "number") return "Unknown";
     const user = users.find(u => u.id === id);
     return user ? user.UserProfile?.name : `User #${id}`;
   };
