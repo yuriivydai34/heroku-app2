@@ -98,7 +98,7 @@ export const NavbarComponent: React.FC<NavbarComponentProps> = ({ onLogout, onOp
                 className="transition-transform"
                 color="primary"
                 size="sm"
-                src="https://img.heroui.chat/image/avatar?w=40&h=40&u=1"
+                src={profile?.avatarUrl}
               />
             </DropdownTrigger>
             <DropdownMenu aria-label="Profile Actions" variant="flat">
