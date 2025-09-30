@@ -16,6 +16,7 @@ import {
 } from "@heroui/react";
 import { Icon } from "@iconify/react";
 import { LanguageSwitcher } from "./language-switcher";
+import { useUserContext } from "@/context/user-context";
 
 interface NavbarComponentProps {
   onLogout: () => void;
@@ -57,6 +58,8 @@ const ThemeSwitcher: React.FC = () => {
 };
 
 export const NavbarComponent: React.FC<NavbarComponentProps> = ({ onLogout, onOpenProfile }) => {
+  const { profile } = useUserContext();
+
   return (
     <Navbar maxWidth="xl" isBordered>
       <NavbarBrand>
@@ -101,19 +104,7 @@ export const NavbarComponent: React.FC<NavbarComponentProps> = ({ onLogout, onOp
             <DropdownMenu aria-label="Profile Actions" variant="flat">
               <DropdownItem key="profile" className="h-14 gap-2" onClick={onOpenProfile}>
                 <p className="font-semibold">Signed in as</p>
-                <p className="font-semibold">admin@company.com</p>
-              </DropdownItem>
-              <DropdownItem key="settings" startContent={<Icon icon="lucide:settings" />}>
-                Settings
-              </DropdownItem>
-              <DropdownItem key="team" startContent={<Icon icon="lucide:users" />}>
-                Team
-              </DropdownItem>
-              <DropdownItem key="analytics" startContent={<Icon icon="lucide:bar-chart" />}>
-                Analytics
-              </DropdownItem>
-              <DropdownItem key="help" startContent={<Icon icon="lucide:help-circle" />}>
-                Help & Feedback
+                <p className="font-semibold">{profile?.name}</p>
               </DropdownItem>
               <DropdownItem key="logout" color="danger" startContent={<Icon icon="lucide:log-out" />} onClick={onLogout}>
                 Log Out

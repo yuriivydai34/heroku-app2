@@ -37,20 +37,20 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen bg-background p-4 md:p-8">
-      {/* Navbar */}
-      <NavbarComponent onLogout={handleLogout} onOpenProfile={onProfileOpenChange} />
+    <UserProvider>
+      <ChecklistProvider>
+        <FileProvider>
+          <TaskProvider>
+            <CommentProvider>
+              <ChatProvider>
+                <div className="min-h-screen bg-background p-4 md:p-8">
+                  {/* Navbar */}
+                  <NavbarComponent onLogout={handleLogout} onOpenProfile={onProfileOpenChange} />
 
-      {/* Main Content */}
-      <div className="container mx-auto max-w-6xl">
-        <h1 className="text-3xl font-semibold mb-6">{t('title')}</h1>
+                  {/* Main Content */}
+                  <div className="container mx-auto max-w-6xl">
+                    <h1 className="text-3xl font-semibold mb-6">{t('title')}</h1>
 
-        <UserProvider>
-          <ChecklistProvider>
-            <FileProvider>
-              <TaskProvider>
-                <CommentProvider>
-                  <ChatProvider>
                     <ProfileModal isOpen={isProfileOpen} onOpenChange={onProfileOpenChange} />
                     <Card className="mb-8">
                       <CardBody className="p-0">
@@ -83,13 +83,14 @@ export default function App() {
                         </Tabs>
                       </CardBody>
                     </Card>
-                  </ChatProvider>
-                </CommentProvider>
-              </TaskProvider>
-            </FileProvider>
-          </ChecklistProvider>
-        </UserProvider>
-      </div>
-    </div>
+
+                  </div>
+                </div>
+              </ChatProvider>
+            </CommentProvider>
+          </TaskProvider>
+        </FileProvider>
+      </ChecklistProvider>
+    </UserProvider>
   );
 }
