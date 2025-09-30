@@ -1,7 +1,7 @@
 'use client';
 
 import React from "react";
-import { Tabs, Tab, Card, CardBody } from "@heroui/react";
+import { Tabs, Tab, Card, CardBody, useDisclosure } from "@heroui/react";
 import { TaskList } from "@/components/tasks/task-list";
 import { FileManager } from "@/components/file-manager";
 import { TaskProvider } from "@/context/task-context";
@@ -15,11 +15,16 @@ import { useRouter } from "next/navigation";
 import { useTranslations } from 'next-intl';
 import { ChecklistProvider } from "@/context/checklist-context";
 import { UserProvider } from "@/context/user-context";
+import ProfileModal from "@/components/profile-modal";
 
 export default function App() {
   const router = useRouter();
 
   const [selected, setSelected] = React.useState("tasks");
+  const {
+    isOpen: isProfileOpen,
+    onOpenChange: onProfileOpenChange
+  } = useDisclosure();
 
   const t = useTranslations('DashboardPage');
 
@@ -34,7 +39,7 @@ export default function App() {
   return (
     <div className="min-h-screen bg-background p-4 md:p-8">
       {/* Navbar */}
-      <NavbarComponent onLogout={handleLogout} />
+      <NavbarComponent onLogout={handleLogout} onOpenProfile={onProfileOpenChange} />
 
       {/* Main Content */}
       <div className="container mx-auto max-w-6xl">
@@ -46,6 +51,7 @@ export default function App() {
               <TaskProvider>
                 <CommentProvider>
                   <ChatProvider>
+                    <ProfileModal isOpen={isProfileOpen} onOpenChange={onProfileOpenChange} />
                     <Card className="mb-8">
                       <CardBody className="p-0">
                         <Tabs
