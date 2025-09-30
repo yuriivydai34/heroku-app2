@@ -99,8 +99,10 @@ export const NavbarComponent: React.FC<NavbarComponentProps> = ({ onLogout }) =>
             </DropdownTrigger>
             <DropdownMenu aria-label="Profile Actions" variant="flat">
               <DropdownItem key="profile" className="h-14 gap-2">
-                <p className="font-semibold">Signed in as</p>
-                <p className="font-semibold">admin@company.com</p>
+                <a href="/profile">
+                  <p className="font-semibold">Signed in as</p>
+                  <p className="font-semibold">admin@company.com</p>
+                </a>
               </DropdownItem>
               <DropdownItem key="settings" startContent={<Icon icon="lucide:settings" />}>
                 Settings
