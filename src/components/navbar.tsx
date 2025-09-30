@@ -73,16 +73,6 @@ export const NavbarComponent: React.FC<NavbarComponentProps> = ({ onLogout, onOp
             Dashboard
           </Link>
         </NavbarItem>
-        <NavbarItem>
-          <Link color="foreground" href="#">
-            Calendar
-          </Link>
-        </NavbarItem>
-        <NavbarItem>
-          <Link color="foreground" href="#">
-            Reports
-          </Link>
-        </NavbarItem>
       </NavbarContent>
 
       <NavbarContent justify="end">
