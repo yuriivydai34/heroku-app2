@@ -7,6 +7,7 @@ interface UserContextType {
   loading: boolean;
   error: string | null;
   profile?: UserProfileData | null;
+  updateProfile?: (data: Partial<UserProfileData>) => Promise<UserProfileData>;
 }
 
 const UserContext = React.createContext<UserContextType>({
@@ -14,6 +15,7 @@ const UserContext = React.createContext<UserContextType>({
   loading: false,
   error: null,
   profile: {},
+  updateProfile: async () => ({} as UserProfileData),
 });
 
 export const useUserContext = () => React.useContext(UserContext);
@@ -50,6 +52,21 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   }, []);
 
+  const updateProfile = React.useCallback(async (data: Partial<UserProfileData>) => {
+    setLoading(true);
+    setError(null);
+    try {
+      const updatedProfile = await userService.updateProfile(data);
+      setProfile(updatedProfile);
+      return updatedProfile;
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to update profile");
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
   React.useEffect(() => {
     fetchProfile();
     fetchUsers();
@@ -60,6 +77,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
     loading,
     error,
     profile,
+    updateProfile,
   };
 
   return (
