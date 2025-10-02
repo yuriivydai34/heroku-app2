@@ -327,7 +327,7 @@ export const TaskForm: React.FC<TaskFormProps> = ({ task, onClose }) => {
 
       <Divider />
 
-      {/* <TaskChecklists /> */}
+      <TaskChecklists />
 
       <div>
         <div className="flex justify-between items-center mb-2">

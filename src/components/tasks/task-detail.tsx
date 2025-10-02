@@ -7,6 +7,7 @@ import { CommentProvider } from "@/context/comment-context";
 import { CommentForm } from "@/components/comments/comment-form";
 import { CommentList } from "@/components/comments/comment-list";
 import { useUserContext } from "@/context/user-context";
+import { TaskChecklists } from "../checklist/task-checklists";
 
 const baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:3000";
 
@@ -129,6 +130,10 @@ export const TaskDetail: React.FC<TaskDetailProps> = ({ task }) => {
         )}
       </div>
       
+      <Divider />
+
+      <TaskChecklists />
+
       <Divider />
       
       <div>
