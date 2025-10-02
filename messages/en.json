@@ -330,7 +330,8 @@
     "file": "file",
     "s": "s",
     "cancel": "Cancel",
-    "updateTask": "Update Task"
+    "updateTask": "Update Task",
+    "createTask": "Create Task"
   },
   "FileManager": {
     "title": "File Manager",

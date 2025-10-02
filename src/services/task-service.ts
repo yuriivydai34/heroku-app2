@@ -1,12 +1,18 @@
-import { Task } from "../types";
+import { Task, TaskSort } from "@/types";
 import authService from "./auth.service";
 
 const baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3000';
 
 export const TaskService = {
   // Get all tasks
-  getAllTasks: async (): Promise<Task[]> => {
-    const response = await fetch(`${baseUrl}/tasks`, {
+  getAllTasks: async (params: { sort?: TaskSort }): Promise<Task[]> => {
+    const url = new URL(`${baseUrl}/tasks`);
+
+    if (params.sort) {
+      url.searchParams.append('sort', JSON.stringify(params.sort));
+    }
+
+    const response = await fetch(url.toString(), {
       method: 'GET',
       headers: authService.getAuthHeaders(),
     });

@@ -126,3 +126,8 @@ export interface TaskTemplateData {
   description: string;
   createdAt?: string;
 }
+
+export interface TaskSort {
+  sortBy: string;
+  sortOrder: 'asc' | 'desc';
+}

@@ -12,6 +12,7 @@ interface TaskContextType {
   updateTask: (task: Task) => Promise<Task>;
   deleteTask: (id: string) => Promise<boolean>;
   selectTask: (task: Task | null) => void;
+  handleSort: (column: string) => void;
 }
 
 const TaskContext = React.createContext<TaskContextType>({
@@ -23,7 +24,8 @@ const TaskContext = React.createContext<TaskContextType>({
   createTask: async () => ({} as Task),
   updateTask: async () => ({} as Task),
   deleteTask: async () => false,
-  selectTask: () => {}
+  selectTask: () => {},
+  handleSort: () => {},
 });
 
 export const useTaskContext = () => React.useContext(TaskContext);
@@ -34,11 +36,11 @@ export const TaskProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [error, setError] = React.useState<string | null>(null);
   const [selectedTask, setSelectedTask] = React.useState<Task | null>(null);
 
-  const fetchTasks = React.useCallback(async () => {
+  const fetchTasks = React.useCallback(async ({ sortBy, sortOrder }: { sortBy?: string; sortOrder?: 'asc' | 'desc' }) => {
     setLoading(true);
     setError(null);
     try {
-      const fetchedTasks = await TaskService.getAllTasks();
+      const fetchedTasks = await TaskService.getAllTasks({ sort: { sortBy: sortBy ?? "id", sortOrder: sortOrder ?? "asc" } });
       setTasks(fetchedTasks);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to fetch tasks");
@@ -104,8 +106,14 @@ export const TaskProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setSelectedTask(task);
   }, []);
 
+  async function handleSort(column: string): Promise<void> {
+    // Implement sorting logic here
+    console.log(`Sorting by ${column}`);
+    await fetchTasks({ sortBy: column, sortOrder: 'asc' });
+  }
+
   React.useEffect(() => {
-    fetchTasks();
+    fetchTasks({});
   }, [fetchTasks]);
 
   const value = {
@@ -117,7 +125,8 @@ export const TaskProvider: React.FC<{ children: React.ReactNode }> = ({ children
     createTask,
     updateTask,
     deleteTask,
-    selectTask
+    selectTask,
+    handleSort,
   };
 
   return (
