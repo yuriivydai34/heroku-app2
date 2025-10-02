@@ -18,6 +18,8 @@ import { UserProvider } from "@/context/user-context";
 import ProfileModal from "@/components/profile-modal";
 import { NotificationProvider } from "@/context/notification-context";
 import NotificationModal from "@/components/notification-modal";
+import { TaskTemplateList } from "@/components/task-templates/task-template-list";
+import { TaskTemplateProvider } from "@/context/task-template-context";
 
 export default function App() {
   const router = useRouter();
@@ -48,6 +50,7 @@ export default function App() {
       <NotificationProvider>
       <ChecklistProvider>
         <FileProvider>
+          <TaskTemplateProvider>
           <TaskProvider>
             <CommentProvider>
               <ChatProvider>
@@ -79,6 +82,11 @@ export default function App() {
                               <TaskList />
                             </div>
                           </Tab>
+                          <Tab key="templates" title="Templates">
+                            <div className="p-4">
+                              <TaskTemplateList />
+                            </div>
+                          </Tab>
                           <Tab key="files" title="File Manager">
                             <div className="p-4">
                               <FileManager />
@@ -98,6 +106,7 @@ export default function App() {
               </ChatProvider>
             </CommentProvider>
           </TaskProvider>
+          </TaskTemplateProvider>
         </FileProvider>
       </ChecklistProvider>
       </NotificationProvider>

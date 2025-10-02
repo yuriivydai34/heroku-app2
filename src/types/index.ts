@@ -118,3 +118,10 @@ export interface Notification {
   read: boolean;
   createdAt: string;
 }
+
+export interface TaskTemplateData {
+  id?: number;
+  title: string;
+  description: string;
+  createdAt?: string;
+}
