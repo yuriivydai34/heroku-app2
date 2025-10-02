@@ -52,7 +52,7 @@ export const TaskForm: React.FC<TaskFormProps> = ({ task, onClose }) => {
     active: true,
     deadline: "",
     usersIdAssociate: [],
-    userIdSupervisor: 0,
+    userIdSupervisor: 0, // <-- use 0 as default number
     files: []
   });
 
@@ -85,8 +85,16 @@ export const TaskForm: React.FC<TaskFormProps> = ({ task, onClose }) => {
       newErrors.title = "Title is required";
     }
 
+    if (!formData.deadline) {
+      newErrors.deadline = "Deadline is required";
+    }
+
     if (!formData.userIdSupervisor) {
       newErrors.userIdSupervisor = "Supervisor is required";
+    }
+
+    if (!formData.usersIdAssociate || formData.usersIdAssociate.length === 0) {
+      newErrors.usersIdAssociate = "At least one associate is required";
     }
 
     setErrors(newErrors);
@@ -127,6 +135,15 @@ export const TaskForm: React.FC<TaskFormProps> = ({ task, onClose }) => {
   const handleAssociatesChange = (values: string[]) => {
     const userIds = values.map(v => parseInt(v));
     setFormData(prev => ({ ...prev, usersIdAssociate: userIds }));
+
+    // Clear error if it exists
+    if (errors.usersIdAssociates) {
+      setErrors(prev => {
+        const newErrors = { ...prev };
+        delete newErrors.usersIdAssociates;
+        return newErrors;
+      });
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -142,6 +159,7 @@ export const TaskForm: React.FC<TaskFormProps> = ({ task, onClose }) => {
       // Add selected files to the task
       const taskWithFiles: Task = {
         ...formData,
+        userIdSupervisor: Number(formData.userIdSupervisor),
         files: selectedFiles
       };
 
@@ -190,6 +208,9 @@ export const TaskForm: React.FC<TaskFormProps> = ({ task, onClose }) => {
           type="date"
           value={formData.deadline || ""}
           onChange={handleInputChange}
+          isRequired
+          isInvalid={!!errors.deadline}
+          errorMessage={errors.deadline}
         />
 
         <div className="flex items-center h-full pt-6">
@@ -210,6 +231,12 @@ export const TaskForm: React.FC<TaskFormProps> = ({ task, onClose }) => {
           isRequired
           isInvalid={!!errors.userIdSupervisor}
           errorMessage={errors.userIdSupervisor}
+          renderValue={() => {
+            const selectedUser = users.find(u => u.id === Number(formData.userIdSupervisor));
+            return selectedUser
+              ? `${selectedUser.UserProfile?.name} (${selectedUser.UserProfile?.role})`
+              : "Select supervisor";
+          }}
         >
           {users.map((user) => (
             <SelectItem key={user.id.toString()} value={user.id.toString()}>
@@ -221,17 +248,35 @@ export const TaskForm: React.FC<TaskFormProps> = ({ task, onClose }) => {
 
       <div>
         <p className="text-sm font-medium mb-2">Associates</p>
-        <CheckboxGroup
-          value={formData.usersIdAssociate.map(id => id.toString())}
-          onValueChange={handleAssociatesChange}
-          className="gap-1"
+        <Select
+          label="Associates"
+          selectionMode="multiple"
+          selectedKeys={formData.usersIdAssociate.map(id => id.toString())}
+          isRequired
+          isInvalid={!!errors.usersIdAssociates}
+          errorMessage={errors.usersIdAssociates}
+          onSelectionChange={(keys) => {
+            // keys can be a Set or array depending on your Select implementation
+            const ids = Array.from(keys as Set<string>).map(id => parseInt(id));
+            setFormData(prev => ({ ...prev, usersIdAssociate: ids }));
+          }}
+          className="mb-4"
+          placeholder="Select associates"
+          isMultiline
+          renderValue={(selected) => {
+            // Show selected user names in the field
+            const selectedUsers = users.filter(u => formData.usersIdAssociate.includes(u.id));
+            return selectedUsers.length
+              ? selectedUsers.map(u => u.UserProfile?.name).join(", ")
+              : "Select associates";
+          }}
         >
           {users.map((user) => (
-            <Checkbox key={user.id} value={user.id.toString()}>
+            <SelectItem key={user.id.toString()} value={user.id.toString()}>
               {user.UserProfile?.name}
-            </Checkbox>
+            </SelectItem>
           ))}
-        </CheckboxGroup>
+        </Select>
       </div>
 
       <Divider />
