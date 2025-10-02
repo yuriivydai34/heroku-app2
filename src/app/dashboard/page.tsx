@@ -77,22 +77,22 @@ export default function App() {
                             cursor: "bg-primary",
                           }}
                         >
-                          <Tab key="tasks" title="Tasks">
+                          <Tab key="tasks" title={t("tasks")}>
                             <div className="p-4">
                               <TaskList />
                             </div>
                           </Tab>
-                          <Tab key="templates" title="Templates">
+                          <Tab key="templates" title={t("templates")}>
                             <div className="p-4">
                               <TaskTemplateList />
                             </div>
                           </Tab>
-                          <Tab key="files" title="File Manager">
+                          <Tab key="files" title={t("files")}>
                             <div className="p-4">
                               <FileManager />
                             </div>
                           </Tab>
-                          <Tab key="chat" title="Chat">
+                          <Tab key="chat" title={t("chat")}>
                             <div className="p-0">
                               <ChatPage />
                             </div>

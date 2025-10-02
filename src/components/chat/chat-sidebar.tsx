@@ -140,8 +140,8 @@ export const ChatSidebar: React.FC = () => {
           tab: "h-10",
         }}
       >
-        <Tab key="rooms" title="Rooms" />
-        <Tab key="direct" title="Direct" />
+        <Tab key="rooms" title={t("rooms")} />
+        <Tab key="direct" title={t("direct")} />
       </Tabs>
       
       <div className="flex-grow overflow-y-auto scrollbar-hidden">

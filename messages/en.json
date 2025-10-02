@@ -1,7 +1,11 @@
 {
   "DashboardPage": {
     "title": "Task Dashboard",
-    "description": "Manage and track your tasks"
+    "description": "Manage and track your tasks",
+    "tasks": "Tasks",
+    "templates": "Templates",
+    "files": "Files",
+    "chat": "Chat"
   },
   "RegisterPage": {
     "title": "Register",
@@ -375,6 +379,8 @@
     "selectMembers": "Select Members",
     "cancel": "Cancel",
     "createRoom": "Create Room",
-    "members": "members"
+    "members": "Members",
+    "rooms": "Rooms",
+    "direct": "Direct"
   }
 }
