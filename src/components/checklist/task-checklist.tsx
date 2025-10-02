@@ -1,5 +1,6 @@
 import { ChecklistItem } from "@/types";
 import { Button } from "@heroui/react";
+import { useTranslations } from 'next-intl';
 
 type TaskChecklistProps = {
   checklistItems: ChecklistItem[];
@@ -7,6 +8,8 @@ type TaskChecklistProps = {
 };
 
 export const TaskChecklist: React.FC<TaskChecklistProps> = ({ checklistItems, setChecklistItems }) => {
+  const t = useTranslations('TaskChecklists');
+
   const addChecklist = () => {
     setChecklistItems([
       ...checklistItems,
@@ -63,7 +66,7 @@ export const TaskChecklist: React.FC<TaskChecklistProps> = ({ checklistItems, se
                   ? deleteItem(item.id)
                   : setChecklistItems(checklistItems.filter((_, i) => i !== idx))
               }
-              title="Delete"
+              title={t('deleteButton')}
             >
               🗑️
             </Button>
@@ -74,9 +77,9 @@ export const TaskChecklist: React.FC<TaskChecklistProps> = ({ checklistItems, se
         variant="light"
         color="default"
         onPress={addChecklist}
-        title="Add Checklist Item"
+        title={t('addChecklistItem')}
       >
-        Add Checklist Item
+        {t('addChecklistItem')}
       </Button>
     </div>
   );

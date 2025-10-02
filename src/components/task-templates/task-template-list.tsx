@@ -21,6 +21,7 @@ import { Icon } from "@iconify/react";
 import { useTaskTemplateContext } from "@/context/task-template-context";
 import { TaskTemplateForm } from "./task-template-form";
 import { TaskTemplateDetail } from "./task-template-detail";
+import { useTranslations } from "next-intl";
 
 export const TaskTemplateList: React.FC = () => {
   const { 
@@ -31,6 +32,8 @@ export const TaskTemplateList: React.FC = () => {
     selectTaskTemplate,
     deleteTaskTemplate
   } = useTaskTemplateContext();
+
+  const t = useTranslations('TaskTemplates');
 
   const { 
     isOpen: isCreateOpen, 
@@ -77,7 +80,7 @@ export const TaskTemplateList: React.FC = () => {
         await deleteTaskTemplate(selectedTemplate.id);
         onDeleteOpenChange(false);
       } catch (error) {
-        console.error("Failed to delete task template:", error);
+        console.error(t('deleteFailed'), error);
       }
     }
   };
@@ -85,7 +88,7 @@ export const TaskTemplateList: React.FC = () => {
   if (error) {
     return (
       <div className="p-4 bg-danger-50 text-danger rounded-medium">
-        Error: {error}
+        {t('error')}: {error}
       </div>
     );
   }
@@ -93,13 +96,13 @@ export const TaskTemplateList: React.FC = () => {
   return (
     <div>
       <div className="flex justify-between items-center mb-4">
-        <h2 className="text-xl font-semibold">Task Templates</h2>
+        <h2 className="text-xl font-semibold">{t('viewTemplateTitle')}</h2>
         <Button 
           color="primary" 
           onPress={onCreateOpen}
           startContent={<Icon icon="lucide:plus" />}
         >
-          Create Task Template
+          {t('createTemplateTitle')}
         </Button>
       </div>
 
@@ -109,7 +112,7 @@ export const TaskTemplateList: React.FC = () => {
         </div>
       ) : (
         <Table 
-          aria-label="Task templates table"
+          aria-label={t('templateTableAriaLabel')}
           removeWrapper
           classNames={{
             base: "border border-default-200 rounded-medium overflow-hidden",
@@ -117,11 +120,11 @@ export const TaskTemplateList: React.FC = () => {
           }}
         >
           <TableHeader>
-            <TableColumn>TITLE</TableColumn>
-            <TableColumn>ACTIONS</TableColumn>
+            <TableColumn>{t('titleLabel')}</TableColumn>
+            <TableColumn>{t('actionsLabel')}</TableColumn>
           </TableHeader>
           <TableBody 
-            emptyContent="No templates found"
+            emptyContent={t('noTemplates')}
             isLoading={loading && templates.length > 0}
             loadingContent={<Spinner />}
           >
@@ -176,7 +179,7 @@ export const TaskTemplateList: React.FC = () => {
         <ModalContent>
           {(onClose) => (
             <>
-              <ModalHeader>Create New Task Template</ModalHeader>
+              <ModalHeader>{t('createTemplateTitle')}</ModalHeader>
               <ModalBody>
                 <TaskTemplateForm onClose={onClose} />
               </ModalBody>
@@ -190,7 +193,7 @@ export const TaskTemplateList: React.FC = () => {
         <ModalContent>
           {(onClose) => (
             <>
-              <ModalHeader>Edit Task Template</ModalHeader>
+              <ModalHeader>{t('editTemplateTitle')}</ModalHeader>
               <ModalBody>
                 <TaskTemplateForm taskTemplate={selectedTemplate} onClose={onClose} />
               </ModalBody>
@@ -204,16 +207,16 @@ export const TaskTemplateList: React.FC = () => {
         <ModalContent>
           {(onClose) => (
             <>
-              <ModalHeader>Task Template Details</ModalHeader>
+              <ModalHeader>{t('viewTemplateTitle')}</ModalHeader>
               <ModalBody>
                 {selectedTemplate && <TaskTemplateDetail taskTemplate={selectedTemplate} />}
               </ModalBody>
               <ModalFooter>
-                <Button onPress={onClose}>Close</Button>
+                <Button onPress={onClose}>{t('closeButton')}</Button>
                 <Button color="primary" onPress={() => {
                   onClose();
                   onEditOpen();
-                }}>Edit</Button>
+                }}>{t('editButton')}</Button>
               </ModalFooter>
             </>
           )}
@@ -225,13 +228,13 @@ export const TaskTemplateList: React.FC = () => {
         <ModalContent>
           {(onClose) => (
             <>
-              <ModalHeader className="text-danger">Confirm Deletion</ModalHeader>
+              <ModalHeader className="text-danger">{t('deleteConfirm')}</ModalHeader>
               <ModalBody>
-                Are you sure you want to delete the task template "{selectedTemplate?.title}"? This action cannot be undone.
+                {t('deleteConfirmationMessage', { title: selectedTemplate?.title })}
               </ModalBody>
               <ModalFooter>
-                <Button variant="flat" onPress={onClose}>Cancel</Button>
-                <Button color="danger" onPress={confirmDelete}>Delete</Button>
+                <Button variant="flat" onPress={onClose}>{t('cancelButton')}</Button>
+                <Button color="danger" onPress={confirmDelete}>{t('deleteButton')}</Button>
               </ModalFooter>
             </>
           )}

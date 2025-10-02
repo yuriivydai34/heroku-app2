@@ -1,3 +1,5 @@
+'use client';
+
 import React from "react";
 import {
   Textarea,
@@ -19,6 +21,7 @@ import { Comment, UploadedFile } from "../../types";
 import { useCommentContext } from "../../context/comment-context";
 import { useFileContext } from "../../context/file-context";
 import { FileUploader } from "../file-uploader";
+import { useTranslations } from "next-intl";
 
 interface CommentFormProps {
   taskId: string;
@@ -31,6 +34,8 @@ export const CommentForm: React.FC<CommentFormProps> = ({ taskId, userId, onComm
   const { files, selectedFiles, setSelectedFiles, clearSelectedFiles, toggleFileSelection } = useFileContext();
   const [text, setText] = React.useState("");
   const [loading, setLoading] = React.useState(false);
+
+  const t = useTranslations('CommentForm');
 
   const {
     isOpen: isFileModalOpen,
@@ -67,7 +72,7 @@ export const CommentForm: React.FC<CommentFormProps> = ({ taskId, userId, onComm
         onCommentAdded();
       }
     } catch (error) {
-      console.error("Error adding comment:", error);
+      console.error(t('error'), error);
     } finally {
       setLoading(false);
     }
@@ -81,8 +86,8 @@ export const CommentForm: React.FC<CommentFormProps> = ({ taskId, userId, onComm
     <div className="mb-6">
       <form onSubmit={handleSubmit}>
         <Textarea
-          label="Add a comment"
-          placeholder="Type your comment here..."
+          label={t('addCommentPlaceholder')}
+          placeholder={t('addCommentPlaceholder')}
           value={text}
           onChange={handleTextChange}
           minRows={2}
@@ -91,7 +96,7 @@ export const CommentForm: React.FC<CommentFormProps> = ({ taskId, userId, onComm
 
         {selectedFiles.length > 0 && (
           <div className="mb-3">
-            <p className="text-sm font-medium mb-2">Attached Files ({selectedFiles.length})</p>
+            <p className="text-sm font-medium mb-2">{t('attachedFiles')} ({selectedFiles.length})</p>
             <div className="flex flex-wrap gap-2">
               {selectedFiles.map((file) => (
                 <Chip
@@ -125,7 +130,7 @@ export const CommentForm: React.FC<CommentFormProps> = ({ taskId, userId, onComm
             isLoading={loading}
             isDisabled={!text.trim()}
           >
-            Add Comment
+            {t('submitButton')}
           </Button>
         </div>
       </form>
@@ -135,7 +140,7 @@ export const CommentForm: React.FC<CommentFormProps> = ({ taskId, userId, onComm
         <ModalContent>
           {(onClose) => (
             <>
-              <ModalHeader>Attach Files</ModalHeader>
+              <ModalHeader>{t('fileUploadTitle')}</ModalHeader>
               <ModalBody>
                 <div className="space-y-6">
                   <FileUploader />
@@ -143,12 +148,12 @@ export const CommentForm: React.FC<CommentFormProps> = ({ taskId, userId, onComm
                   <Divider />
 
                   <div>
-                    <h3 className="text-lg font-medium mb-4">Select from Existing Files</h3>
+                    <h3 className="text-lg font-medium mb-4">{t('fileUploadDescription')}</h3>
                     {files.length === 0 ? (
                       <div className="text-center p-8 bg-default-50 rounded-medium">
                         <Icon icon="lucide:file" className="mx-auto mb-2 text-default-400" width={32} height={32} />
-                        <p className="text-default-600">No files available</p>
-                        <p className="text-default-400 text-sm">Upload files using the form above</p>
+                        <p className="text-default-600">{t('noFilesAvailable')}</p>
+                        <p className="text-default-400 text-sm">{t('uploadFiles')}</p>
                       </div>
                     ) : (
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -199,10 +204,10 @@ export const CommentForm: React.FC<CommentFormProps> = ({ taskId, userId, onComm
               <ModalFooter>
                 <div className="flex justify-between w-full">
                   <div className="text-sm">
-                    {selectedFiles.length} file{selectedFiles.length !== 1 ? 's' : ''} selected
+                    {selectedFiles.length} {t('file')} {selectedFiles.length !== 1 ? t('s') : ''} {t('selected')}
                   </div>
                   <Button variant="flat" onPress={onClose}>
-                    Done
+                    {t('done')}
                   </Button>
                 </div>
               </ModalFooter>

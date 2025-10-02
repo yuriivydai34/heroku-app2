@@ -70,7 +70,7 @@ export const NavbarComponent: React.FC<NavbarComponentProps> = ({ onLogout, onOp
     <Navbar maxWidth="xl" isBordered>
       <NavbarBrand>
         <Icon icon="lucide:check-square" className="text-primary text-2xl mr-2" />
-        <p className="font-bold text-inherit">TaskManager</p>
+        <p className="font-bold text-inherit">{t('title')}</p>
       </NavbarBrand>
 
       <NavbarContent className="hidden sm:flex gap-4" justify="center">

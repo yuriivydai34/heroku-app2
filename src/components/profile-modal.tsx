@@ -14,6 +14,8 @@ const ProfileModal: React.FC<ProfileModalProps> = ({ isOpen, onOpenChange }) => 
   const [isEditing, setIsEditing] = useState(false);
   const [editData, setEditData] = useState(profile || {});
 
+  const t = useTranslations('ProfileModal');
+
   // Update editData when profile changes or modal opens
   useEffect(() => {
     if (profile) setEditData(profile);
@@ -33,53 +35,53 @@ const ProfileModal: React.FC<ProfileModalProps> = ({ isOpen, onOpenChange }) => 
   return (
     <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="md">
       <ModalContent>
-        <ModalHeader>Profile</ModalHeader>
+        <ModalHeader>{t('title')}</ModalHeader>
         <ModalBody>
           {!isEditing ? (
             <>
-              <p>User profile details and settings.</p>
+              <p>{t('userProfileDetails')}</p>
               {profile ? (
                 <Card>
                   <CardBody>
-                    <p><strong>Name:</strong> {profile.name}</p>
-                    <p><strong>Email:</strong> {profile.email}</p>
+                    <p><strong>{t('nameLabel')}:</strong> {profile.name}</p>
+                    <p><strong>{t('emailLabel')}:</strong> {profile.email}</p>
                     <img
                       src={profile.avatarUrl}
                       alt="Avatar"
                       className="w-20 h-20 rounded-full mb-4"
                     />
-                    <p><strong>Role:</strong> {profile.role}</p>
+                    <p><strong>{t('roleLabel')}:</strong> {profile.role}</p>
                   </CardBody>
                 </Card>
               ) : (
-                <p>No profile data available.</p>
+                <p>{t('noProfileData')}</p>
               )}
             </>
           ) : (
             <>
               <Input
-                label="Name"
+                label={t('nameLabel')}
                 name="name"
                 value={editData?.name || ""}
                 onChange={handleInputChange}
                 className="mb-4"
               />
               <Input
-                label="Email"
+                label={t('emailLabel')}
                 name="email"
                 value={editData?.email || ""}
                 onChange={handleInputChange}
                 className="mb-4"
               />
               <Input
-                label="Avatar URL"
+                label={t('avatarUrlLabel')}
                 name="avatarUrl"
                 value={editData?.avatarUrl || ""}
                 onChange={handleInputChange}
                 className="mb-4"
               />
               <Input
-                label="Role"
+                label={t('roleLabel')}
                 name="role"
                 value={editData?.role || ""}
                 onChange={handleInputChange}
@@ -92,19 +94,19 @@ const ProfileModal: React.FC<ProfileModalProps> = ({ isOpen, onOpenChange }) => 
           {!isEditing ? (
             <>
               <Button variant="light" color="primary" onPress={() => setIsEditing(true)}>
-                Edit
+                {t('editButton')}
               </Button>
               <Button variant="light" onPress={() => onOpenChange(false)}>
-                Close
+                {t('closeButton')}
               </Button>
             </>
           ) : (
             <>
               <Button color="primary" onPress={handleSave}>
-                Save
+                {t('saveButton')}
               </Button>
               <Button variant="light" onPress={() => setIsEditing(false)}>
-                Cancel
+                {t('cancelButton')}
               </Button>
             </>
           )}

@@ -7,6 +7,7 @@ import {
 } from "@heroui/react";
 import { TaskTemplateData } from "@/types";
 import { useTaskTemplateContext } from "@/context/task-template-context";
+import { useTranslations } from "next-intl";
 
 interface TaskTemplateFormProps {
   taskTemplate?: TaskTemplateData | null;
@@ -16,6 +17,8 @@ interface TaskTemplateFormProps {
 export const TaskTemplateForm: React.FC<TaskTemplateFormProps> = ({ taskTemplate, onClose }) => {
   const { createTaskTemplate, updateTaskTemplate } = useTaskTemplateContext();
   const isEditMode = !!taskTemplate;
+
+  const t = useTranslations('TaskTemplates');
 
   const [formData, setFormData] = React.useState<TaskTemplateData>({
     title: "",
@@ -39,7 +42,7 @@ export const TaskTemplateForm: React.FC<TaskTemplateFormProps> = ({ taskTemplate
     const newErrors: Record<string, string> = {};
 
     if (!formData.title.trim()) {
-      newErrors.title = "Title is required";
+      newErrors.title = t('titleRequired');
     }
 
     setErrors(newErrors);
@@ -77,7 +80,7 @@ export const TaskTemplateForm: React.FC<TaskTemplateFormProps> = ({ taskTemplate
       }
       onClose();
     } catch (error) {
-      console.error("Error saving task template:", error);
+      console.error(t('saveFailed'), error);
     } finally {
       setLoading(false);
     }
@@ -86,7 +89,7 @@ export const TaskTemplateForm: React.FC<TaskTemplateFormProps> = ({ taskTemplate
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       <Input
-        label="Title"
+        label={t('titleLabel')}
         name="title"
         value={formData.title}
         onChange={handleInputChange}
@@ -96,7 +99,7 @@ export const TaskTemplateForm: React.FC<TaskTemplateFormProps> = ({ taskTemplate
       />
 
       <Textarea
-        label="Description"
+        label={t('descriptionLabel')}
         name="description"
         value={formData.description || ""}
         onChange={handleInputChange}
@@ -107,14 +110,14 @@ export const TaskTemplateForm: React.FC<TaskTemplateFormProps> = ({ taskTemplate
 
       <div className="flex justify-end gap-2 pt-4">
         <Button variant="flat" onPress={onClose}>
-          Cancel
+          {t('cancelButton')}
         </Button>
         <Button
           color="primary"
           type="submit"
           isLoading={loading}
         >
-          {isEditMode ? "Update Task Template" : "Create Task Template"}
+          {isEditMode ? t('updateButton') : t('createButton')}
         </Button>
       </div>
     </form>

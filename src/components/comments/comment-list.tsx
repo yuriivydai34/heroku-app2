@@ -11,10 +11,9 @@ import {
 } from "@heroui/react";
 import { Icon } from "@iconify/react";
 import { format } from "date-fns";
-import { Comment } from "../../types";
-import { useCommentContext } from "../../context/comment-context";
+import { useCommentContext } from "@/context/comment-context";
 import { useUserContext } from "@/context/user-context";
-import { a } from "framer-motion/client";
+import { useTranslations } from 'next-intl';
 
 const baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:3000";
 
@@ -26,16 +25,18 @@ export const CommentList: React.FC<CommentListProps> = ({ taskId }) => {
   const { comments, loading, error, fetchCommentsByTaskId, deleteComment } = useCommentContext();
   const { users } = useUserContext();
 
+  const t = useTranslations('CommentList');
+
   React.useEffect(() => {
     fetchCommentsByTaskId(taskId);
   }, [taskId, fetchCommentsByTaskId]);
 
   const handleDelete = async (commentId: string) => {
-    if (window.confirm("Are you sure you want to delete this comment?")) {
+    if (window.confirm(t('confirmDelete'))) {
       try {
         await deleteComment(commentId);
       } catch (error) {
-        console.error("Failed to delete comment:", error);
+        console.error(t('deleteFailed'), error);
       }
     }
   };
@@ -76,7 +77,7 @@ export const CommentList: React.FC<CommentListProps> = ({ taskId }) => {
   if (error) {
     return (
       <div className="p-4 bg-danger-50 text-danger rounded-medium">
-        Error: {error}
+        {t('error')}: {error}
       </div>
     );
   }
@@ -85,8 +86,8 @@ export const CommentList: React.FC<CommentListProps> = ({ taskId }) => {
     return (
       <div className="text-center p-8 bg-default-50 rounded-medium">
         <Icon icon="lucide:message-circle" className="mx-auto mb-2 text-default-400" width={32} height={32} />
-        <p className="text-default-600">No comments yet</p>
-        <p className="text-default-400 text-sm">Be the first to add a comment</p>
+        <p className="text-default-600">{t('noComments')}</p>
+        <p className="text-default-400 text-sm">{t('beFirstComment')}</p>
       </div>
     );
   }
@@ -129,7 +130,7 @@ export const CommentList: React.FC<CommentListProps> = ({ taskId }) => {
                   {comment.files && comment.files.length > 0 && (
                     <div className="mt-3">
                       <Divider className="my-2" />
-                      <p className="text-xs text-default-500 mb-2">Attached Files:</p>
+                      <p className="text-xs text-default-500 mb-2">{t('attachedFiles')}:</p>
                       <div className="space-y-2">
                         {comment.files.map((file) => (
                           <div key={file.id} className="flex items-center gap-2 bg-default-50 p-2 rounded-medium">

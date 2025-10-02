@@ -2,9 +2,12 @@ import React from "react";
 import { Button } from "@heroui/react";
 import { TaskChecklist } from "./task-checklist";
 import { useChecklistContext } from "@/context/checklist-context";
+import { useTranslations } from 'next-intl';
 
 export const TaskChecklists: React.FC = () => {
   const { checklists, setChecklists, createChecklists, updateChecklist, deleteChecklist } = useChecklistContext();
+  
+  const t = useTranslations('TaskChecklists');
 
   const createChecklist = () => {
     setChecklists((prev) => [...prev, { title: `Checklist ${prev.length + 1}` }]);
@@ -20,13 +23,13 @@ export const TaskChecklists: React.FC = () => {
 
   return (
     <div>
-      <Button variant="light" onPress={createChecklist}>Add Checklist</Button>
+      <Button variant="light" onPress={createChecklist}>{t('addChecklistButton')}</Button>
       <div id="checklists">
         {checklists.map((checklist, idx) => (
           <div key={idx}>
-            Checklist {checklist.title} <Button variant="light" color="danger" onPress={() => {
+            {t('checklistTitle', { title: checklist.title })} <Button variant="light" color="danger" onPress={() => {
               setChecklists((prev) => prev.filter((_, i) => i !== idx));
-            }}>Delete</Button>
+            }}>{t('deleteButton')}</Button>
             <TaskChecklist
               checklistItems={checklist.checklistItems ?? []}
               setChecklistItems={(items) => setChecklistItems(idx, items)}
