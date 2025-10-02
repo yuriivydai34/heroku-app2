@@ -3,7 +3,9 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import authService from '../../services/auth.service';
-import { Button } from '@heroui/react';
+import { Button, Input, Card } from '@heroui/react';
+import { LoginFormData, LoginFormErrors } from '@/types';
+import { useTranslations } from 'next-intl';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -11,6 +13,8 @@ export default function LoginPage() {
     username: '',
     password: '',
   });
+  
+  const t = useTranslations('LoginPage');
 
   const [errors, setErrors] = useState<LoginFormErrors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -21,12 +25,12 @@ export default function LoginPage() {
 
     // Username validation
     if (!formData.username.trim()) {
-      newErrors.username = 'Username is required';
+      newErrors.username = t('usernameRequired');
     }
 
     // Password validation
     if (!formData.password) {
-      newErrors.password = 'Password is required';
+      newErrors.password = t('passwordRequired');
     }
 
     setErrors(newErrors);
@@ -66,10 +70,10 @@ export default function LoginPage() {
       });
 
       if (!result.success) {
-        throw new Error(result.message || 'Login failed');
+        throw new Error(result.message || t('loginFailed'));
       }
 
-      setSubmitMessage('Login successful! Redirecting...');
+      setSubmitMessage(t('loginSuccess'));
 
       // Redirect to dashboard after successful login
       setTimeout(() => {
@@ -77,7 +81,7 @@ export default function LoginPage() {
       }, 1000);
 
     } catch (error) {
-      setSubmitMessage(error instanceof Error ? error.message : 'Login failed. Please try again.');
+      setSubmitMessage(error instanceof Error ? error.message : t('loginFailed'));
     } finally {
       setIsSubmitting(false);
     }
@@ -88,88 +92,70 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8">
-        <div>
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-            Увійдіть до системи
-          </h2>
-        </div>
-        <div className="bg-white rounded-lg shadow-md p-6">
-          <form onSubmit={handleSubmit} className="space-y-4">
-            {/* Username */}
-            <div>
-              <label htmlFor="username" className="block text-sm font-medium text-gray-700 mb-1">
-                Користувач
-              </label>
-              <input
-                type="text"
-                id="username"
-                name="username"
-                value={formData.username}
-                onChange={handleInputChange}
-                className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.username ? 'border-red-500' : 'border-gray-300'} text-black`}
-                placeholder="Введіть ім'я користувача"
-              />
-              {errors.username && (
-                <p className="mt-1 text-sm text-red-600">{errors.username}</p>
-              )}
+    <div className="min-h-screen flex items-center justify-center bg-content1 text-content1 transition-colors">
+      <Card className="max-w-md w-full p-8 bg-content2 text-content1 shadow-xl">
+        <h2 className="mb-8 text-center text-3xl font-extrabold" style={{ color: "#000" }}>
+          {t('loginTitle')}
+        </h2>
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <Input
+            label={t('usernameLabel')}
+            name="username"
+            value={formData.username}
+            onChange={handleInputChange}
+            placeholder={t('usernamePlaceholder')}
+            isRequired
+            color={errors.username ? "danger" : "default"}
+            variant="bordered"
+            className="w-full"
+            autoFocus
+          />
+          {errors.username && (
+            <div className="text-sm text-danger">{errors.username}</div>
+          )}
+          <Input
+            label={t('passwordLabel')}
+            name="password"
+            type="password"
+            value={formData.password}
+            onChange={handleInputChange}
+            placeholder={t('passwordPlaceholder')}
+            isRequired
+            color={errors.password ? "danger" : "default"}
+            variant="bordered"
+            className="w-full"
+          />
+          {errors.password && (
+            <div className="text-sm text-danger">{errors.password}</div>
+          )}
+          <Button
+            type="submit"
+            color="primary"
+            className="w-full"
+            isLoading={isSubmitting}
+          >
+            {isSubmitting ? t('loggingIn') : t('loginButton')}
+          </Button>
+          {submitMessage && (
+            <div className={`text-center text-sm ${submitMessage.includes('successful') ? 'text-success' : 'text-danger'}`}>
+              {submitMessage}
             </div>
-
-            {/* Password */}
-            <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
-                Пароль
-              </label>
-              <input
-                type="password"
-                id="password"
-                name="password"
-                value={formData.password}
-                onChange={handleInputChange}
-                className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.password ? 'border-red-500' : 'border-gray-300'} text-black`}
-                placeholder="Введіть пароль"
-              />
-              {errors.password && (
-                <p className="mt-1 text-sm text-red-600">{errors.password}</p>
-              )}
-            </div>
-
-            {/* Submit Button */}
-            <Button
-              type="submit"
-              disabled={isSubmitting}
-              className={`w-full py-2 px-4 rounded-md font-medium transition-colors ${isSubmitting
-                ? 'bg-gray-400 cursor-not-allowed'
-                : 'bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2'
-                } text-white`}
-            >
-              {isSubmitting ? 'Входимо...' : 'Увійти'}
-            </Button>
-
-            {/* Submit Message */}
-            {submitMessage && (
-              <div className={`text-center text-sm ${submitMessage.includes('successful') ? 'text-green-600' : 'text-red-600'
-                }`}>
-                {submitMessage}
-              </div>
-            )}
-          </form>
-
-          {/* Register Link */}
-          <div className="mt-6 text-center">
-            <p className="text-sm text-gray-600">
-              Ще не зареєстровані ?{' '}
-              <Button
-                onClick={handleRegisterRedirect}
-                className="text-blue-600 hover:text-blue-500 font-medium underline"
-              >
-                Створіть користувача
-              </Button>
-            </p>
-          </div>
+          )}
+        </form>
+        <div className="mt-6 text-center">
+          <span className="text-sm" style={{ color: "#000" }}>
+            {t('notRegistered')}{' '}
+          </span>
+          <Button
+            variant="light"
+            color="primary"
+            onClick={handleRegisterRedirect}
+            className="font-medium underline"
+          >
+            {t('registerHere')}
+          </Button>
         </div>
-      </div>
+      </Card>
     </div>
   );
 }

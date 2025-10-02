@@ -1,4 +1,5 @@
 import { authService } from "./auth.service";
+import { Notification } from "@/types";
 
 class NotificationService {
   private baseUrl: string;
@@ -7,13 +8,10 @@ class NotificationService {
     this.baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL || '';
   }
 
-  async getNotifications(): Promise<NotificationResponse[]> {
+  async getNotifications(): Promise<Notification[]> {
     try {
       if (!authService.isAuthenticated()) {
-        return [{
-          success: false,
-          message: 'User not authenticated',
-        }];
+        throw new Error('User not authenticated');
       }
 
       const response = await fetch(`${this.baseUrl}/notification`, {

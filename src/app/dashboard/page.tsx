@@ -1,158 +1,115 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import React from "react";
+import { Tabs, Tab, Card, CardBody, useDisclosure } from "@heroui/react";
+import { TaskList } from "@/components/tasks/task-list";
+import { FileManager } from "@/components/file-manager";
+import { TaskProvider } from "@/context/task-context";
+import { FileProvider } from "@/context/file-context";
+import { CommentProvider } from "@/context/comment-context";
+import { ChatProvider } from "@/context/chat-context";
+import { ChatPage } from "@/components/chat/chat-page";
+import { NavbarComponent } from "@/components/navbar";
+import { authService } from "@/services/auth.service";
+import { useRouter } from "next/navigation";
+import { useTranslations } from 'next-intl';
+import { ChecklistProvider } from "@/context/checklist-context";
+import { UserProvider } from "@/context/user-context";
+import ProfileModal from "@/components/profile-modal";
+import { NotificationProvider } from "@/context/notification-context";
+import NotificationModal from "@/components/notification-modal";
+import { TaskTemplateList } from "@/components/task-templates/task-template-list";
+import { TaskTemplateProvider } from "@/context/task-template-context";
 
-import authService from '../../services/auth.service';
-
-import NavHeader from '@/components/NavHeader';
-import { Button } from '@heroui/react';
-
-export default function DashboardPage() {
+export default function App() {
   const router = useRouter();
-  const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    // Check authentication status
-    if (!authService.isAuthenticated()) {
-      // Redirect to login if not authenticated
-      router.push('/login');
-    } else {
-      setIsLoading(false);
-    }
-  }, [router]);
+  const [selected, setSelected] = React.useState("tasks");
+  const {
+    isOpen: isProfileOpen,
+    onOpenChange: onProfileOpenChange
+  } = useDisclosure();
 
-  if (isLoading) {
-    return (
-      <div className="min-h-screen bg-gray-100 flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
-          <p className="mt-4 text-gray-600">Завантажується...</p>
-        </div>
-      </div>
-    );
+    const {
+    isOpen: isNotificationOpen,
+    onOpenChange: onNotificationOpenChange
+  } = useDisclosure();
+
+  const t = useTranslations('DashboardPage');
+
+  const handleLogout = async () => {
+    // Clear any authentication tokens or session data here
+    await authService.logout();
+
+    // Redirect to login page
+    router.push('/login');
   }
 
   return (
-    <div className="min-h-screen bg-gray-100">
-      {/* Header */}
-      <NavHeader />
+    <UserProvider>
+      <NotificationProvider>
+      <ChecklistProvider>
+        <FileProvider>
+          <TaskTemplateProvider>
+          <TaskProvider>
+            <CommentProvider>
+              <ChatProvider>
+                <div className="min-h-screen bg-background p-4 md:p-8">
+                  {/* Navbar */}
+                  <NavbarComponent onLogout={handleLogout} onOpenProfile={onProfileOpenChange} onOpenNotification={onNotificationOpenChange} />
 
-      {/* Main Content */}
-      <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-        <div className="px-4 py-6 sm:px-0">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-            {/* Dashboard Cards */}
-            <div className="bg-white overflow-hidden shadow rounded-lg">
-              <div className="p-5">
-                <div className="flex items-center">
-                  <div className="flex-shrink-0">
-                    <div className="w-8 h-8 bg-purple-500 rounded-full flex items-center justify-center">
-                      <span className="text-white text-sm font-bold">P</span>
-                    </div>
-                  </div>
-                  <div className="ml-5 w-0 flex-1">
-                    <dl>
-                      <dt className="text-sm font-medium text-gray-500 truncate">
-                        Профіль
-                      </dt>
-                      <dd className="text-lg font-medium text-gray-900">
-                        <Button
-                          onClick={() => router.push('/profile')}
-                          className="text-blue-600 hover:text-blue-800 font-medium"
+                  {/* Main Content */}
+                  <div className="container mx-auto max-w-6xl">
+                    <h1 className="text-3xl font-semibold mb-6">{t('title')}</h1>
+
+                    <ProfileModal isOpen={isProfileOpen} onOpenChange={onProfileOpenChange} />
+                    <NotificationModal isOpen={isNotificationOpen} onOpenChange={onNotificationOpenChange} />
+                    <Card className="mb-8">
+                      <CardBody className="p-0">
+                        <Tabs
+                          selectedKey={selected}
+                          onSelectionChange={setSelected as any}
+                          classNames={{
+                            base: "w-full",
+                            tabList: "w-full bg-content2 p-0",
+                            tab: "h-14",
+                            tabContent: "group-data-[selected=true]:text-primary",
+                            cursor: "bg-primary",
+                          }}
                         >
-                          Редагувати профіль
-                        </Button>
-                      </dd>
-                    </dl>
+                          <Tab key="tasks" title={t("tasks")}>
+                            <div className="p-4">
+                              <TaskList />
+                            </div>
+                          </Tab>
+                          <Tab key="templates" title={t("templates")}>
+                            <div className="p-4">
+                              <TaskTemplateList />
+                            </div>
+                          </Tab>
+                          <Tab key="files" title={t("files")}>
+                            <div className="p-4">
+                              <FileManager />
+                            </div>
+                          </Tab>
+                          <Tab key="chat" title={t("chat")}>
+                            <div className="p-0">
+                              <ChatPage />
+                            </div>
+                          </Tab>
+                        </Tabs>
+                      </CardBody>
+                    </Card>
+
                   </div>
                 </div>
-              </div>
-            </div>
-
-            <div className="bg-white overflow-hidden shadow rounded-lg">
-              <div className="p-5">
-                <div className="flex items-center">
-                  <div className="flex-shrink-0">
-                    <div className="w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center">
-                      <span className="text-white text-sm font-bold">T</span>
-                    </div>
-                  </div>
-                  <div className="ml-5 w-0 flex-1">
-                    <dl>
-                      <dt className="text-sm font-medium text-gray-500 truncate">
-                        Задачі
-                      </dt>
-                      <dd className="text-lg font-medium text-gray-900">
-                        <Button
-                          onClick={() => router.push('/tasks')}
-                          className="text-blue-600 hover:text-blue-800 font-medium"
-                        >
-                          Управляти задачами
-                        </Button>
-                      </dd>
-                    </dl>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-white overflow-hidden shadow rounded-lg">
-              <div className="p-5">
-                <div className="flex items-center">
-                  <div className="flex-shrink-0">
-                    <div className="w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center">
-                      <span className="text-white text-sm font-bold">T</span>
-                    </div>
-                  </div>
-                  <div className="ml-5 w-0 flex-1">
-                    <dl>
-                      <dt className="text-sm font-medium text-gray-500 truncate">
-                        Чат
-                      </dt>
-                      <dd className="text-lg font-medium text-gray-900">
-                        <Button
-                          onClick={() => router.push('/chat')}
-                          className="text-blue-600 hover:text-blue-800 font-medium"
-                        >
-                          Чат з користувачами
-                        </Button>
-                      </dd>
-                    </dl>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-white overflow-hidden shadow rounded-lg">
-              <div className="p-5">
-                <div className="flex items-center">
-                  <div className="flex-shrink-0">
-                    <div className="w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center">
-                      <span className="text-white text-sm font-bold">T</span>
-                    </div>
-                  </div>
-                  <div className="ml-5 w-0 flex-1">
-                    <dl>
-                      <dt className="text-sm font-medium text-gray-500 truncate">
-                        Шаблони задач
-                      </dt>
-                      <dd className="text-lg font-medium text-gray-900">
-                        <Button
-                          onClick={() => router.push('/task-template')}
-                          className="text-blue-600 hover:text-blue-800 font-medium"
-                        >
-                          Шаблони задач
-                        </Button>
-                      </dd>
-                    </dl>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </main>
-    </div>
+              </ChatProvider>
+            </CommentProvider>
+          </TaskProvider>
+          </TaskTemplateProvider>
+        </FileProvider>
+      </ChecklistProvider>
+      </NotificationProvider>
+    </UserProvider>
   );
 }
