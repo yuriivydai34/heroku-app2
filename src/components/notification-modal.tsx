@@ -9,7 +9,7 @@ interface NotificationModalProps {
 const NotificationModal = ({ isOpen, onOpenChange }: NotificationModalProps) => {
   const { notifications, markAllAsRead } = useNotificationContext();
   return (
-    <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="md">
+    <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="md" scrollBehavior="inside">
       <ModalContent>
         <ModalHeader>Notifications</ModalHeader>
         <ModalBody>
