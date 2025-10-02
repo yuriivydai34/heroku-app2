@@ -1,11 +1,11 @@
 import React from "react";
-import { 
-  Button, 
-  Table, 
-  TableHeader, 
-  TableColumn, 
-  TableBody, 
-  TableRow, 
+import {
+  Button,
+  Table,
+  TableHeader,
+  TableColumn,
+  TableBody,
+  TableRow,
   TableCell,
   Chip,
   Spinner,
@@ -15,7 +15,9 @@ import {
   ModalHeader,
   ModalBody,
   ModalFooter,
-  useDisclosure
+  useDisclosure,
+  Input,
+  Pagination
 } from "@heroui/react";
 import { Icon } from "@iconify/react";
 import { useTaskTemplateContext } from "@/context/task-template-context";
@@ -24,39 +26,52 @@ import { TaskTemplateDetail } from "./task-template-detail";
 import { useTranslations } from "next-intl";
 
 export const TaskTemplateList: React.FC = () => {
-  const { 
-    templates, 
-    loading, 
-    error, 
+  const {
+    templates,
+    loading,
+    error,
     selectedTemplate,
     selectTaskTemplate,
-    deleteTaskTemplate
+    deleteTaskTemplate,
+    handleSort,
   } = useTaskTemplateContext();
+
+  const [search, setSearch] = React.useState("");
+
+  const [page, setPage] = React.useState(1);
+  const rowsPerPage = 5;
+
+  const filteredTemplates = templates.filter(template =>
+    template.title.toLowerCase().includes(search.toLowerCase())
+  );
+
+  const paginatedTemplates = filteredTemplates.slice((page - 1) * rowsPerPage, page * rowsPerPage);
+  const totalPages = Math.max(1, Math.ceil(filteredTemplates.length / rowsPerPage));
 
   const t = useTranslations('TaskTemplates');
 
-  const { 
-    isOpen: isCreateOpen, 
-    onOpen: onCreateOpen, 
-    onOpenChange: onCreateOpenChange 
+  const {
+    isOpen: isCreateOpen,
+    onOpen: onCreateOpen,
+    onOpenChange: onCreateOpenChange
   } = useDisclosure();
 
-  const { 
-    isOpen: isEditOpen, 
-    onOpen: onEditOpen, 
-    onOpenChange: onEditOpenChange 
+  const {
+    isOpen: isEditOpen,
+    onOpen: onEditOpen,
+    onOpenChange: onEditOpenChange
   } = useDisclosure();
 
-  const { 
-    isOpen: isViewOpen, 
-    onOpen: onViewOpen, 
-    onOpenChange: onViewOpenChange 
+  const {
+    isOpen: isViewOpen,
+    onOpen: onViewOpen,
+    onOpenChange: onViewOpenChange
   } = useDisclosure();
 
-  const { 
-    isOpen: isDeleteOpen, 
-    onOpen: onDeleteOpen, 
-    onOpenChange: onDeleteOpenChange 
+  const {
+    isOpen: isDeleteOpen,
+    onOpen: onDeleteOpen,
+    onOpenChange: onDeleteOpenChange
   } = useDisclosure();
 
   const handleEdit = (template: typeof templates[0]) => {
@@ -97,8 +112,8 @@ export const TaskTemplateList: React.FC = () => {
     <div>
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-xl font-semibold">{t('viewTemplateTitle')}</h2>
-        <Button 
-          color="primary" 
+        <Button
+          color="primary"
           onPress={onCreateOpen}
           startContent={<Icon icon="lucide:plus" />}
         >
@@ -106,12 +121,19 @@ export const TaskTemplateList: React.FC = () => {
         </Button>
       </div>
 
+      <Input
+        placeholder={t('searchByTitle')}
+        value={search}
+        onChange={e => setSearch(e.target.value)}
+        className="mb-4 w-full max-w-xs"
+      />
+
       {loading && templates.length === 0 ? (
         <div className="flex justify-center items-center h-64">
           <Spinner size="lg" />
         </div>
       ) : (
-        <Table 
+        <Table
           aria-label={t('templateTableAriaLabel')}
           removeWrapper
           classNames={{
@@ -120,15 +142,15 @@ export const TaskTemplateList: React.FC = () => {
           }}
         >
           <TableHeader>
-            <TableColumn>{t('titleLabel')}</TableColumn>
+            <TableColumn onClick={() => handleSort('title')}>{t('titleLabel')}</TableColumn>
             <TableColumn>{t('actionsLabel')}</TableColumn>
           </TableHeader>
-          <TableBody 
+          <TableBody
             emptyContent={t('noTemplates')}
             isLoading={loading && templates.length > 0}
             loadingContent={<Spinner />}
           >
-            {templates.map((template: typeof templates[0]) => (
+            {paginatedTemplates.map((template: typeof templates[0]) => (
               <TableRow key={template.id}>
                 <TableCell>
                   <div className="font-medium">{template.title}</div>
@@ -136,31 +158,31 @@ export const TaskTemplateList: React.FC = () => {
                 <TableCell>
                   <div className="flex gap-2">
                     <Tooltip content="View details">
-                      <Button 
-                        isIconOnly 
-                        size="sm" 
-                        variant="light" 
+                      <Button
+                        isIconOnly
+                        size="sm"
+                        variant="light"
                         onPress={() => handleView(template)}
                       >
                         <Icon icon="lucide:eye" />
                       </Button>
                     </Tooltip>
                     <Tooltip content="Edit task template">
-                      <Button 
-                        isIconOnly 
-                        size="sm" 
-                        variant="light" 
+                      <Button
+                        isIconOnly
+                        size="sm"
+                        variant="light"
                         onPress={() => handleEdit(template)}
                       >
                         <Icon icon="lucide:pencil" />
                       </Button>
                     </Tooltip>
                     <Tooltip content="Delete task template" color="danger">
-                      <Button 
-                        isIconOnly 
-                        size="sm" 
-                        variant="light" 
-                        color="danger" 
+                      <Button
+                        isIconOnly
+                        size="sm"
+                        variant="light"
+                        color="danger"
                         onPress={() => handleDelete(template)}
                       >
                         <Icon icon="lucide:trash" />
@@ -171,7 +193,16 @@ export const TaskTemplateList: React.FC = () => {
               </TableRow>
             ))}
           </TableBody>
-        </Table>
+        </Table>)}
+      {totalPages > 1 && (
+        <div className="flex justify-center mt-4">
+          <Pagination
+            page={page}
+            total={totalPages}
+            onChange={setPage}
+            showControls
+          />
+        </div>
       )}
 
       {/* Create Task Template Modal */}

@@ -1,4 +1,4 @@
-import { TaskTemplateData } from '@/types';
+import { TaskSort, TaskTemplateData } from '@/types';
 import authService from './auth.service';
 
 class TaskTemplateService {
@@ -8,13 +8,19 @@ class TaskTemplateService {
     this.baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL || '';
   }
 
-  async fetchTaskTemplates(): Promise<TaskTemplateData[]> {
+  async fetchTaskTemplates(params: { sort?: TaskSort }): Promise<TaskTemplateData[]> {
     try {
       if (!authService.isAuthenticated()) {
         throw new Error('User not authenticated');
       }
 
-      const response = await fetch(`${this.baseUrl}/task-template`, {
+      const url = new URL(`${this.baseUrl}/task-template`);
+
+    if (params.sort) {
+      url.searchParams.append('sort', JSON.stringify(params.sort));
+    }
+
+      const response = await fetch(url.toString(), {
         method: 'GET',
         headers: authService.getAuthHeaders(),
       });

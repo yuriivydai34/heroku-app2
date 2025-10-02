@@ -165,7 +165,8 @@
     "loadFailed": "Failed to load task templates. Please try again.",
     "updateButton": "Update Template",
     "actionsLabel": "Actions",
-    "templateTableAriaLabel": "Task Templates Table"
+    "templateTableAriaLabel": "Task Templates Table",
+    "searchByTitle": "Search by title"
   },
   "TaskList": {
     "createTaskTitle": "Create New Task",

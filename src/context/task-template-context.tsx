@@ -1,5 +1,5 @@
 import React from "react";
-import { TaskTemplateData } from "@/types";
+import { TaskSort, TaskTemplateData } from "@/types";
 import { taskTemplateService } from "@/services/task-template.service";
 
 interface TaskTemplateContextType {
@@ -13,6 +13,7 @@ interface TaskTemplateContextType {
   updateTaskTemplate: (template: TaskTemplateData) => Promise<TaskTemplateData>;
   deleteTaskTemplate: (id: number) => Promise<boolean>;
   selectTaskTemplate: (template: TaskTemplateData | null) => void;
+  handleSort: (column: string) => void;
 }
 
 const TaskTemplateContext = React.createContext<TaskTemplateContextType>({
@@ -20,12 +21,13 @@ const TaskTemplateContext = React.createContext<TaskTemplateContextType>({
   loading: false,
   error: null,
   selectedTemplate: null,
-  fetchTaskTemplates: async () => {[] as TaskTemplateData[]},
+  fetchTaskTemplates: async () => { [] as TaskTemplateData[] },
   fetchTaskTemplate: async (templateId: number) => ({} as TaskTemplateData),
   createTaskTemplate: async () => ({} as TaskTemplateData),
   updateTaskTemplate: async () => ({} as TaskTemplateData),
   deleteTaskTemplate: async () => false,
-  selectTaskTemplate: () => { }
+  selectTaskTemplate: () => { },
+  handleSort: () => { }
 });
 
 export const useTaskTemplateContext = () => React.useContext(TaskTemplateContext);
@@ -36,12 +38,12 @@ export const TaskTemplateProvider: React.FC<{ children: React.ReactNode }> = ({ 
   const [error, setError] = React.useState<string | null>(null);
   const [selectedTemplate, setSelectedTemplate] = React.useState<TaskTemplateData | null>(null);
 
-  const fetchTaskTemplates = React.useCallback(async () => {
+  const fetchTaskTemplates = React.useCallback(async (params: { sort?: TaskSort }) => {
     setLoading(true);
     setError(null);
 
     try {
-      const data = await taskTemplateService.fetchTaskTemplates();
+      const data = await taskTemplateService.fetchTaskTemplates(params);
       setTemplates(data);
     } catch (error) {
       setError(error instanceof Error ? error.message : 'Failed to load task templates');
@@ -127,8 +129,12 @@ export const TaskTemplateProvider: React.FC<{ children: React.ReactNode }> = ({ 
     setSelectedTemplate(template);
   }, []);
 
+  async function handleSort(column: string): Promise<void> {
+    await fetchTaskTemplates({ sort: { sortBy: column, sortOrder: 'asc' } });
+  }
+
   React.useEffect(() => {
-    fetchTaskTemplates();
+    fetchTaskTemplates({});
   }, [fetchTaskTemplates]);
 
   const contextValue = {
@@ -141,7 +147,8 @@ export const TaskTemplateProvider: React.FC<{ children: React.ReactNode }> = ({ 
     createTaskTemplate,
     updateTaskTemplate,
     deleteTaskTemplate,
-    selectTaskTemplate
+    selectTaskTemplate,
+    handleSort,
   };
 
   return (

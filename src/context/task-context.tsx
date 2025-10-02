@@ -107,8 +107,6 @@ export const TaskProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, []);
 
   async function handleSort(column: string): Promise<void> {
-    // Implement sorting logic here
-    console.log(`Sorting by ${column}`);
     await fetchTasks({ sortBy: column, sortOrder: 'asc' });
   }
 

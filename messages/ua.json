@@ -165,7 +165,8 @@
     "loadFailed": "Не вдалося завантажити шаблони завдань. Будь ласка, спробуйте ще раз.",
     "updateButton": "Оновити шаблон",
     "actionsLabel": "Дії",
-    "templateTableAriaLabel": "Таблиця шаблонів завдань"
+    "templateTableAriaLabel": "Таблиця шаблонів завдань",
+    "searchByTitle": "Пошук за назвою"
   },
   "TaskList": {
     "createTaskTitle": "Створити нове завдання",
