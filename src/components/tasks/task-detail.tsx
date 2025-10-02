@@ -8,6 +8,7 @@ import { CommentForm } from "@/components/comments/comment-form";
 import { CommentList } from "@/components/comments/comment-list";
 import { useUserContext } from "@/context/user-context";
 import { TaskChecklists } from "../checklist/task-checklists";
+import { useTranslations } from 'next-intl';
 
 const baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:3000";
 
@@ -18,8 +19,10 @@ interface TaskDetailProps {
 export const TaskDetail: React.FC<TaskDetailProps> = ({ task }) => {
   const { users } = useUserContext();
 
+  const t = useTranslations('TaskDetail');
+
   const formatDate = (dateString?: string) => {
-    if (!dateString) return "Not set";
+    if (!dateString) return t('notAvailable');
     try {
       return format(new Date(dateString), "MMMM d, yyyy");
     } catch {
@@ -71,7 +74,7 @@ export const TaskDetail: React.FC<TaskDetailProps> = ({ task }) => {
             color={task.active ? "success" : "default"} 
             variant="flat"
           >
-            {task.active ? "Active" : "Inactive"}
+            {task.active ? t('active') : t('inactive')}
           </Chip>
         </div>
         
@@ -84,18 +87,18 @@ export const TaskDetail: React.FC<TaskDetailProps> = ({ task }) => {
       
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
-          <h3 className="text-sm font-medium text-default-500 mb-1">Deadline</h3>
+          <h3 className="text-sm font-medium text-default-500 mb-1">{t('deadline')}</h3>
           <p>{formatDate(task.deadline)}</p>
         </div>
         
         <div>
-          <h3 className="text-sm font-medium text-default-500 mb-1">Created</h3>
+          <h3 className="text-sm font-medium text-default-500 mb-1">{t('createdAt')}</h3>
           <p>{formatDateTime(task.createdAt)}</p>
         </div>
         
         {task.updatedAt && task.updatedAt !== task.createdAt && (
           <div>
-            <h3 className="text-sm font-medium text-default-500 mb-1">Last Updated</h3>
+            <h3 className="text-sm font-medium text-default-500 mb-1">{t('updatedAt')}</h3>
             <p>{formatDateTime(task.updatedAt)}</p>
           </div>
         )}
@@ -105,18 +108,18 @@ export const TaskDetail: React.FC<TaskDetailProps> = ({ task }) => {
       
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
-          <h3 className="text-sm font-medium text-default-500 mb-1">Creator</h3>
+          <h3 className="text-sm font-medium text-default-500 mb-1">{t('creator')}</h3>
           <p>{getUserName(task.userIdCreator)} ({getUserRole(task.userIdCreator)})</p>
         </div>
         
         <div>
-          <h3 className="text-sm font-medium text-default-500 mb-1">Supervisor</h3>
+          <h3 className="text-sm font-medium text-default-500 mb-1">{t('supervisor')}</h3>
           <p>{getUserName(task.userIdSupervisor)} ({getUserRole(task.userIdSupervisor)})</p>
         </div>
       </div>
       
       <div>
-        <h3 className="text-sm font-medium text-default-500 mb-2">Associates</h3>
+        <h3 className="text-sm font-medium text-default-500 mb-2">{t('associates')}</h3>
         {task.usersIdAssociate.length > 0 ? (
           <div className="flex flex-wrap gap-2">
             {task.usersIdAssociate.map((id) => (
@@ -126,7 +129,7 @@ export const TaskDetail: React.FC<TaskDetailProps> = ({ task }) => {
             ))}
           </div>
         ) : (
-          <p className="text-default-400">No associates assigned</p>
+          <p className="text-default-400">{t('noAssociates')}</p>
         )}
       </div>
       
@@ -137,11 +140,11 @@ export const TaskDetail: React.FC<TaskDetailProps> = ({ task }) => {
       <Divider />
       
       <div>
-        <h3 className="text-sm font-medium text-default-500 mb-2">Attached Files</h3>
+        <h3 className="text-sm font-medium text-default-500 mb-2">{t('attachments')}</h3>
         {task.files && task.files.length > 0 ? (
           <div className="grid grid-cols-1 gap-2">
             <div className="mb-2 text-xs text-default-400">
-              {task.files.length} file{task.files.length !== 1 ? 's' : ''} attached to this task
+              {task.files.length} file{task.files.length !== 1 ? 's' : ''} {t('attachedToTask')}
             </div>
             {task.files.map((file) => (
               <Card key={file.id} className="w-full border border-default-200 bg-default-50">
@@ -202,14 +205,14 @@ export const TaskDetail: React.FC<TaskDetailProps> = ({ task }) => {
             ))}
           </div>
         ) : (
-          <p className="text-default-400">No files attached</p>
+          <p className="text-default-400">{t('noFilesAttached')}</p>
         )}
       </div>
       
       <Divider />
       
       <div>
-        <h3 className="text-lg font-semibold mb-4">Comments</h3>
+        <h3 className="text-lg font-semibold mb-4">{t('comments')}</h3>
         <CommentProvider>
           <CommentForm taskId={task.id!} userId={task.userIdCreator ?? 0} />
           <CommentList taskId={task.id!} />

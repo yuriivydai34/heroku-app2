@@ -30,6 +30,7 @@ import { TaskChecklists } from "../checklist/task-checklists";
 import { useUserContext } from "@/context/user-context";
 import { useTaskTemplateContext } from "@/context/task-template-context";
 import { TaskTemplateData } from "@/types";
+import { useTranslations } from 'next-intl';
 
 interface TaskFormProps {
   task?: Task | null;
@@ -42,6 +43,8 @@ export const TaskForm: React.FC<TaskFormProps> = ({ task, onClose }) => {
   const { files, selectedFiles, setSelectedFiles, clearSelectedFiles, toggleFileSelection } = useFileContext();
   const [templateSelected, setTemplateSelected] = React.useState<TaskTemplateData | null>(null);
   const { templates } = useTaskTemplateContext();
+
+  const t = useTranslations('TaskForm');
 
   const isEditMode = !!task;
 
@@ -87,19 +90,19 @@ export const TaskForm: React.FC<TaskFormProps> = ({ task, onClose }) => {
     const newErrors: Record<string, string> = {};
 
     if (!formData.title.trim()) {
-      newErrors.title = "Title is required";
+      newErrors.title = t('titleRequired');
     }
 
     if (!formData.deadline) {
-      newErrors.deadline = "Deadline is required";
+      newErrors.deadline = t('deadlineRequired');
     }
 
     if (!formData.userIdSupervisor) {
-      newErrors.userIdSupervisor = "Supervisor is required";
+      newErrors.userIdSupervisor = t('supervisorRequired');
     }
 
     if (!formData.usersIdAssociate || formData.usersIdAssociate.length === 0) {
-      newErrors.usersIdAssociate = "At least one associate is required";
+      newErrors.usersIdAssociate = t('associatesRequired');
     }
 
     setErrors(newErrors);
@@ -176,7 +179,7 @@ export const TaskForm: React.FC<TaskFormProps> = ({ task, onClose }) => {
 
       onClose();
     } catch (error) {
-      console.error("Error saving task:", error);
+      console.error(t('errorSavingTask'), error);
     } finally {
       setLoading(false);
     }
@@ -218,7 +221,7 @@ export const TaskForm: React.FC<TaskFormProps> = ({ task, onClose }) => {
         renderValue={() =>
           templateSelected
             ? `${templateSelected.title} (ID: ${templateSelected.id})`
-            : "No Template"
+            : t('noTemplate')
         }
       >
         {templates
@@ -230,7 +233,7 @@ export const TaskForm: React.FC<TaskFormProps> = ({ task, onClose }) => {
           ))}
       </Select>
       <Input
-        label="Title"
+        label={t('taskNameLabel')}
         name="title"
         value={formData.title}
         onChange={handleInputChange}
@@ -240,7 +243,7 @@ export const TaskForm: React.FC<TaskFormProps> = ({ task, onClose }) => {
       />
 
       <Textarea
-        label="Description"
+        label={t('taskDescriptionLabel')}
         name="description"
         value={formData.description || ""}
         onChange={handleInputChange}
@@ -249,7 +252,7 @@ export const TaskForm: React.FC<TaskFormProps> = ({ task, onClose }) => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <Input
-          label="Deadline"
+          label={t('dueDateLabel')}
           name="deadline"
           type="date"
           value={formData.deadline || ""}
@@ -264,14 +267,14 @@ export const TaskForm: React.FC<TaskFormProps> = ({ task, onClose }) => {
             isSelected={formData.active}
             onValueChange={handleSwitchChange}
           >
-            Active
+            {t('activeLabel')}
           </Switch>
         </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <Select
-          label="Supervisor"
+          label={t('supervisorLabel')}
           selectedKeys={[formData.userIdSupervisor.toString()]}
           onChange={(e) => handleSupervisorChange(e.target.value)}
           isRequired
@@ -281,7 +284,7 @@ export const TaskForm: React.FC<TaskFormProps> = ({ task, onClose }) => {
             const selectedUser = users.find(u => u.id === Number(formData.userIdSupervisor));
             return selectedUser
               ? `${selectedUser.UserProfile?.name} (${selectedUser.UserProfile?.role})`
-              : "Select supervisor";
+              : t('selectSupervisor');
           }}
         >
           {users.map((user) => (
@@ -293,9 +296,9 @@ export const TaskForm: React.FC<TaskFormProps> = ({ task, onClose }) => {
       </div>
 
       <div>
-        <p className="text-sm font-medium mb-2">Associates</p>
+        <p className="text-sm font-medium mb-2">{t('associatesLabel')}</p>
         <Select
-          label="Associates"
+          label={t('associatesLabel')}
           selectionMode="multiple"
           selectedKeys={formData.usersIdAssociate.map(id => id.toString())}
           isRequired
@@ -307,14 +310,14 @@ export const TaskForm: React.FC<TaskFormProps> = ({ task, onClose }) => {
             setFormData(prev => ({ ...prev, usersIdAssociate: ids }));
           }}
           className="mb-4"
-          placeholder="Select associates"
+          placeholder={t('selectAssociates')}
           isMultiline
           renderValue={(selected) => {
             // Show selected user names in the field
             const selectedUsers = users.filter(u => formData.usersIdAssociate.includes(u.id));
             return selectedUsers.length
               ? selectedUsers.map(u => u.UserProfile?.name).join(", ")
-              : "Select associates";
+              : t('selectAssociates');
           }}
         >
           {users.map((user) => (
@@ -331,7 +334,7 @@ export const TaskForm: React.FC<TaskFormProps> = ({ task, onClose }) => {
 
       <div>
         <div className="flex justify-between items-center mb-2">
-          <p className="text-sm font-medium">Attached Files</p>
+          <p className="text-sm font-medium">{t('attachedFilesLabel')}</p>
           <Button
             size="sm"
             variant="flat"
@@ -344,7 +347,7 @@ export const TaskForm: React.FC<TaskFormProps> = ({ task, onClose }) => {
         </div>
 
         {selectedFiles.length === 0 ? (
-          <p className="text-default-400 text-sm">No files attached</p>
+          <p className="text-default-400 text-sm">{t('noFilesAttached')}</p>
         ) : (
           <div className="flex flex-wrap gap-2">
             {selectedFiles.map((file, idx) => (
@@ -364,14 +367,14 @@ export const TaskForm: React.FC<TaskFormProps> = ({ task, onClose }) => {
 
       <div className="flex justify-end gap-2 pt-4">
         <Button variant="flat" onPress={onClose}>
-          Cancel
+          {t('cancel')}
         </Button>
         <Button
           color="primary"
           type="submit"
           isLoading={loading}
         >
-          {isEditMode ? "Update Task" : "Create Task"}
+          {isEditMode ? t('updateTask') : t('createTask')}
         </Button>
       </div>
 
@@ -381,7 +384,7 @@ export const TaskForm: React.FC<TaskFormProps> = ({ task, onClose }) => {
         <ModalContent>
           {(onClose) => (
             <>
-              <ModalHeader>Manage Files</ModalHeader>
+              <ModalHeader>{t('manageFiles')}</ModalHeader>
               <ModalBody>
                 <div className="space-y-6">
                   <FileUploader />
@@ -389,12 +392,12 @@ export const TaskForm: React.FC<TaskFormProps> = ({ task, onClose }) => {
                   <Divider />
 
                   <div>
-                    <h3 className="text-lg font-medium mb-4">Select from Existing Files</h3>
+                    <h3 className="text-lg font-medium mb-4">{t('selectFromExistingFiles')}</h3>
                     {files.length === 0 ? (
                       <div className="text-center p-8 bg-default-50 rounded-medium">
                         <Icon icon="lucide:file" className="mx-auto mb-2 text-default-400" width={32} height={32} />
-                        <p className="text-default-600">No files available</p>
-                        <p className="text-default-400 text-sm">Upload files using the form above</p>
+                        <p className="text-default-600">{t('noFilesAvailable')}</p>
+                        <p className="text-default-400 text-sm">{t('uploadFilesUsingForm')}</p>
                       </div>
                     ) : (
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -445,10 +448,10 @@ export const TaskForm: React.FC<TaskFormProps> = ({ task, onClose }) => {
               <ModalFooter>
                 <div className="flex justify-between w-full">
                   <div className="text-sm">
-                    {selectedFiles.length} file{selectedFiles.length !== 1 ? 's' : ''}
+                    {selectedFiles.length} {t('file')} {selectedFiles.length !== 1 ? t('s') : ''}
                   </div>
                   <Button variant="flat" onPress={onClose}>
-                    Done
+                    {t('doneButton')}
                   </Button>
                 </div>
               </ModalFooter>

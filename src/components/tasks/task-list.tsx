@@ -23,6 +23,7 @@ import { useTaskContext } from "@/context/task-context";
 import { TaskForm } from "./task-form";
 import { TaskDetail } from "./task-detail";
 import { useUserContext } from "@/context/user-context";
+import { useTranslations } from 'next-intl';
 
 export const TaskList: React.FC = () => {
   const { 
@@ -33,6 +34,8 @@ export const TaskList: React.FC = () => {
     selectTask,
     deleteTask
   } = useTaskContext();
+
+  const t = useTranslations('TaskList');
 
   const { users } = useUserContext();
 
@@ -87,13 +90,13 @@ export const TaskList: React.FC = () => {
   };
 
   const getUserName = (id?: number) => {
-    if (typeof id !== "number") return "Unknown";
+    if (typeof id !== "number") return t('unknownUser');
     const user = users.find(u => u.id === id);
     return user ? user.UserProfile?.name : `User #${id}`;
   };
 
   const formatDate = (dateString?: string) => {
-    if (!dateString) return "N/A";
+    if (!dateString) return t('notAvailable');
     try {
       return format(new Date(dateString), "MMM d, yyyy");
     } catch {
@@ -112,13 +115,13 @@ export const TaskList: React.FC = () => {
   return (
     <div>
       <div className="flex justify-between items-center mb-4">
-        <h2 className="text-xl font-semibold">Tasks</h2>
+        <h2 className="text-xl font-semibold">{t('tasks')}</h2>
         <Button 
           color="primary" 
           onPress={onCreateOpen}
           startContent={<Icon icon="lucide:plus" />}
         >
-          Create Task
+          {t('createTask')}
         </Button>
       </div>
 
@@ -136,16 +139,16 @@ export const TaskList: React.FC = () => {
           }}
         >
           <TableHeader>
-            <TableColumn>TITLE</TableColumn>
-            <TableColumn>STATUS</TableColumn>
-            <TableColumn>DEADLINE</TableColumn>
-            <TableColumn>CREATOR</TableColumn>
-            <TableColumn>SUPERVISOR</TableColumn>
-            <TableColumn>FILES</TableColumn>
-            <TableColumn>ACTIONS</TableColumn>
+            <TableColumn>{t('title')}</TableColumn>
+            <TableColumn>{t('status')}</TableColumn>
+            <TableColumn>{t('deadline')}</TableColumn>
+            <TableColumn>{t('creator')}</TableColumn>
+            <TableColumn>{t('supervisor')}</TableColumn>
+            <TableColumn>{t('files')}</TableColumn>
+            <TableColumn>{t('actions')}</TableColumn>
           </TableHeader>
           <TableBody 
-            emptyContent="No tasks found"
+            emptyContent={t('noTasksFound')}
             isLoading={loading && tasks.length > 0}
             loadingContent={<Spinner />}
           >
@@ -168,14 +171,14 @@ export const TaskList: React.FC = () => {
                 <TableCell>{getUserName(task.userIdSupervisor)}</TableCell>
                 <TableCell>
                   {task.files && task.files.length > 0 ? (
-                    <Chip size="sm" variant="flat">{task.files.length} files</Chip>
+                    <Chip size="sm" variant="flat">{task.files.length} {t('files')}</Chip>
                   ) : (
-                    <span className="text-default-400">No files</span>
+                    <span className="text-default-400">{t('noFiles')}</span>
                   )}
                 </TableCell>
                 <TableCell>
                   <div className="flex gap-2">
-                    <Tooltip content="View details">
+                    <Tooltip content={t('viewDetails')}>
                       <Button 
                         isIconOnly 
                         size="sm" 
@@ -185,7 +188,7 @@ export const TaskList: React.FC = () => {
                         <Icon icon="lucide:eye" />
                       </Button>
                     </Tooltip>
-                    <Tooltip content="Edit task">
+                    <Tooltip content={t('editTask')}>
                       <Button 
                         isIconOnly 
                         size="sm" 
@@ -195,7 +198,7 @@ export const TaskList: React.FC = () => {
                         <Icon icon="lucide:pencil" />
                       </Button>
                     </Tooltip>
-                    <Tooltip content="Delete task" color="danger">
+                    <Tooltip content={t('deleteTask')} color="danger">
                       <Button 
                         isIconOnly 
                         size="sm" 
@@ -219,7 +222,7 @@ export const TaskList: React.FC = () => {
         <ModalContent>
           {(onClose) => (
             <>
-              <ModalHeader>Create New Task</ModalHeader>
+              <ModalHeader>{t('createNewTask')}</ModalHeader>
               <ModalBody>
                 <TaskForm onClose={onClose} />
               </ModalBody>
@@ -233,7 +236,7 @@ export const TaskList: React.FC = () => {
         <ModalContent>
           {(onClose) => (
             <>
-              <ModalHeader>Edit Task</ModalHeader>
+              <ModalHeader>{t('editTask')}</ModalHeader>
               <ModalBody>
                 <TaskForm task={selectedTask} onClose={onClose} />
               </ModalBody>
@@ -247,16 +250,16 @@ export const TaskList: React.FC = () => {
         <ModalContent>
           {(onClose) => (
             <>
-              <ModalHeader>Task Details</ModalHeader>
+              <ModalHeader>{t('taskDetails')}</ModalHeader>
               <ModalBody>
                 {selectedTask && <TaskDetail task={selectedTask} />}
               </ModalBody>
               <ModalFooter>
-                <Button onPress={onClose}>Close</Button>
+                <Button onPress={onClose}>{t('close')}</Button>
                 <Button color="primary" onPress={() => {
                   onClose();
                   onEditOpen();
-                }}>Edit</Button>
+                }}>{t('edit')}</Button>
               </ModalFooter>
             </>
           )}
@@ -268,13 +271,13 @@ export const TaskList: React.FC = () => {
         <ModalContent>
           {(onClose) => (
             <>
-              <ModalHeader className="text-danger">Confirm Deletion</ModalHeader>
+              <ModalHeader className="text-danger">{t('confirmDeletion')}</ModalHeader>
               <ModalBody>
-                Are you sure you want to delete the task "{selectedTask?.title}"? This action cannot be undone.
+                {t('confirmDeletionMessage', { taskTitle: selectedTask?.title })}
               </ModalBody>
               <ModalFooter>
-                <Button variant="flat" onPress={onClose}>Cancel</Button>
-                <Button color="danger" onPress={confirmDelete}>Delete</Button>
+                <Button variant="flat" onPress={onClose}>{t('cancel')}</Button>
+                <Button color="danger" onPress={confirmDelete}>{t('delete')}</Button>
               </ModalFooter>
             </>
           )}
