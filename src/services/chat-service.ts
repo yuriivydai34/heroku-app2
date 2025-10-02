@@ -1,7 +1,15 @@
 import { Message, ChatRoom, UserStatus, UserData } from "@/types";
 import authService from "./auth.service";
 
+import { io, Socket } from "socket.io-client";
+
 const baseUrl = `${process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:3000"}`;
+
+export const socket: Socket = io(baseUrl, {
+  auth: {
+    userId: authService.getCurrentUserId()
+  }
+});
 
 export const ChatService = {
   // Get messages for a specific room or direct conversation
@@ -21,6 +29,8 @@ export const ChatService = {
 
   // Send a new message
   sendMessage: async (message: Omit<Message, 'id' | 'timestamp' | 'isRead'>): Promise<Message> => {
+    socket.emit('new_message', message); // Emit via socket.io for real-time updates
+    
     const response = await fetch(`${baseUrl}/message`, {
       method: "POST",
       headers: authService.getAuthHeaders(),

@@ -1,6 +1,6 @@
 import React from "react";
 import { Message, ChatRoom, UserStatus, UploadedFile, UserData } from "@/types";
-import { ChatService } from "@/services/chat-service";
+import { ChatService, socket } from "@/services/chat-service";
 import { useFileContext } from "./file-context";
 
 interface ChatContextType {
@@ -23,6 +23,7 @@ interface ChatContextType {
   getUnreadCount: (roomId: string) => number;
   markMessagesAsRead: (messageIds: string[]) => Promise<void>;
   getCurrentUserId: () => number;
+  socket: any;
 }
 
 const ChatContext = React.createContext<ChatContextType>({
@@ -45,6 +46,7 @@ const ChatContext = React.createContext<ChatContextType>({
   getUnreadCount: () => 0,
   markMessagesAsRead: async () => {},
   getCurrentUserId: () => 1,
+  socket: {} as any
 });
 
 export const useChatContext = () => React.useContext(ChatContext);
@@ -259,22 +261,40 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({ children
     return currentUserId;
   }, [currentUserId]);
   
+  const handleNewMessage = (message: Message) => {
+    // If the message belongs to the active room or DM, add it to messages
+    if ((activeRoomId && message.roomId === activeRoomId) ||
+        (activeDirectUserId && 
+         ((message.senderId === activeDirectUserId && message.receiverId === currentUserId) ||
+          (message.senderId === currentUserId && message.receiverId === activeDirectUserId)))) {
+      setMessages(prev => [...prev, message]);
+      
+      // If the message is from another user, mark it as read
+      if (message.senderId !== currentUserId) {
+        markMessagesAsRead([String(message.id)]);
+      }
+    } else {
+      // Otherwise, just update unread counts
+      calculateUnreadCounts();
+    }
+  };
+
   // Initialize data
   React.useEffect(() => {
     fetchRooms();
     fetchUserStatuses();
     calculateUnreadCounts();
-    
+
     // In a real app, you would set up socket.io listeners here
-    // socket.on('new_message', handleNewMessage);
+    socket.on('new_message', handleNewMessage);
     // socket.on('message_read', handleMessageRead);
     // socket.on('user_status_changed', handleUserStatusChanged);
     
-    // return () => {
-    //   socket.off('new_message', handleNewMessage);
+    return () => {
+      socket.off('new_message', handleNewMessage);
     //   socket.off('message_read', handleMessageRead);
     //   socket.off('user_status_changed', handleUserStatusChanged);
-    // };
+    };
   }, [fetchRooms, fetchUserStatuses, calculateUnreadCounts]);
   
   const value = {

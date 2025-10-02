@@ -201,7 +201,7 @@ export const ChatSidebar: React.FC = () => {
                       <div className="relative">
                         <Avatar
                           name={user.UserProfile?.name}
-                          src={`https://img.heroui.chat/image/avatar?w=200&h=200&u=${user.id}`}
+                          src={user.UserProfile?.avatarUrl || `https://img.heroui.chat/image/avatar?w=200&h=200&u=${user.id}`}
                           size="sm"
                         />
                         <Badge
