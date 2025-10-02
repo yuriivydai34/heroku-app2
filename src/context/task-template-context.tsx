@@ -7,27 +7,26 @@ interface TaskTemplateContextType {
   loading: boolean;
   error: string | null;
   selectedTemplate: TaskTemplateData | null;
-  fetchTaskTemplates: () => Promise<void>;
+  fetchTaskTemplates: (params: { sort?: TaskSort }) => Promise<void>;
   fetchTaskTemplate: (templateId: number) => Promise<TaskTemplateData>;
   createTaskTemplate: (template: TaskTemplateData) => Promise<TaskTemplateData>;
   updateTaskTemplate: (template: TaskTemplateData) => Promise<TaskTemplateData>;
   deleteTaskTemplate: (id: number) => Promise<boolean>;
   selectTaskTemplate: (template: TaskTemplateData | null) => void;
-  handleSort: (column: string) => void;
+  handleSort: (column: string) => Promise<void>;
 }
-
 const TaskTemplateContext = React.createContext<TaskTemplateContextType>({
   templates: [],
   loading: false,
   error: null,
   selectedTemplate: null,
-  fetchTaskTemplates: async () => { [] as TaskTemplateData[] },
-  fetchTaskTemplate: async (templateId: number) => ({} as TaskTemplateData),
+  fetchTaskTemplates: async () => { },
+  fetchTaskTemplate: async () => ({} as TaskTemplateData),
   createTaskTemplate: async () => ({} as TaskTemplateData),
   updateTaskTemplate: async () => ({} as TaskTemplateData),
   deleteTaskTemplate: async () => false,
   selectTaskTemplate: () => { },
-  handleSort: () => { }
+  handleSort: async () => { },
 });
 
 export const useTaskTemplateContext = () => React.useContext(TaskTemplateContext);

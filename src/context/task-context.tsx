@@ -1,5 +1,5 @@
 import React from "react";
-import { Task } from "../types";
+import { Task, TaskSort } from "../types";
 import { TaskService } from "../services/task-service";
 
 interface TaskContextType {
@@ -7,7 +7,7 @@ interface TaskContextType {
   loading: boolean;
   error: string | null;
   selectedTask: Task | null;
-  fetchTasks: () => Promise<void>;
+  fetchTasks: ({ sortBy, sortOrder }: TaskSort) => Promise<void>;
   createTask: (task: Task) => Promise<Task>;
   updateTask: (task: Task) => Promise<Task>;
   deleteTask: (id: string) => Promise<boolean>;
@@ -20,7 +20,7 @@ const TaskContext = React.createContext<TaskContextType>({
   loading: false,
   error: null,
   selectedTask: null,
-  fetchTasks: async () => {},
+  fetchTasks: async () => {[] as Task[]},
   createTask: async () => ({} as Task),
   updateTask: async () => ({} as Task),
   deleteTask: async () => false,
