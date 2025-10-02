@@ -17,6 +17,7 @@ import {
 import { Icon } from "@iconify/react";
 import { useFileContext } from "../context/file-context";
 import { FileUploader } from "./file-uploader";
+import { useTranslations } from "next-intl";
 
 const baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:3000";
 
@@ -29,6 +30,8 @@ export const FileManager: React.FC = () => {
     toggleFileSelection,
     deleteFile
   } = useFileContext();
+
+  const t = useTranslations('FileManager');
 
   const [fileToDelete, setFileToDelete] = React.useState<number | null>(null);
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -44,7 +47,7 @@ export const FileManager: React.FC = () => {
         await deleteFile(fileToDelete);
         onOpenChange(false);
       } catch (error) {
-        console.error("Failed to delete file:", error);
+        console.error(t('deleteFailed'), error);
       }
     }
   };
@@ -60,7 +63,7 @@ export const FileManager: React.FC = () => {
   if (error) {
     return (
       <div className="p-4 bg-danger-50 text-danger rounded-medium">
-        Error: {error}
+        {t('error')}: {error}
       </div>
     );
   }
@@ -68,14 +71,14 @@ export const FileManager: React.FC = () => {
   return (
     <div>
       <div className="mb-6">
-        <h2 className="text-xl font-semibold mb-4">File Manager</h2>
+        <h2 className="text-xl font-semibold mb-4">{t('title')}</h2>
         <FileUploader />
       </div>
 
       <Divider className="my-6" />
 
       <div>
-        <h3 className="text-lg font-medium mb-4">Your Files</h3>
+        <h3 className="text-lg font-medium mb-4">{t('yourFiles')}</h3>
 
         {loading ? (
           <div className="flex justify-center items-center h-64">
@@ -84,8 +87,8 @@ export const FileManager: React.FC = () => {
         ) : files.length === 0 ? (
           <div className="text-center p-8 bg-default-50 rounded-medium">
             <Icon icon="lucide:file" className="mx-auto mb-2 text-default-400" width={32} height={32} />
-            <p className="text-default-600">No files uploaded yet</p>
-            <p className="text-default-400 text-sm">Upload files using the form above</p>
+            <p className="text-default-600">{t('noFilesUploaded')}</p>
+            <p className="text-default-400 text-sm">{t('uploadFilesUsingForm')}</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -128,10 +131,10 @@ export const FileManager: React.FC = () => {
                             className="text-xs text-primary flex items-center gap-1"
                           >
                             <Icon icon="lucide:external-link" width={14} />
-                            View
+                            {t('view')}
                           </a>
 
-                          <Tooltip content="Delete file" color="danger">
+                          <Tooltip content={t('deleteFile')} color="danger">
                             <Button
                               isIconOnly
                               size="sm"
@@ -158,13 +161,13 @@ export const FileManager: React.FC = () => {
         <ModalContent>
           {(onClose) => (
             <>
-              <ModalHeader className="text-danger">Confirm Deletion</ModalHeader>
+              <ModalHeader className="text-danger">{t('deleteConfirmation')}</ModalHeader>
               <ModalBody>
-                Are you sure you want to delete this file? This action cannot be undone.
+                {t('deleteFileWarning')}
               </ModalBody>
               <ModalFooter>
-                <Button variant="flat" onPress={onClose}>Cancel</Button>
-                <Button color="danger" onPress={confirmDelete}>Delete</Button>
+                <Button variant="flat" onPress={onClose}>{t('cancel')}</Button>
+                <Button color="danger" onPress={confirmDelete}>{t('delete')}</Button>
               </ModalFooter>
             </>
           )}

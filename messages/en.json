@@ -224,7 +224,9 @@
     "selected": "selected",
     "done": "Done",
     "uploading": "Uploading...",
-    "uploadFailed": "File upload failed. Please try again."
+    "uploadFailed": "File upload failed. Please try again.",
+    "createNewTask": "Create New Task",
+    "editTask": "Edit Task"
   },
   "TaskDetail": {
     "title": "Task Details",
@@ -277,6 +279,49 @@
     "cancelButton": "Cancel",
     "selectAssigneePlaceholder": "Select a user",
     "selectPriorityPlaceholder": "Select priority level",
-    "selectTemplatePlaceholder": "Select a template (optional)"
+    "selectTemplatePlaceholder": "Select a template (optional)",
+    "activeLabel": "Active",
+    "inactiveLabel": "Inactive",
+    "selectAssociates": "Select associates",
+    "associatesLabel": "Associates",
+    "supervisorLabel": "Supervisors",
+    "noFilesAttached": "No files attached",
+    "attachFiles": "Attach files using the form above",
+    "attachedFilesLabel": "Attached Files",
+    "selectFromExistingFiles": "Select from existing files",
+    "noFilesAvailable": "No files available",
+    "uploadFilesUsingForm": "Upload files using the form above",
+    "closeButton": "Close",
+    "doneButton": "Done",
+    "uploading": "Uploading...",
+    "file": "file",
+    "s": "s",
+    "cancel": "Cancel",
+    "updateTask": "Update Task"
+  },
+  "FileManager": {
+    "title": "File Manager",
+    "error": "Error",
+    "yourFiles": "Your Files",
+    "noFilesUploaded": "No files uploaded yet",
+    "uploadFilesUsingForm": "Upload files using the form above",
+    "view": "View",
+    "deleteFile": "Delete file",
+    "deleteConfirmation": "Confirm Deletion",
+    "deleteFileWarning": "Are you sure you want to delete this file? This action cannot be undone.",
+    "cancel": "Cancel",
+    "delete": "Delete"
+  },
+  "FileUploader": {
+    "dragAndDropFileHere": "Drag & drop file here",
+    "dropFileHere": "Drop file here",
+    "uploadFilesUsingForm": "or click to browse",
+    "uploading": "Uploading...",
+    "uploadFailed": "File upload failed. Please try again.",
+    "noFilesAvailable": "No files available",
+    "file": "file",
+    "s": "s",
+    "selected": "selected",
+    "done": "Done"
   }
 }

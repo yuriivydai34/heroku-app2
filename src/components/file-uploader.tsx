@@ -2,6 +2,7 @@ import React from "react";
 import { Button, Card, CardBody, Progress } from "@heroui/react";
 import { Icon } from "@iconify/react";
 import { useFileContext } from "../context/file-context";
+import { useTranslations } from "next-intl";
 
 export const FileUploader: React.FC = () => {
   const { uploadFile, loading } = useFileContext();
@@ -9,6 +10,8 @@ export const FileUploader: React.FC = () => {
   const [uploadProgress, setUploadProgress] = React.useState(0);
   const [currentFile, setCurrentFile] = React.useState<File | null>(null);
   const fileInputRef = React.useRef<HTMLInputElement>(null);
+
+  const t = useTranslations('FileUploader');
 
   const handleDrag = (e: React.DragEvent) => {
     e.preventDefault();
@@ -137,9 +140,9 @@ export const FileUploader: React.FC = () => {
               height={40}
             />
             <p className="text-default-600 font-medium mb-1">
-              {dragActive ? "Drop file here" : "Drag & drop file here"}
+              {dragActive ? t('dropFileHere') : t('dragAndDropFileHere')}
             </p>
-            <p className="text-default-400 text-sm mb-4">or click to browse</p>
+            <p className="text-default-400 text-sm mb-4">{t('uploadFilesUsingForm')}</p>
             <Button
               color="primary"
               variant="flat"
