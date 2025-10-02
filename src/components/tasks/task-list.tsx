@@ -16,7 +16,8 @@ import {
   ModalBody,
   ModalFooter,
   useDisclosure,
-  Pagination
+  Pagination,
+  Input
 } from "@heroui/react";
 import { Icon } from "@iconify/react";
 import { format } from "date-fns";
@@ -37,10 +38,17 @@ export const TaskList: React.FC = () => {
     handleSort,
   } = useTaskContext();
 
+  const [search, setSearch] = React.useState("");
+
   const [page, setPage] = React.useState(1);
   const rowsPerPage = 5;
-  const totalPages = Math.max(1, Math.ceil(tasks.length / rowsPerPage));
-  const paginatedTasks = tasks.slice((page - 1) * rowsPerPage, page * rowsPerPage);
+
+  const filteredTasks = tasks.filter(task =>
+    task.title.toLowerCase().includes(search.toLowerCase())
+  );
+
+  const paginatedTasks = filteredTasks.slice((page - 1) * rowsPerPage, page * rowsPerPage);
+  const totalPages = Math.max(1, Math.ceil(filteredTasks.length / rowsPerPage));
 
   const t = useTranslations('TaskList');
 
@@ -131,6 +139,13 @@ export const TaskList: React.FC = () => {
           {t('createTask')}
         </Button>
       </div>
+
+      <Input
+        placeholder={t('searchByTitle')}
+        value={search}
+        onChange={e => setSearch(e.target.value)}
+        className="mb-4 w-full max-w-xs"
+      />
 
       {loading && tasks.length === 0 ? (
         <div className="flex justify-center items-center h-64">
