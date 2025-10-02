@@ -43,7 +43,7 @@ export const CommentForm: React.FC<CommentFormProps> = ({ taskId, userId, onComm
     onOpenChange: onFileModalOpenChange
   } = useDisclosure();
 
-  const handleTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+  const handleTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setText(e.target.value);
   };
 

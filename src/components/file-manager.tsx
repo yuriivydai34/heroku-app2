@@ -45,7 +45,7 @@ export const FileManager: React.FC = () => {
     if (fileToDelete !== null) {
       try {
         await deleteFile(fileToDelete);
-        onOpenChange(false);
+        onOpenChange();
       } catch (error) {
         console.error(t('deleteFailed'), error);
       }

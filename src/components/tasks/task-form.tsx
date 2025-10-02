@@ -227,7 +227,7 @@ export const TaskForm: React.FC<TaskFormProps> = ({ task, onClose }) => {
         {templates
           .filter((template) => template.id !== undefined && template.id !== null)
           .map((template) => (
-            <SelectItem key={template.id!.toString()} value={template.id!.toString()}>
+            <SelectItem key={template.id!.toString()}>
               {template.title} (ID: {template.id})
             </SelectItem>
           ))}
@@ -288,7 +288,7 @@ export const TaskForm: React.FC<TaskFormProps> = ({ task, onClose }) => {
           }}
         >
           {users.map((user) => (
-            <SelectItem key={user.id.toString()} value={user.id.toString()}>
+            <SelectItem key={user.id.toString()}>
               {user.UserProfile?.name} ({user.UserProfile?.role})
             </SelectItem>
           ))}
@@ -321,7 +321,7 @@ export const TaskForm: React.FC<TaskFormProps> = ({ task, onClose }) => {
           }}
         >
           {users.map((user) => (
-            <SelectItem key={user.id.toString()} value={user.id.toString()}>
+            <SelectItem key={user.id.toString()}>
               {user.UserProfile?.name}
             </SelectItem>
           ))}

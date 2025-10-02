@@ -244,7 +244,7 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({ children
       // Update local messages
       setMessages(prev => 
         prev.map(message => 
-          messageIds.includes(message.id) 
+          messageIds.includes(String(message.id)) 
             ? { ...message, isRead: true } 
             : message
         )
@@ -300,6 +300,7 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const value = {
     messages,
     rooms,
+    users: [], // Add users property (replace with actual users if available)
     userStatuses,
     activeRoomId,
     activeDirectUserId,
@@ -315,7 +316,8 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setActiveDirectUser,
     getUnreadCount,
     markMessagesAsRead,
-    getCurrentUserId
+    getCurrentUserId,
+    socket // Add socket property
   };
   
   return (

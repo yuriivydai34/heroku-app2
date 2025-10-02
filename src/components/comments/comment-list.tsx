@@ -120,7 +120,7 @@ export const CommentList: React.FC<CommentListProps> = ({ taskId }) => {
                         color="danger"
                         onPress={() => handleDelete(comment.id!)}
                       >
-                        <Icon icon="lucide:trash-2" size={16} />
+                        <Icon icon="lucide:trash-2" width={16} height={16} />
                       </Button>
                     </Tooltip>
                   </div>
@@ -152,7 +152,7 @@ export const CommentList: React.FC<CommentListProps> = ({ taskId }) => {
                               rel="noopener noreferrer"
                               className="text-primary"
                             >
-                              <Icon icon="lucide:external-link" size={14} />
+                              <Icon icon="lucide:external-link" width={14} height={14} />
                             </a>
                           </div>
                         ))}

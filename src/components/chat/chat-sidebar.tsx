@@ -97,7 +97,7 @@ export const ChatSidebar: React.FC = () => {
       setSelectedMembers([]);
       
       // Close modal
-      onOpenCreateRoomChange(false);
+      onOpenCreateRoomChange();
       
       // Set the new room as active
       setActiveRoom(newRoom.id);
@@ -164,11 +164,12 @@ export const ChatSidebar: React.FC = () => {
                       />
                       {getUnreadCount(room.id.toString()) > 0 && (
                         <Badge
-                          content={getUnreadCount(room.id.toString())}
                           color="danger"
                           size="sm"
                           className="absolute -top-1 -right-1"
-                        />
+                        >
+                          {getUnreadCount(room.id.toString())}
+                        </Badge>
                       )}
                     </div>
                   }
@@ -213,7 +214,10 @@ export const ChatSidebar: React.FC = () => {
                           size="sm"
                           variant="solid"
                           isOneChar
-                        />
+                        >
+                          {/* Render a dot or empty string as status indicator */}
+                          •
+                        </Badge>
                       </div>
                     }
                   >

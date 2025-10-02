@@ -97,7 +97,7 @@ export const TaskList: React.FC = () => {
     if (selectedTask?.id) {
       try {
         await deleteTask(selectedTask.id);
-        onDeleteOpenChange(false);
+        onDeleteOpenChange();
       } catch (error) {
         console.error("Failed to delete task:", error);
       }
@@ -304,7 +304,7 @@ export const TaskList: React.FC = () => {
             <>
               <ModalHeader className="text-danger">{t('confirmDeletion')}</ModalHeader>
               <ModalBody>
-                {t('confirmDeletionMessage', { taskTitle: selectedTask?.title })}
+                {t('confirmDeletionMessage', { taskTitle: selectedTask?.title ?? '' })}
               </ModalBody>
               <ModalFooter>
                 <Button variant="flat" onPress={onClose}>{t('cancel')}</Button>

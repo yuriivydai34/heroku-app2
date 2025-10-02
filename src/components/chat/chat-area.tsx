@@ -230,7 +230,7 @@ export const ChatArea: React.FC = () => {
           </div>
         ) : groupedMessages.length === 0 ? (
           <div className="flex flex-col items-center justify-center h-full text-default-400">
-            <Icon icon="lucide:message-circle" size={48} className="mb-2" />
+            <Icon icon="lucide:message-circle" width={48} height={48} className="mb-2" />
             <p>{t("noMessages")}</p>
             <p className="text-sm">{t("startConversation")}</p>
           </div>
@@ -304,7 +304,7 @@ export const ChatArea: React.FC = () => {
                                         rel="noopener noreferrer"
                                         className={isCurrentUser ? 'text-white' : 'text-primary'}
                                       >
-                                        <Icon icon="lucide:external-link" size={14} />
+                                        <Icon icon="lucide:external-link" width={14} height={14} />
                                       </a>
                                     </div>
                                   ))}
@@ -320,9 +320,9 @@ export const ChatArea: React.FC = () => {
                               {isCurrentUser && (
                                 <span className="ml-1">
                                   {message.isRead ? (
-                                    <Icon icon="lucide:check-check" className="inline" size={12} />
+                                    <Icon icon="lucide:check-check" className="inline" width={12} height={12} />
                                   ) : (
-                                    <Icon icon="lucide:check" className="inline" size={12} />
+                                    <Icon icon="lucide:check" className="inline" width={12} height={12} />
                                   )}
                                 </span>
                               )}

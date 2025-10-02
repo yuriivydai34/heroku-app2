@@ -93,7 +93,7 @@ export const TaskTemplateList: React.FC = () => {
     if (selectedTemplate?.id) {
       try {
         await deleteTaskTemplate(selectedTemplate.id);
-        onDeleteOpenChange(false);
+        onDeleteOpenChange();
       } catch (error) {
         console.error(t('deleteFailed'), error);
       }
@@ -261,7 +261,7 @@ export const TaskTemplateList: React.FC = () => {
             <>
               <ModalHeader className="text-danger">{t('deleteConfirm')}</ModalHeader>
               <ModalBody>
-                {t('deleteConfirmationMessage', { title: selectedTemplate?.title })}
+                {t('deleteConfirmationMessage', { title: selectedTemplate?.title ?? "" })}
               </ModalBody>
               <ModalFooter>
                 <Button variant="flat" onPress={onClose}>{t('cancelButton')}</Button>
