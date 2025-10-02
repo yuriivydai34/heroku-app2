@@ -28,6 +28,8 @@ import { FileUploader } from "../file-uploader";
 import { format } from "date-fns";
 import { TaskChecklists } from "../checklist/task-checklists";
 import { useUserContext } from "@/context/user-context";
+import { useTaskTemplateContext } from "@/context/task-template-context";
+import { TaskTemplateData } from "@/types";
 
 interface TaskFormProps {
   task?: Task | null;
@@ -38,6 +40,9 @@ export const TaskForm: React.FC<TaskFormProps> = ({ task, onClose }) => {
   const { users } = useUserContext();
   const { createTask, updateTask } = useTaskContext();
   const { files, selectedFiles, setSelectedFiles, clearSelectedFiles, toggleFileSelection } = useFileContext();
+  const [templateSelected, setTemplateSelected] = React.useState<TaskTemplateData | null>(null);
+  const { templates } = useTaskTemplateContext();
+
   const isEditMode = !!task;
 
   const {
@@ -181,8 +186,49 @@ export const TaskForm: React.FC<TaskFormProps> = ({ task, onClose }) => {
     setSelectedFiles(selectedFiles.filter(f => f.id !== file.id));
   };
 
+  const onSelectTemplate = (template: TaskTemplateData) => {
+    setTemplateSelected(template);
+    setFormData(prev => ({
+      ...prev,
+      title: template.title,
+      description: template.description
+    }));
+  };
+
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
+      <Select
+        id="template"
+        label="Template"
+        value={templateSelected?.id?.toString() || "0"}
+        onChange={(e) => {
+          if (e.target.value === "0") {
+            setTemplateSelected(null);
+          } else {
+            const selectedTemplate = templates.find(
+              (template) => String(template.id) === e.target.value
+            );
+            if (selectedTemplate) {
+              onSelectTemplate(selectedTemplate);
+            }
+          }
+        }}
+        className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+        style={{ color: 'black' }}
+        renderValue={() =>
+          templateSelected
+            ? `${templateSelected.title} (ID: ${templateSelected.id})`
+            : "No Template"
+        }
+      >
+        {templates
+          .filter((template) => template.id !== undefined && template.id !== null)
+          .map((template) => (
+            <SelectItem key={template.id!.toString()} value={template.id!.toString()}>
+              {template.title} (ID: {template.id})
+            </SelectItem>
+          ))}
+      </Select>
       <Input
         label="Title"
         name="title"
