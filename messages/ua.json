@@ -355,7 +355,8 @@
     "file": "файл",
     "s": "и",
     "selected": "вибрано",
-    "done": "Готово"
+    "done": "Готово",
+    "selectFileToUpload": "Виберіть файл для завантаження"
   },
   "ChatArea": {
     "createdBy": "Створив",

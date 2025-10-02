@@ -355,7 +355,8 @@
     "file": "file",
     "s": "s",
     "selected": "selected",
-    "done": "Done"
+    "done": "Done",
+    "selectFileToUpload": "Select file to upload"
   },
   "ChatArea": {
     "createdBy": "Created by",

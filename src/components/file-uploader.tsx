@@ -150,7 +150,7 @@ export const FileUploader: React.FC = () => {
               isLoading={loading}
               startContent={!loading && <Icon icon="lucide:upload" />}
             >
-              Upload File
+              {t('selectFileToUpload')}
             </Button>
           </CardBody>
         </Card>
