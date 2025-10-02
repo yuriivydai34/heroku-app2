@@ -14,6 +14,7 @@ import { format } from "date-fns";
 import { Comment } from "../../types";
 import { useCommentContext } from "../../context/comment-context";
 import { useUserContext } from "@/context/user-context";
+import { a } from "framer-motion/client";
 
 const baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:3000";
 
@@ -43,7 +44,8 @@ export const CommentList: React.FC<CommentListProps> = ({ taskId }) => {
     const user = users.find(u => u.id === userId);
     return {
       name: user ? user.UserProfile?.name : `User #${userId}`,
-      role: user ? user.UserProfile?.role : "Unknown"
+      role: user ? user.UserProfile?.role : "Unknown",
+      avatarUrl: user ? user.UserProfile?.avatarUrl : undefined
     };
   };
 
@@ -100,7 +102,7 @@ export const CommentList: React.FC<CommentListProps> = ({ taskId }) => {
               <div className="flex gap-3">
                 <Avatar
                   name={user.name}
-                  src={`https://img.heroui.chat/image/avatar?w=200&h=200&u=${comment.userId}`}
+                  src={user.avatarUrl || `https://img.heroui.chat/image/avatar?w=200&h=200&u=${comment.userId}`}
                   className="flex-shrink-0"
                 />
                 <div className="flex-grow">

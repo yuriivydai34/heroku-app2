@@ -261,7 +261,7 @@ export const ChatSidebar: React.FC = () => {
                         <div className="flex items-center gap-2">
                           <Avatar
                             name={user.UserProfile?.name}
-                            src={`https://img.heroui.chat/image/avatar?w=200&h=200&u=${user.id}`}
+                            src={user.UserProfile?.avatarUrl || `https://img.heroui.chat/image/avatar?w=200&h=200&u=${user.id}`}
                             size="sm"
                           />
                           <span>{user.UserProfile?.name}</span>

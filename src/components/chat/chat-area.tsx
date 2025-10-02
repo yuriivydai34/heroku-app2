@@ -189,7 +189,7 @@ export const ChatArea: React.FC = () => {
         <div className="flex items-center gap-2">
           <Avatar
             name={chatTitle}
-            src={activeUser ? `https://img.heroui.chat/image/avatar?w=200&h=200&u=${activeUser.id}` : undefined}
+            src={activeUser?.UserProfile?.avatarUrl || `https://img.heroui.chat/image/avatar?w=200&h=200&u=${activeUser?.id}`}
             size="sm"
           />
           <div>
@@ -244,7 +244,7 @@ export const ChatArea: React.FC = () => {
                     {!isCurrentUser && (
                       <Avatar
                         name={sender?.UserProfile?.name || `User #${firstMessage.senderId}`}
-                        src={`https://img.heroui.chat/image/avatar?w=200&h=200&u=${firstMessage.senderId}`}
+                        src={activeUser?.UserProfile?.avatarUrl || `https://img.heroui.chat/image/avatar?w=200&h=200&u=${firstMessage.senderId}`}
                         className="mt-1"
                         size="sm"
                       />
@@ -484,7 +484,7 @@ export const ChatArea: React.FC = () => {
                             <>
                               <Avatar
                                 name={creator?.UserProfile?.name || `User #${activeRoom.createdBy}`}
-                                src={`https://img.heroui.chat/image/avatar?w=200&h=200&u=${activeRoom.createdBy}`}
+                                src={creator?.UserProfile?.avatarUrl || `https://img.heroui.chat/image/avatar?w=200&h=200&u=${activeRoom.createdBy}`}
                                 size="sm"
                               />
                               <span>{creator?.UserProfile?.name || `User #${activeRoom.createdBy}`}</span>
@@ -506,7 +506,7 @@ export const ChatArea: React.FC = () => {
                               <div className="flex items-center gap-2">
                                 <Avatar
                                   name={member.UserProfile?.name || `User #${member.id}`}
-                                  src={`https://img.heroui.chat/image/avatar?w=200&h=200&u=${member.id}`}
+                                  src={member.UserProfile?.avatarUrl || `https://img.heroui.chat/image/avatar?w=200&h=200&u=${member.id}`}
                                   size="sm"
                                 />
                                 <div>
