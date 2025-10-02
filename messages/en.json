@@ -323,5 +323,29 @@
     "s": "s",
     "selected": "selected",
     "done": "Done"
+  },
+  "ChatArea": {
+    "createdBy": "Created by",
+    "members": "Members",
+    "userPlaceholder": "User",
+    "creatorBadge": "Admin",
+    "close": "Close",
+    "noMessages": "No messages yet",
+    "startConversation": "Start the conversation by sending a message",
+    "noConversationSelected": "No conversation selected",
+    "selectOrCreateChatToStart": "Select a room or user from the sidebar to start chatting, or create a new room to invite team members."
+  },
+  "ChatSidebar": {
+    "chat": "Chat",
+    "searchPlaceholder": "Search users...",
+    "noUsersFound": "No users found",
+    "noUsersAvailable": "No users available",
+    "createNewRoom": "Create New Room",
+    "roomName": "Room Name",
+    "enterRoomName": "Enter room name",
+    "selectMembers": "Select Members",
+    "cancel": "Cancel",
+    "createRoom": "Create Room",
+    "members": "members"
   }
 }

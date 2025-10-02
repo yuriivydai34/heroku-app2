@@ -20,8 +20,11 @@ import { Icon } from "@iconify/react";
 import { useChatContext } from "@/context/chat-context";
 import { useUserContext } from "@/context/user-context";
 import { ChatRoom } from "@/types";
+import { useTranslations } from "next-intl";
 
 export const ChatSidebar: React.FC = () => {
+  const t = useTranslations("ChatSidebar");
+  
   const { 
     rooms, 
     userStatuses, 
@@ -107,7 +110,7 @@ export const ChatSidebar: React.FC = () => {
     <div className="w-72 flex-shrink-0 border-r border-default-200 flex flex-col">
       <div className="p-3 border-b border-default-200">
         <div className="flex justify-between items-center mb-3">
-          <h2 className="text-lg font-semibold">Chat</h2>
+          <h2 className="text-lg font-semibold">{t("chat")}</h2>
           <Button 
             isIconOnly 
             size="sm" 
@@ -120,7 +123,7 @@ export const ChatSidebar: React.FC = () => {
         </div>
         
         <Input
-          placeholder="Search..."
+          placeholder={t("searchPlaceholder")}
           startContent={<Icon icon="lucide:search" className="text-default-400" />}
           size="sm"
           value={searchQuery}
@@ -173,7 +176,7 @@ export const ChatSidebar: React.FC = () => {
                   <div className="text-left truncate">
                     <p className="font-medium truncate">{room.name}</p>
                     <p className="text-xs text-default-500 truncate">
-                      {room.members.length} members
+                      {room.members.length} {t('members')}
                     </p>
                   </div>
                 </Button>
@@ -226,7 +229,7 @@ export const ChatSidebar: React.FC = () => {
             </div>
           ) : (
             <div className="p-4 text-center text-default-400">
-              {searchQuery ? "No users found" : "No users available"}
+              {searchQuery ? t("noUsersFound") : t("noUsersAvailable")}
             </div>
           )
         )}
@@ -237,18 +240,18 @@ export const ChatSidebar: React.FC = () => {
         <ModalContent>
           {(onClose) => (
             <>
-              <ModalHeader>Create New Room</ModalHeader>
+              <ModalHeader>{t("createNewRoom")}</ModalHeader>
               <ModalBody>
                 <Input
-                  label="Room Name"
-                  placeholder="Enter room name"
+                  label={t("roomName")}
+                  placeholder={t("enterRoomName")}
                   value={newRoomName}
                   onChange={(e) => setNewRoomName(e.target.value)}
                 />
                 
                 <Divider className="my-4" />
-                
-                <p className="text-sm font-medium mb-2">Select Members</p>
+
+                <p className="text-sm font-medium mb-2">{t("selectMembers")}</p>
                 <CheckboxGroup
                   value={selectedMembers}
                   onValueChange={setSelectedMembers}
@@ -272,14 +275,14 @@ export const ChatSidebar: React.FC = () => {
               </ModalBody>
               <ModalFooter>
                 <Button variant="flat" onPress={onClose}>
-                  Cancel
+                  {t("cancel")}
                 </Button>
                 <Button 
                   color="primary" 
                   onPress={handleCreateRoom}
                   isDisabled={!newRoomName.trim() || selectedMembers.length === 0}
                 >
-                  Create Room
+                  {t("createRoom")}
                 </Button>
               </ModalFooter>
             </>
