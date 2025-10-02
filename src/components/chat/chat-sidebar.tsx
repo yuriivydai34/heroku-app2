@@ -1,11 +1,11 @@
 import React from "react";
-import {
-  Button,
-  Input,
-  Tabs,
-  Tab,
-  Avatar,
-  Badge,
+import { 
+  Button, 
+  Input, 
+  Tabs, 
+  Tab, 
+  Avatar, 
+  Badge, 
   Divider,
   Modal,
   ModalContent,
@@ -19,15 +19,15 @@ import {
 import { Icon } from "@iconify/react";
 import { useChatContext } from "@/context/chat-context";
 import { useUserContext } from "@/context/user-context";
-import { ChatService } from "@/services/chat-service";
+import { ChatRoom } from "@/types";
 
 export const ChatSidebar: React.FC = () => {
-  const {
-    rooms,
-    userStatuses,
-    activeRoomId,
+  const { 
+    rooms, 
+    userStatuses, 
+    activeRoomId, 
     activeDirectUserId,
-    setActiveRoom,
+    setActiveRoom, 
     setActiveDirectUser,
     getUnreadCount,
     createRoom,
@@ -35,45 +35,44 @@ export const ChatSidebar: React.FC = () => {
   } = useChatContext();
 
   const { users } = useUserContext();
-  const directRooms = ChatService.generateDirectRooms(users);
-
+  
   const [searchQuery, setSearchQuery] = React.useState("");
   const [selectedTab, setSelectedTab] = React.useState("rooms");
   const [newRoomName, setNewRoomName] = React.useState("");
   const [selectedMembers, setSelectedMembers] = React.useState<string[]>([]);
-
-  const {
-    isOpen: isCreateRoomOpen,
-    onOpen: onOpenCreateRoom,
-    onOpenChange: onOpenCreateRoomChange
+  
+  const { 
+    isOpen: isCreateRoomOpen, 
+    onOpen: onOpenCreateRoom, 
+    onOpenChange: onOpenCreateRoomChange 
   } = useDisclosure();
-
+  
   const currentUserId = getCurrentUserId();
-
+  
   // Filter rooms by search query
   const filteredRooms = React.useMemo(() => {
     return rooms
       .filter(room => !room.isDirectMessage) // Only show group rooms
-      .filter(room =>
+      .filter(room => 
         room.name.toLowerCase().includes(searchQuery.toLowerCase())
       );
   }, [rooms, searchQuery]);
-
+  
   // Filter users by search query
   const filteredUsers = React.useMemo(() => {
     return users
       .filter(user => user.id !== currentUserId) // Don't show current user
-      .filter(user =>
-        (user.UserProfile?.name ?? "").toLowerCase().includes(searchQuery.toLowerCase()) ||
-        (user.UserProfile?.role ?? "").toLowerCase().includes(searchQuery.toLowerCase())
+      .filter(user => 
+        user.UserProfile?.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        user.UserProfile?.role?.toLowerCase().includes(searchQuery.toLowerCase())
       );
   }, [searchQuery, currentUserId]);
-
+  
   const getUserStatus = (userId: number) => {
     const status = userStatuses.find(s => s.userId === userId);
     return status?.status || 'offline';
   };
-
+  
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'online': return 'success';
@@ -82,44 +81,44 @@ export const ChatSidebar: React.FC = () => {
       default: return 'default';
     }
   };
-
+  
   const handleCreateRoom = async () => {
     if (!newRoomName.trim()) return;
-
+    
     try {
       const memberIds = selectedMembers.map(id => parseInt(id));
       const newRoom = await createRoom(newRoomName.trim(), memberIds);
-
+      
       // Reset form
       setNewRoomName("");
       setSelectedMembers([]);
-
+      
       // Close modal
       onOpenCreateRoomChange(false);
-
+      
       // Set the new room as active
       setActiveRoom(newRoom.id);
     } catch (error) {
       console.error("Failed to create room:", error);
     }
   };
-
+  
   return (
     <div className="w-72 flex-shrink-0 border-r border-default-200 flex flex-col">
       <div className="p-3 border-b border-default-200">
         <div className="flex justify-between items-center mb-3">
           <h2 className="text-lg font-semibold">Chat</h2>
-          <Button
-            isIconOnly
-            size="sm"
-            variant="flat"
+          <Button 
+            isIconOnly 
+            size="sm" 
+            variant="flat" 
             color="primary"
             onPress={onOpenCreateRoom}
           >
             <Icon icon="lucide:plus" />
           </Button>
         </div>
-
+        
         <Input
           placeholder="Search..."
           startContent={<Icon icon="lucide:search" className="text-default-400" />}
@@ -128,9 +127,9 @@ export const ChatSidebar: React.FC = () => {
           onChange={(e) => setSearchQuery(e.target.value)}
         />
       </div>
-
-      <Tabs
-        selectedKey={selectedTab}
+      
+      <Tabs 
+        selectedKey={selectedTab} 
         onSelectionChange={setSelectedTab as any}
         classNames={{
           tabList: "w-full px-2 border-b border-default-200",
@@ -141,7 +140,7 @@ export const ChatSidebar: React.FC = () => {
         <Tab key="rooms" title="Rooms" />
         <Tab key="direct" title="Direct" />
       </Tabs>
-
+      
       <div className="flex-grow overflow-y-auto scrollbar-hidden">
         {selectedTab === "rooms" ? (
           filteredRooms.length > 0 ? (
@@ -150,9 +149,9 @@ export const ChatSidebar: React.FC = () => {
                 <Button
                   key={room.id}
                   className="w-full justify-start h-auto py-2"
-                  variant={activeRoomId === room.id ? "flat" : "light"}
-                  color={activeRoomId === room.id ? "primary" : "default"}
-                  onPress={() => setActiveRoom(room.id)}
+                  variant={activeRoomId === room.id.toString() ? "flat" : "light"}
+                  color={activeRoomId === room.id.toString() ? "primary" : "default"}
+                  onPress={() => setActiveRoom(room.id.toString())}
                   startContent={
                     <div className="relative">
                       <Avatar
@@ -160,9 +159,9 @@ export const ChatSidebar: React.FC = () => {
                         size="sm"
                         className="bg-primary-100"
                       />
-                      {getUnreadCount(room.id) > 0 && (
+                      {getUnreadCount(room.id.toString()) > 0 && (
                         <Badge
-                          content={getUnreadCount(room.id)}
+                          content={getUnreadCount(room.id.toString())}
                           color="danger"
                           size="sm"
                           className="absolute -top-1 -right-1"
@@ -190,7 +189,7 @@ export const ChatSidebar: React.FC = () => {
             <div className="p-2 space-y-1">
               {filteredUsers.map((user) => {
                 const status = getUserStatus(user.id);
-
+                
                 return (
                   <Button
                     key={user.id}
@@ -232,7 +231,7 @@ export const ChatSidebar: React.FC = () => {
           )
         )}
       </div>
-
+      
       {/* Create Room Modal */}
       <Modal isOpen={isCreateRoomOpen} onOpenChange={onOpenCreateRoomChange}>
         <ModalContent>
@@ -246,9 +245,9 @@ export const ChatSidebar: React.FC = () => {
                   value={newRoomName}
                   onChange={(e) => setNewRoomName(e.target.value)}
                 />
-
+                
                 <Divider className="my-4" />
-
+                
                 <p className="text-sm font-medium mb-2">Select Members</p>
                 <CheckboxGroup
                   value={selectedMembers}
@@ -275,8 +274,8 @@ export const ChatSidebar: React.FC = () => {
                 <Button variant="flat" onPress={onClose}>
                   Cancel
                 </Button>
-                <Button
-                  color="primary"
+                <Button 
+                  color="primary" 
                   onPress={handleCreateRoom}
                   isDisabled={!newRoomName.trim() || selectedMembers.length === 0}
                 >

@@ -31,7 +31,7 @@ export interface Comment {
 }
 
 export interface Message {
-  id: string;
+  id: number;
   content: string;
   senderId: number;
   timestamp: string;
@@ -108,6 +108,7 @@ export interface UserProfileData {
 export interface UserData {
   id: number;
   username: string;
+  status: UserStatus['status'];
   UserProfile?: UserProfileData;
 }
 

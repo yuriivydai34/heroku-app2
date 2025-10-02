@@ -1,11 +1,12 @@
 import React from "react";
-import { Message, ChatRoom, UserStatus, UploadedFile } from "../types";
-import { ChatService } from "../services/chat-service";
+import { Message, ChatRoom, UserStatus, UploadedFile, UserData } from "@/types";
+import { ChatService } from "@/services/chat-service";
 import { useFileContext } from "./file-context";
 
 interface ChatContextType {
   messages: Message[];
   rooms: ChatRoom[];
+  users: UserData[];
   userStatuses: UserStatus[];
   activeRoomId: string | null;
   activeDirectUserId: number | null;
@@ -27,6 +28,7 @@ interface ChatContextType {
 const ChatContext = React.createContext<ChatContextType>({
   messages: [],
   rooms: [],
+  users: [],
   userStatuses: [],
   activeRoomId: null,
   activeDirectUserId: null,
@@ -78,7 +80,7 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({ children
       // Mark messages as read
       const unreadMessageIds = fetchedMessages
         .filter(m => !m.isRead && m.senderId !== currentUserId)
-        .map(m => m.id);
+        .map(m => String(m.id));
       
       if (unreadMessageIds.length > 0) {
         await ChatService.markAsRead(unreadMessageIds);

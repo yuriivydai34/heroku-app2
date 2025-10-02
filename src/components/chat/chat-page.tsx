@@ -11,7 +11,7 @@ export const ChatPage: React.FC = () => {
   return (
     <div className="flex h-[calc(100vh-13rem)] min-h-[500px]">
       <ChatSidebar />
-
+      
       <div className="flex-grow border-l border-default-200">
         {hasActiveChat ? (
           <ChatArea />

@@ -1,166 +1,132 @@
-import { Message, ChatRoom, UserStatus, UserData } from "../types";
+import { Message, ChatRoom, UserStatus, UserData } from "@/types";
 import authService from "./auth.service";
-import userService from "./user.service";
 
-const baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:3000";
-
-let userStatuses: UserStatus[] = [];
-let rooms: ChatRoom[] = [];
+const baseUrl = `${process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:3000"}`;
 
 export const ChatService = {
-  generateDirectRooms: (users: UserData[]): ChatRoom[] => {
-    users.forEach((user, i) => {
-      users.slice(i + 1).forEach(otherUser => {
-        const dmRoomId = `dm-${user.id}-${otherUser.id}`;
-        rooms.push({
-          id: dmRoomId,
-          name: `${user.UserProfile?.name} & ${otherUser.UserProfile?.name}`,
-          createdBy: user.id,
-          createdAt: new Date(Date.now() - 3600000 * 100).toISOString(),
-          members: [user.id, otherUser.id],
-          isDirectMessage: true
-        });
-      });
-    });
-    return rooms;
-  },
   // Get messages for a specific room or direct conversation
   getMessages: async (roomId?: string, userId?: number, otherUserId?: number): Promise<Message[]> => {
-    const response = await fetch(`${baseUrl}/message/${roomId ? `room/${roomId}` : `users/${userId}/${otherUserId}`}`, {
-      method: 'GET',
-      headers: authService.getAuthHeaders()
-    });
+    const response = await fetch(
+      roomId
+        ? `${baseUrl}/message/room/${roomId}`
+        : `${baseUrl}/message/users/${userId}/${otherUserId}`,
+      {
+        method: "GET",
+        headers: authService.getAuthHeaders(),
+      }
+    );
+    if (!response.ok) return Promise.reject(new Error("Failed to fetch messages"));
     return response.json();
   },
 
   // Send a new message
-  sendMessage: async (message: Omit<Message, 'timestamp' | 'isRead'>): Promise<Message> => {
+  sendMessage: async (message: Omit<Message, 'id' | 'timestamp' | 'isRead'>): Promise<Message> => {
     const response = await fetch(`${baseUrl}/message`, {
-      method: 'POST',
+      method: "POST",
       headers: authService.getAuthHeaders(),
-      body: JSON.stringify({
-        ...message,
-        timestamp: new Date().toISOString(),
-        isRead: false
-      })
+      body: JSON.stringify(message)
     });
+    if (!response.ok) return Promise.reject(new Error("Failed to send message"));
     return response.json();
   },
 
   // Mark messages as read
   markAsRead: async (messageIds: string[]): Promise<boolean> => {
     const response = await fetch(`${baseUrl}/message/read`, {
-      method: 'POST',
+      method: "PUT",
       headers: authService.getAuthHeaders(),
       body: JSON.stringify({ messageIds })
     });
-    return response.ok;
+    return response.json();
   },
 
   // Get all chat rooms
   getRooms: async (): Promise<ChatRoom[]> => {
     const response = await fetch(`${baseUrl}/chat-room`, {
-      method: 'GET',
-      headers: authService.getAuthHeaders()
+      method: "GET",
+      headers: authService.getAuthHeaders(),
     });
     return response.json();
   },
 
   // Create a new chat room
-  createRoom: async (room: Omit<ChatRoom, 'createdAt'>): Promise<ChatRoom> => {
+  createRoom: async (room: Omit<ChatRoom, 'id' | 'createdAt'>): Promise<ChatRoom> => {
     const response = await fetch(`${baseUrl}/chat-room`, {
-      method: 'POST',
+      method: "POST",
       headers: authService.getAuthHeaders(),
       body: JSON.stringify(room)
     });
+    if (!response.ok) return Promise.reject(new Error("Failed to create room"));
     return response.json();
+    // This is where you would emit a socket.io event
+    // socket.emit('new_room', newRoom);
   },
 
   // Add members to a room
   addRoomMembers: async (roomId: string, memberIds: number[]): Promise<ChatRoom> => {
-    const response = await fetch(`${baseUrl}/chat-room/${roomId}/add-members`, {
-      method: 'PUT',
+    const response = await fetch(`${baseUrl}/chat-room/${roomId}/members`, {
+      method: "POST",
       headers: authService.getAuthHeaders(),
       body: JSON.stringify({ memberIds })
     });
+    if (!response.ok) return Promise.reject(new Error("Failed to add room members"));
+
+    // This is where you would emit a socket.io event
+    // socket.emit('room_members_updated', { roomId, members: updatedMembers });
+
     return response.json();
   },
 
   // Remove members from a room
   removeRoomMembers: async (roomId: string, memberIds: number[]): Promise<ChatRoom> => {
-    const response = await fetch(`${baseUrl}/chat-room/${roomId}/remove-members`, {
-      method: 'PUT',
+    const response = await fetch(`${baseUrl}/chat-room/${roomId}/members`, {
+      method: "DELETE",
       headers: authService.getAuthHeaders(),
       body: JSON.stringify({ memberIds })
     });
-    return response.json(); 
+    if (!response.ok) return Promise.reject(new Error("Failed to remove room members"));
+
+    // This is where you would emit a socket.io event
+    // socket.emit('room_members_updated', { roomId, members: updatedMembers });
+
+    return response.json();
   },
 
   // Get user statuses
   getUserStatuses: async (): Promise<UserStatus[]> => {
-    const response = await userService.getUsers({});
-    userStatuses = response.map(user => ({
+    const response = await fetch(`${baseUrl}/users`, {
+      method: "GET",
+      headers: authService.getAuthHeaders(),
+    });
+    const users: UserData[] = await response.json();
+    return users.map(user => ({
       userId: user.id,
-      status: Math.random() > 0.3 ? 'online' : 'offline',
+      status: user.status,
       lastSeen: new Date().toISOString()
     }));
-    return userStatuses;
-  },
-
-  // Update user status
-  updateUserStatus: (userId: number, status: 'online' | 'offline' | 'away' | 'busy'): Promise<UserStatus> => {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        const userIndex = userStatuses.findIndex(u => u.userId === userId);
-
-        if (userIndex === -1) {
-          // Create new status if it doesn't exist
-          const newStatus: UserStatus = {
-            userId,
-            status,
-            lastSeen: new Date().toISOString()
-          };
-
-          userStatuses = [...userStatuses, newStatus];
-
-          // This is where you would emit a socket.io event
-          // socket.emit('user_status_changed', newStatus);
-
-          resolve(newStatus);
-          return;
-        }
-
-        const updatedStatus: UserStatus = {
-          ...userStatuses[userIndex],
-          status,
-          lastSeen: new Date().toISOString()
-        };
-
-        userStatuses = [
-          ...userStatuses.slice(0, userIndex),
-          updatedStatus,
-          ...userStatuses.slice(userIndex + 1)
-        ];
-
-        // This is where you would emit a socket.io event
-        // socket.emit('user_status_changed', updatedStatus);
-
-        resolve(updatedStatus);
-      }, 200);
-    });
   },
 
   // Get direct message room ID for two users
-  getDirectMessageRoomId: (userId1: number, userId2: number): Promise<string | null> => {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        // Sort user IDs to ensure consistent room ID
-        const [smallerId, largerId] = [userId1, userId2].sort((a, b) => a - b);
-        const dmRoomId = `dm-${smallerId}-${largerId}`;
+  getDirectMessageRoomId: async (userId1: number, userId2: number): Promise<string | null> => {
+    const [smallerId, largerId] = [userId1, userId2].sort((a, b) => a - b);
+    const dmRoomId = `dm-${smallerId}-${largerId}`;
 
-        const room = rooms.find(r => r.id === dmRoomId);
-        resolve(room ? room.id : null);
-      }, 100);
+    const response = await fetch(`${baseUrl}/chat-room/${dmRoomId}`, {
+      method: "GET",
+      headers: authService.getAuthHeaders(),
     });
+    if (!response.ok) return Promise.reject(new Error("Failed to fetch direct message room"));
+
+    let data: any = {};
+    const text = await response.text();
+    if (text) {
+      data = JSON.parse(text);
+    }
+
+    if (data.roomId === dmRoomId) {
+      return dmRoomId;
+    } else {
+      return null;
+    }
   }
 };
