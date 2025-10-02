@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import authService from '../../services/auth.service';
 import { Button, Input, Card } from '@heroui/react';
 import { LoginFormData, LoginFormErrors } from '@/types';
+import { useTranslations } from 'next-intl';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -12,6 +13,8 @@ export default function LoginPage() {
     username: '',
     password: '',
   });
+  
+  const t = useTranslations('LoginPage');
 
   const [errors, setErrors] = useState<LoginFormErrors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -22,12 +25,12 @@ export default function LoginPage() {
 
     // Username validation
     if (!formData.username.trim()) {
-      newErrors.username = 'Username is required';
+      newErrors.username = t('usernameRequired');
     }
 
     // Password validation
     if (!formData.password) {
-      newErrors.password = 'Password is required';
+      newErrors.password = t('passwordRequired');
     }
 
     setErrors(newErrors);
@@ -67,10 +70,10 @@ export default function LoginPage() {
       });
 
       if (!result.success) {
-        throw new Error(result.message || 'Login failed');
+        throw new Error(result.message || t('loginFailed'));
       }
 
-      setSubmitMessage('Login successful! Redirecting...');
+      setSubmitMessage(t('loginSuccess'));
 
       // Redirect to dashboard after successful login
       setTimeout(() => {
@@ -78,7 +81,7 @@ export default function LoginPage() {
       }, 1000);
 
     } catch (error) {
-      setSubmitMessage(error instanceof Error ? error.message : 'Login failed. Please try again.');
+      setSubmitMessage(error instanceof Error ? error.message : t('loginFailed'));
     } finally {
       setIsSubmitting(false);
     }
@@ -92,15 +95,15 @@ export default function LoginPage() {
     <div className="min-h-screen flex items-center justify-center bg-content1 text-content1 transition-colors">
       <Card className="max-w-md w-full p-8 bg-content2 text-content1 shadow-xl">
         <h2 className="mb-8 text-center text-3xl font-extrabold" style={{ color: "#000" }}>
-          Увійдіть до системи
+          {t('loginTitle')}
         </h2>
         <form onSubmit={handleSubmit} className="space-y-6">
           <Input
-            label="Користувач"
+            label={t('usernameLabel')}
             name="username"
             value={formData.username}
             onChange={handleInputChange}
-            placeholder="Введіть ім'я користувача"
+            placeholder={t('usernamePlaceholder')}
             isRequired
             color={errors.username ? "danger" : "default"}
             variant="bordered"
@@ -111,12 +114,12 @@ export default function LoginPage() {
             <div className="text-sm text-danger">{errors.username}</div>
           )}
           <Input
-            label="Пароль"
+            label={t('passwordLabel')}
             name="password"
             type="password"
             value={formData.password}
             onChange={handleInputChange}
-            placeholder="Введіть пароль"
+            placeholder={t('passwordPlaceholder')}
             isRequired
             color={errors.password ? "danger" : "default"}
             variant="bordered"
@@ -131,7 +134,7 @@ export default function LoginPage() {
             className="w-full"
             isLoading={isSubmitting}
           >
-            {isSubmitting ? 'Входимо...' : 'Увійти'}
+            {isSubmitting ? t('loggingIn') : t('loginButton')}
           </Button>
           {submitMessage && (
             <div className={`text-center text-sm ${submitMessage.includes('successful') ? 'text-success' : 'text-danger'}`}>
@@ -141,7 +144,7 @@ export default function LoginPage() {
         </form>
         <div className="mt-6 text-center">
           <span className="text-sm" style={{ color: "#000" }}>
-            Ще не зареєстровані?{' '}
+            {t('notRegistered')}{' '}
           </span>
           <Button
             variant="light"
@@ -149,7 +152,7 @@ export default function LoginPage() {
             onClick={handleRegisterRedirect}
             className="font-medium underline"
           >
-            Створіть користувача
+            {t('registerHere')}
           </Button>
         </div>
       </Card>

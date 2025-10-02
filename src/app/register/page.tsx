@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import authService from '@/services/auth.service';
 import { Button, Input, Card } from '@heroui/react';
+import { useTranslations } from 'next-intl';
 
 interface FormData {
   username: string;
@@ -25,6 +26,8 @@ export default function RegisterPage() {
     confirmPassword: '',
   });
 
+  const t = useTranslations('RegisterPage');
+
   const [errors, setErrors] = useState<FormErrors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitMessage, setSubmitMessage] = useState('');
@@ -33,21 +36,21 @@ export default function RegisterPage() {
     const newErrors: FormErrors = {};
 
     if (!formData.username.trim()) {
-      newErrors.username = 'Username is required';
+      newErrors.username = t('usernameRequired');
     } else if (formData.username.length < 3) {
-      newErrors.username = 'Username must be at least 3 characters long';
+      newErrors.username = t('usernameMinLength');
     }
 
     if (!formData.password) {
-      newErrors.password = 'Password is required';
+      newErrors.password = t('passwordRequired');
     } else if (formData.password.length < 6) {
-      newErrors.password = 'Password must be at least 6 characters long';
+      newErrors.password = t('passwordMinLength');
     }
 
     if (!formData.confirmPassword) {
-      newErrors.confirmPassword = 'Please confirm your password';
+      newErrors.confirmPassword = t('confirmPasswordRequired');
     } else if (formData.password !== formData.confirmPassword) {
-      newErrors.confirmPassword = 'Passwords do not match';
+      newErrors.confirmPassword = t('passwordsDoNotMatch');
     }
 
     setErrors(newErrors);
@@ -84,10 +87,10 @@ export default function RegisterPage() {
       });
 
       if (!result.success) {
-        throw new Error(result.message || 'Registration failed');
+        throw new Error(result.message || t('registrationFailed'));
       }
 
-      setSubmitMessage('Registration successful! Redirecting to login...');
+      setSubmitMessage(t('registrationSuccess'));
       setFormData({
         username: '',
         password: '',
@@ -99,7 +102,7 @@ export default function RegisterPage() {
       }, 2000);
 
     } catch (error) {
-      setSubmitMessage(error instanceof Error ? error.message : 'Registration failed. Please try again.');
+      setSubmitMessage(error instanceof Error ? error.message : t('registrationFailed'));
     } finally {
       setIsSubmitting(false);
     }
@@ -113,15 +116,15 @@ export default function RegisterPage() {
     <div className="min-h-screen flex items-center justify-center bg-content1">
       <Card>
         <h2 className="mb-8 text-center text-3xl font-extrabold" style={{ color: "#000" }}>
-          Реєстрація
+          {t('title')}
         </h2>
         <form onSubmit={handleSubmit}>
           <Input
-            label="Користувач"
+            label={t('usernameLabel')}
             name="username"
             value={formData.username}
             onChange={handleInputChange}
-            placeholder="Введіть ім'я користувача"
+            placeholder={t('usernamePlaceholder')}
             isRequired
             color={errors.username ? "danger" : "default"}
             variant="bordered"
@@ -129,24 +132,24 @@ export default function RegisterPage() {
           />
           {errors.username && <div style={{ color: "#d32f2f" }}>{errors.username}</div>}
           <Input
-            label="Пароль"
+            label={t('passwordLabel')}
             name="password"
             type="password"
             value={formData.password}
             onChange={handleInputChange}
-            placeholder="Введіть пароль"
+            placeholder={t('passwordPlaceholder')}
             isRequired
             color={errors.password ? "danger" : "default"}
             variant="bordered"
           />
           {errors.password && <div style={{ color: "#d32f2f" }}>{errors.password}</div>}
           <Input
-            label="Підтвердіть пароль"
+            label={t('confirmPasswordLabel')}
             name="confirmPassword"
             type="password"
             value={formData.confirmPassword}
             onChange={handleInputChange}
-            placeholder="Підтвердіть ваш пароль"
+            placeholder={t('confirmPasswordPlaceholder')}
             isRequired
             color={errors.confirmPassword ? "danger" : "default"}
             variant="bordered"
@@ -158,7 +161,7 @@ export default function RegisterPage() {
             isLoading={isSubmitting}
             className="w-full"
           >
-            {isSubmitting ? 'Створюємо...' : 'Створити користувача'}
+            {isSubmitting ? t('creatingUser') : t('createUser')}
           </Button>
           {submitMessage && <div className="text-center" style={{ color: submitMessage.includes('successful') ? "#388e3c" : "#d32f2f" }}>
             {submitMessage}
@@ -166,7 +169,7 @@ export default function RegisterPage() {
         </form>
         <div className="mt-6 text-center">
           <span className="text-sm" style={{ color: "#000" }}>
-            Вже є зареєструвались?{' '}
+            {t('alreadyRegistered')}{' '}
           </span>
           <Button
             variant="light"
@@ -174,7 +177,7 @@ export default function RegisterPage() {
             onClick={handleLoginRedirect}
             className="font-medium underline"
           >
-            Увійти
+            {t('loginTitle')}
           </Button>
         </div>
       </Card>

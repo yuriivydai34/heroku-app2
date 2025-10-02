@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Button, Card, CardBody, Input } from "@heroui/react";
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter } from "@heroui/react";
 import { useUserContext } from "@/context/user-context";
+import { useTranslations } from 'next-intl';
 
 interface ProfileModalProps {
   isOpen: boolean;
