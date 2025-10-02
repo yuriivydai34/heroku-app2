@@ -285,7 +285,8 @@ export const TaskForm: React.FC<TaskFormProps> = ({ task, onClose }) => {
       </div>
 
       {/* File Selection Modal */}
-      <Modal isOpen={isFileModalOpen} onOpenChange={onFileModalOpenChange} size="3xl">
+      <Modal isOpen={isFileModalOpen} onOpenChange={onFileModalOpenChange} size="lg" className="max-w-xl"
+        scrollBehavior="inside">
         <ModalContent>
           {(onClose) => (
             <>

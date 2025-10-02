@@ -215,7 +215,7 @@ export const TaskList: React.FC = () => {
       )}
 
       {/* Create Task Modal */}
-      <Modal isOpen={isCreateOpen} onOpenChange={onCreateOpenChange} size="3xl">
+      <Modal isOpen={isCreateOpen} onOpenChange={onCreateOpenChange} size="lg" className="max-w-xl" scrollBehavior="inside">
         <ModalContent>
           {(onClose) => (
             <>
@@ -229,7 +229,7 @@ export const TaskList: React.FC = () => {
       </Modal>
 
       {/* Edit Task Modal */}
-      <Modal isOpen={isEditOpen} onOpenChange={onEditOpenChange} size="3xl">
+      <Modal isOpen={isEditOpen} onOpenChange={onEditOpenChange} size="lg" className="max-w-xl" scrollBehavior="inside">
         <ModalContent>
           {(onClose) => (
             <>
@@ -243,7 +243,7 @@ export const TaskList: React.FC = () => {
       </Modal>
 
       {/* View Task Modal */}
-      <Modal isOpen={isViewOpen} onOpenChange={onViewOpenChange} size="3xl">
+      <Modal isOpen={isViewOpen} onOpenChange={onViewOpenChange} size="lg" className="max-w-xl" scrollBehavior="inside">
         <ModalContent>
           {(onClose) => (
             <>
