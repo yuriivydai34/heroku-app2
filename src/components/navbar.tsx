@@ -17,10 +17,12 @@ import {
 import { Icon } from "@iconify/react";
 import { LanguageSwitcher } from "./language-switcher";
 import { useUserContext } from "@/context/user-context";
+import { useNotificationContext } from "@/context/notification-context";
 
 interface NavbarComponentProps {
   onLogout: () => void;
   onOpenProfile: () => void;
+  onOpenNotification: () => void;
 }
 
 const ThemeSwitcher: React.FC = () => {
@@ -57,8 +59,9 @@ const ThemeSwitcher: React.FC = () => {
   );
 };
 
-export const NavbarComponent: React.FC<NavbarComponentProps> = ({ onLogout, onOpenProfile }) => {
+export const NavbarComponent: React.FC<NavbarComponentProps> = ({ onLogout, onOpenProfile, onOpenNotification }) => {
   const { profile } = useUserContext();
+  const { notifications } = useNotificationContext();
 
   return (
     <Navbar maxWidth="xl" isBordered>
@@ -72,6 +75,21 @@ export const NavbarComponent: React.FC<NavbarComponentProps> = ({ onLogout, onOp
           <Link color="foreground" href="#" aria-current="page">
             Dashboard
           </Link>
+          <Button
+            variant="light"
+            color="primary"
+            size="sm"
+            startContent={<Icon icon="lucide:bell" />}
+            onPress={onOpenNotification}
+            aria-label="Open notifications"
+            className="mx-2"
+          >
+            Notifications {notifications.filter(n => !n.read).length > 0 && (
+              <span className="ml-1 inline-block bg-danger text-white text-xs font-bold px-2 py-0.5 rounded-full">
+                {notifications.filter(n => !n.read).length}
+              </span>
+            )}
+          </Button>
         </NavbarItem>
       </NavbarContent>
 

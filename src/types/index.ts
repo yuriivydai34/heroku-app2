@@ -110,3 +110,11 @@ export interface UserData {
   username: string;
   UserProfile?: UserProfileData;
 }
+
+export interface Notification {
+  id: string;
+  content: string;
+  userId: number;
+  read: boolean;
+  createdAt: string;
+}

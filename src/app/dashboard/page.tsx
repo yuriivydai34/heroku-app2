@@ -16,6 +16,8 @@ import { useTranslations } from 'next-intl';
 import { ChecklistProvider } from "@/context/checklist-context";
 import { UserProvider } from "@/context/user-context";
 import ProfileModal from "@/components/profile-modal";
+import { NotificationProvider } from "@/context/notification-context";
+import NotificationModal from "@/components/notification-modal";
 
 export default function App() {
   const router = useRouter();
@@ -24,6 +26,11 @@ export default function App() {
   const {
     isOpen: isProfileOpen,
     onOpenChange: onProfileOpenChange
+  } = useDisclosure();
+
+    const {
+    isOpen: isNotificationOpen,
+    onOpenChange: onNotificationOpenChange
   } = useDisclosure();
 
   const t = useTranslations('DashboardPage');
@@ -38,6 +45,7 @@ export default function App() {
 
   return (
     <UserProvider>
+      <NotificationProvider>
       <ChecklistProvider>
         <FileProvider>
           <TaskProvider>
@@ -45,13 +53,14 @@ export default function App() {
               <ChatProvider>
                 <div className="min-h-screen bg-background p-4 md:p-8">
                   {/* Navbar */}
-                  <NavbarComponent onLogout={handleLogout} onOpenProfile={onProfileOpenChange} />
+                  <NavbarComponent onLogout={handleLogout} onOpenProfile={onProfileOpenChange} onOpenNotification={onNotificationOpenChange} />
 
                   {/* Main Content */}
                   <div className="container mx-auto max-w-6xl">
                     <h1 className="text-3xl font-semibold mb-6">{t('title')}</h1>
 
                     <ProfileModal isOpen={isProfileOpen} onOpenChange={onProfileOpenChange} />
+                    <NotificationModal isOpen={isNotificationOpen} onOpenChange={onNotificationOpenChange} />
                     <Card className="mb-8">
                       <CardBody className="p-0">
                         <Tabs
@@ -91,6 +100,7 @@ export default function App() {
           </TaskProvider>
         </FileProvider>
       </ChecklistProvider>
+      </NotificationProvider>
     </UserProvider>
   );
 }
