@@ -93,7 +93,7 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-content1 text-content1 transition-colors">
-      <Card className="max-w-md w-full p-8 bg-content2 text-content1 shadow-xl">
+      <Card>
         <h2 className="mb-8 text-center text-3xl font-extrabold" style={{ color: "#000" }}>
           {t('loginTitle')}
         </h2>
@@ -107,7 +107,6 @@ export default function LoginPage() {
             isRequired
             color={errors.username ? "danger" : "default"}
             variant="bordered"
-            className="w-full"
             autoFocus
           />
           {errors.username && (
@@ -123,7 +122,6 @@ export default function LoginPage() {
             isRequired
             color={errors.password ? "danger" : "default"}
             variant="bordered"
-            className="w-full"
           />
           {errors.password && (
             <div className="text-sm text-danger">{errors.password}</div>

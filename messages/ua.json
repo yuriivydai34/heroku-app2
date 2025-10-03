@@ -9,7 +9,7 @@
   },
   "RegisterPage": {
     "title": "Реєстрація",
-    "loginTitle": "Створіть свій обліковий запис",
+    "loginTitle": "Увійти до свого облікового запису",
     "description": "Створіть новий обліковий запис",
     "nameLabel": "Ім'я",
     "emailLabel": "Email",

@@ -9,7 +9,7 @@
   },
   "RegisterPage": {
     "title": "Register",
-    "loginTitle": "Create your account",
+    "loginTitle": "Log in to your account",
     "description": "Create a new account",
     "nameLabel": "Name",
     "emailLabel": "Email",
