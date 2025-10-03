@@ -5,18 +5,18 @@ import React from "react";
 export const ThemeSwitcher: React.FC = () => {
   const [theme, setTheme] = React.useState<'light' | 'dark'>('light');
 
-  // On mount, set theme from localStorage or system preference
+  // On mount, set theme from localStorage or default to light
   React.useEffect(() => {
     const savedTheme = localStorage.getItem("theme") as 'light' | 'dark' | null;
-    let isDark: boolean;
-    if (savedTheme) {
-      isDark = savedTheme === "dark";
-    } else {
-      isDark = window.matchMedia("(prefers-color-scheme: dark)").matches ||
-        document.documentElement.classList.contains("dark");
+    const finalTheme = savedTheme || 'light'; // Default to 'light' instead of system preference
+    
+    setTheme(finalTheme);
+    document.documentElement.classList.toggle("dark", finalTheme === "dark");
+    
+    // Save the default if no theme was saved
+    if (!savedTheme) {
+      localStorage.setItem("theme", 'light');
     }
-    setTheme(isDark ? "dark" : "light");
-    document.documentElement.classList.toggle("dark", isDark);
   }, []);
 
   const handleToggleTheme = () => {

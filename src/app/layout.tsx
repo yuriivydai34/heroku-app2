@@ -20,18 +20,38 @@ export const metadata: Metadata = {
   description: "CRM задачі",
 };
 
+// Theme initialization script
+const themeScript = `
+  (function() {
+    const savedTheme = localStorage.getItem('theme');
+    const theme = savedTheme || 'light';
+    if (theme === 'dark') {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  })();
+`;
+
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark">
+    <html lang="en" suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <Providers>
-          <AuthGuard><NextIntlClientProvider>{children}</NextIntlClientProvider></AuthGuard>
+          <AuthGuard>
+            <NextIntlClientProvider>
+              {children}
+            </NextIntlClientProvider>
+          </AuthGuard>
         </Providers>
       </body>
     </html>

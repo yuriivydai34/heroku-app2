@@ -15,13 +15,20 @@ const setLocale = (locale: string) => {
 };
 
 export const LanguageSwitcher: React.FC = () => {
-  const [locale, setLocaleState] = useState('en');
+  const [locale, setLocaleState] = useState('ua');
 
   const localeLabel = locale === 'ua' ? 'Українська' : 'English';
 
   useEffect(() => {
     const match = document.cookie.match(/(?:^|; )locale=([^;]*)/);
-    setLocaleState(match ? match[1] : 'en');
+    const currentLocale = match ? match[1] : 'ua';
+
+    // Set default cookie if none exists
+    if (!match) {
+      document.cookie = `locale=ua; path=/`;
+    }
+
+    setLocaleState(currentLocale);
   }, []);
 
   return (
