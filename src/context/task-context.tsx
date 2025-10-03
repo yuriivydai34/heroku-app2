@@ -1,5 +1,5 @@
 import React from "react";
-import { Task, TaskSort } from "../types";
+import { Task, TaskRequest, TaskSort } from "../types";
 import { TaskService } from "../services/task-service";
 
 interface TaskContextType {
@@ -49,7 +49,7 @@ export const TaskProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   }, []);
 
-  const createTask = React.useCallback(async (task: Task) => {
+  const createTask = React.useCallback(async (task: TaskRequest) => {
     setLoading(true);
     setError(null);
     try {
@@ -64,7 +64,7 @@ export const TaskProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   }, []);
 
-  const updateTask = React.useCallback(async (task: Task) => {
+  const updateTask = React.useCallback(async (task: TaskRequest) => {
     setLoading(true);
     setError(null);
     try {

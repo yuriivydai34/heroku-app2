@@ -1,4 +1,4 @@
-import { Task, TaskSort } from "@/types";
+import { Task, TaskRequest, TaskSort } from "@/types";
 import authService from "./auth.service";
 
 const baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3000';
@@ -47,12 +47,11 @@ export const TaskService = {
   },
 
   // Create a new task
-  createTask: async (task: Task): Promise<Task> => {
-    const fileIds = task.files?.map(file => file.id) || [];
+  createTask: async (task: TaskRequest): Promise<Task> => {
     const response = await fetch(`${baseUrl}/tasks`, {
       method: 'POST',
       headers: authService.getAuthHeaders(),
-      body: JSON.stringify({ ...task, files: fileIds }),
+      body: JSON.stringify(task),
     });
 
     if (!response.ok) {
@@ -64,7 +63,7 @@ export const TaskService = {
   },
 
   // Update an existing task
-  updateTask: async (task: Task): Promise<Task> => {
+  updateTask: async (task: TaskRequest): Promise<Task> => {
     const response = await fetch(`${baseUrl}/tasks/${task.id}`, {
       method: 'PUT',
       headers: authService.getAuthHeaders(),

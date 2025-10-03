@@ -12,6 +12,18 @@ export interface Task {
   files?: UploadedFile[];
 }
 
+export interface TaskRequest {
+  id?: string;
+  title: string;
+  description?: string;
+  active?: boolean;
+  deadline?: string;
+  userIdCreator?: number;
+  usersIdAssociate: number[];
+  userIdSupervisor: number;
+  files?: number[]; // Array of file IDs
+}
+
 export interface UploadedFile {
   id?: number;
   filename: string;

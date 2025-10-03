@@ -21,7 +21,7 @@ import {
   CardBody
 } from "@heroui/react";
 import { Icon } from "@iconify/react";
-import { Task, UploadedFile } from "@/types";
+import { Task, TaskRequest, UploadedFile } from "@/types";
 import { useTaskContext } from "@/context/task-context";
 import { useFileContext } from "@/context/file-context";
 import { FileUploader } from "../file-uploader";
@@ -165,10 +165,10 @@ export const TaskForm: React.FC<TaskFormProps> = ({ task, onClose }) => {
 
     try {
       // Add selected files to the task
-      const taskWithFiles: Task = {
+      const taskWithFiles: TaskRequest = {
         ...formData,
         userIdSupervisor: Number(formData.userIdSupervisor),
-        files: selectedFiles
+        files: selectedFiles.map(f => f.id)
       };
 
       if (isEditMode) {
