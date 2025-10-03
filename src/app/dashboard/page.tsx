@@ -30,7 +30,7 @@ export default function App() {
     onOpenChange: onProfileOpenChange
   } = useDisclosure();
 
-    const {
+  const {
     isOpen: isNotificationOpen,
     onOpenChange: onNotificationOpenChange
   } = useDisclosure();
@@ -48,67 +48,67 @@ export default function App() {
   return (
     <UserProvider>
       <NotificationProvider>
-      <ChecklistProvider>
-        <FileProvider>
-          <TaskTemplateProvider>
-          <TaskProvider>
-            <CommentProvider>
-              <ChatProvider>
-                <div className="min-h-screen bg-background p-4 md:p-8">
-                  {/* Navbar */}
-                  <NavbarComponent onLogout={handleLogout} onOpenProfile={onProfileOpenChange} onOpenNotification={onNotificationOpenChange} />
+        <ChecklistProvider>
+          <FileProvider>
+            <TaskTemplateProvider>
+              <TaskProvider>
+                <CommentProvider>
+                  <ChatProvider>
+                    <div className="min-h-screen bg-background p-4 md:p-8">
+                      {/* Navbar */}
+                      <NavbarComponent onLogout={handleLogout} onOpenProfile={onProfileOpenChange} onOpenNotification={onNotificationOpenChange} />
 
-                  {/* Main Content */}
-                  <div className="container mx-auto max-w-6xl">
-                    <h1 className="text-3xl font-semibold mb-6">{t('title')}</h1>
+                      {/* Main Content */}
+                      <div className="container mx-auto max-w-6xl">
+                        <h1 className="text-3xl font-semibold mb-6">{t('title')}</h1>
 
-                    <ProfileModal isOpen={isProfileOpen} onOpenChange={onProfileOpenChange} />
-                    <NotificationModal isOpen={isNotificationOpen} onOpenChange={onNotificationOpenChange} />
-                    <Card className="mb-8">
-                      <CardBody className="p-0">
-                        <Tabs
-                          selectedKey={selected}
-                          onSelectionChange={setSelected as any}
-                          classNames={{
-                            base: "w-full",
-                            tabList: "w-full bg-content2 p-0",
-                            tab: "h-14",
-                            tabContent: "group-data-[selected=true]:text-primary",
-                            cursor: "bg-primary",
-                          }}
-                        >
-                          <Tab key="tasks" title={t("tasks")}>
-                            <div className="p-4">
-                              <TaskList />
-                            </div>
-                          </Tab>
-                          <Tab key="templates" title={t("templates")}>
-                            <div className="p-4">
-                              <TaskTemplateList />
-                            </div>
-                          </Tab>
-                          <Tab key="files" title={t("files")}>
-                            <div className="p-4">
-                              <FileManager />
-                            </div>
-                          </Tab>
-                          <Tab key="chat" title={t("chat")}>
-                            <div className="p-0">
-                              <ChatPage />
-                            </div>
-                          </Tab>
-                        </Tabs>
-                      </CardBody>
-                    </Card>
+                        <ProfileModal isOpen={isProfileOpen} onOpenChange={onProfileOpenChange} />
+                        <NotificationModal isOpen={isNotificationOpen} onOpenChange={onNotificationOpenChange} />
+                        <Card className="mb-8">
+                          <CardBody className="p-0">
+                            <Tabs
+                              selectedKey={selected}
+                              onSelectionChange={setSelected as any}
+                              classNames={{
+                                base: "w-full",
+                                tabList: "w-full bg-content2 p-0",
+                                tab: "h-14",
+                                tabContent: "group-data-[selected=true]:text-primary group-data-[selected=true]:font-bold group-data-[selected=true]:!text-black", // <-- add !text-black or another readable color
+                                cursor: "bg-primary",
+                              }}
+                            >
+                              <Tab key="tasks" title={t("tasks")}>
+                                <div className="p-4">
+                                  <TaskList />
+                                </div>
+                              </Tab>
+                              <Tab key="templates" title={t("templates")}>
+                                <div className="p-4">
+                                  <TaskTemplateList />
+                                </div>
+                              </Tab>
+                              <Tab key="files" title={t("files")}>
+                                <div className="p-4">
+                                  <FileManager />
+                                </div>
+                              </Tab>
+                              <Tab key="chat" title={t("chat")}>
+                                <div className="p-0">
+                                  <ChatPage />
+                                </div>
+                              </Tab>
+                            </Tabs>
+                          </CardBody>
+                        </Card>
 
-                  </div>
-                </div>
-              </ChatProvider>
-            </CommentProvider>
-          </TaskProvider>
-          </TaskTemplateProvider>
-        </FileProvider>
-      </ChecklistProvider>
+                      </div>
+                    </div>
+                  </ChatProvider>
+                </CommentProvider>
+              </TaskProvider>
+            </TaskTemplateProvider>
+          </FileProvider>
+        </ChecklistProvider>
       </NotificationProvider>
     </UserProvider>
   );
