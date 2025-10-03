@@ -53,6 +53,17 @@ export interface Message {
   files?: UploadedFile[];
 }
 
+export interface MessageRequest {
+  id: number;
+  content: string;
+  senderId: number;
+  timestamp: string;
+  roomId?: string;
+  receiverId?: number;
+  isRead: boolean;
+  files?: number[];
+}
+
 export interface ChatRoom {
   id: string;
   name: string;

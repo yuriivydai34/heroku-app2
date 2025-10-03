@@ -1,5 +1,5 @@
 import React from "react";
-import { Message, ChatRoom, UserStatus, UploadedFile, UserData } from "@/types";
+import { Message, ChatRoom, UserStatus, UploadedFile, UserData, MessageRequest } from "@/types";
 import { ChatService, socket } from "@/services/chat-service";
 import { useFileContext } from "./file-context";
 
@@ -13,7 +13,7 @@ interface ChatContextType {
   unreadCounts: Record<string, number>;
   loading: boolean;
   error: string | null;
-  sendMessage: (content: string, files?: UploadedFile[]) => Promise<Message>;
+  sendMessage: (content: string, files?: number[]) => Promise<Message>;
   fetchMessages: (roomId?: string, otherUserId?: number) => Promise<void>;
   fetchRooms: () => Promise<void>;
   fetchUserStatuses: () => Promise<void>;
@@ -123,11 +123,11 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   }, []);
   
-  const sendMessage = React.useCallback(async (content: string, files?: UploadedFile[]): Promise<Message> => {
+  const sendMessage = React.useCallback(async (content: string, files?: number[]): Promise<Message> => {
     setLoading(true);
     setError(null);
     try {
-      let newMessage: Omit<Message, 'id' | 'timestamp' | 'isRead'>;
+      let newMessage: Omit<MessageRequest, 'id' | 'timestamp' | 'isRead'>;
       
       if (activeRoomId) {
         newMessage = {

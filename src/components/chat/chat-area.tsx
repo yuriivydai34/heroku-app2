@@ -24,6 +24,8 @@ import { Message, UploadedFile } from "@/types";
 import { useUserContext } from "@/context/user-context";
 import { useTranslations } from "next-intl";
 
+const baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3000';
+
 export const ChatArea: React.FC = () => {
   const {
     messages,
@@ -103,7 +105,12 @@ export const ChatArea: React.FC = () => {
     if (!messageText.trim() && selectedFiles.length === 0) return;
 
     try {
-      await sendMessage(messageText, selectedFiles.length > 0 ? selectedFiles : undefined);
+      await sendMessage(
+        messageText,
+        selectedFiles.length > 0
+          ? selectedFiles.map(file => file.id).filter((id): id is number => id !== undefined)
+          : undefined
+      );
       setMessageText("");
     } catch (error) {
       console.error(t("sendMessageFailed"), error);
@@ -299,7 +306,7 @@ export const ChatArea: React.FC = () => {
                                         {formatFileSize(file.size)}
                                       </span>
                                       <a
-                                        href={file.url}
+                                        href={baseUrl + '/' + file.url}
                                         target="_blank"
                                         rel="noopener noreferrer"
                                         className={isCurrentUser ? 'text-white' : 'text-primary'}

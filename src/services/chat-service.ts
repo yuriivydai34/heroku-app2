@@ -1,4 +1,4 @@
-import { Message, ChatRoom, UserStatus, UserData } from "@/types";
+import { Message, ChatRoom, UserStatus, UserData, MessageRequest } from "@/types";
 import authService from "./auth.service";
 
 import { io, Socket } from "socket.io-client";
@@ -28,7 +28,7 @@ export const ChatService = {
   },
 
   // Send a new message
-  sendMessage: async (message: Omit<Message, 'id' | 'timestamp' | 'isRead'>): Promise<Message> => {
+  sendMessage: async (message: Omit<MessageRequest, 'id' | 'timestamp' | 'isRead'>): Promise<Message> => {
     socket.emit('new_message', message); // Emit via socket.io for real-time updates
     
     const response = await fetch(`${baseUrl}/message`, {

@@ -376,7 +376,12 @@
     "noConversationSelected": "No conversation selected",
     "selectOrCreateChatToStart": "Select a room or user from the sidebar to start chatting, or create a new room to invite team members.",
     "done": "Add",
-    "typeMessage": "Type a message..."
+    "typeMessage": "Type a message...",
+    "attachFiles": "Attach files",
+    "selectFiles": "Select files to attach",
+    "file": "file",
+    "s": "s",
+    "selected": "selected"
   },
   "ChatSidebar": {
     "chat": "Chat",
