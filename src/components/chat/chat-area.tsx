@@ -371,7 +371,7 @@ export const ChatArea: React.FC = () => {
           </Button>
 
           <Textarea
-            placeholder="Type a message..."
+            placeholder={t("typeMessage")}
             value={messageText}
             onChange={(e) => setMessageText(e.target.value)}
             onKeyDown={handleKeyPress}
