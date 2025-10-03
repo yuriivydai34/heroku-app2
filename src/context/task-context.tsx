@@ -8,8 +8,8 @@ interface TaskContextType {
   error: string | null;
   selectedTask: Task | null;
   fetchTasks: ({ sortBy, sortOrder }: TaskSort) => Promise<void>;
-  createTask: (task: Task) => Promise<Task>;
-  updateTask: (task: Task) => Promise<Task>;
+  createTask: (task: TaskRequest) => Promise<Task>;
+  updateTask: (task: TaskRequest) => Promise<Task>;
   deleteTask: (id: string) => Promise<boolean>;
   selectTask: (task: Task | null) => void;
   handleSort: (column: string) => void;

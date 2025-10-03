@@ -39,7 +39,7 @@ interface TaskFormProps {
 
 export const TaskForm: React.FC<TaskFormProps> = ({ task, onClose }) => {
   const { users } = useUserContext();
-  const { createTask, updateTask } = useTaskContext();
+  const { createTask, updateTask, fetchTasks } = useTaskContext();
   const { files, selectedFiles, setSelectedFiles, clearSelectedFiles, toggleFileSelection } = useFileContext();
   const [templateSelected, setTemplateSelected] = React.useState<TaskTemplateData | null>(null);
   const { templates } = useTaskTemplateContext();
@@ -168,7 +168,7 @@ export const TaskForm: React.FC<TaskFormProps> = ({ task, onClose }) => {
       const taskWithFiles: TaskRequest = {
         ...formData,
         userIdSupervisor: Number(formData.userIdSupervisor),
-        files: selectedFiles.map(f => f.id)
+        files: selectedFiles.map(f => f.id).filter((id): id is number => typeof id === "number")
       };
 
       if (isEditMode) {
@@ -176,7 +176,7 @@ export const TaskForm: React.FC<TaskFormProps> = ({ task, onClose }) => {
       } else {
         await createTask(taskWithFiles);
       }
-
+      await fetchTasks({ sortBy: 'createdAt', sortOrder: 'desc' }); // Refresh task list
       onClose();
     } catch (error) {
       console.error(t('errorSavingTask'), error);
