@@ -25,10 +25,18 @@ interface NavbarComponentProps {
   onLogout: () => void;
   onOpenProfile: () => void;
   onOpenNotification: () => void;
+  onOpenAdmin?: () => void;
 }
 
-export const NavbarComponent: React.FC<NavbarComponentProps> = ({ onLogout, onOpenProfile, onOpenNotification }) => {
-  const { profile } = useUserContext();
+export const NavbarComponent: React.FC<NavbarComponentProps> = ({ onLogout, onOpenProfile, onOpenNotification, onOpenAdmin }) => {
+  const { profile, currentUser } = useUserContext();
+
+  // Ensure currentUser is typed correctly
+  type User = {
+    role?: string;
+    [key: string]: any;
+  };
+  const typedCurrentUser = currentUser as User | undefined;
   const { notifications } = useNotificationContext();
 
   const t = useTranslations('Navbar');
@@ -42,7 +50,7 @@ export const NavbarComponent: React.FC<NavbarComponentProps> = ({ onLogout, onOp
 
       <NavbarContent className="hidden sm:flex gap-4" justify="center">
         <NavbarItem isActive>
-          <Link color="foreground" href="#" aria-current="page">
+          <Link color="foreground" href="/dashboard" aria-current="page">
             {t('home')}
           </Link>
           <Button
@@ -79,10 +87,15 @@ export const NavbarComponent: React.FC<NavbarComponentProps> = ({ onLogout, onOp
                 src={profile?.avatarUrl}
               />
             </DropdownTrigger>
-            <DropdownMenu aria-label="Profile Actions" variant="flat">
-              <DropdownItem key="profile" className="h-14 gap-2" onClick={onOpenProfile}>
-                <p className="font-semibold">{t('profile')}</p>
-                <p className="font-semibold">{profile?.name}</p>
+            <DropdownMenu>
+              {typedCurrentUser?.role === 'admin' ? (
+                <DropdownItem key="role" className="h-14 gap-2" onClick={onOpenAdmin}>
+                  <p className="font-semibold">{t('admin')}</p>
+                </DropdownItem>
+              ) : null}
+              <DropdownItem key="profile" startContent={<Icon icon="lucide:user" />} onClick={onOpenProfile}>
+                {t('profile')}
+                <p><span className="text-xs text-muted-foreground">{profile?.name}</span></p>
               </DropdownItem>
               <DropdownItem key="logout" color="danger" startContent={<Icon icon="lucide:log-out" />} onClick={onLogout}>
                 {t('logout')}

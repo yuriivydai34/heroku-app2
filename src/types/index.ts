@@ -131,6 +131,7 @@ export interface UserProfileData {
 export interface UserData {
   id: number;
   username: string;
+  role: 'user' | 'admin';
   status: UserStatus['status'];
   UserProfile?: UserProfileData;
 }

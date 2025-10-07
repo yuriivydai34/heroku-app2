@@ -82,7 +82,11 @@
     "dashboard": "Dashboard",
     "profile": "Profile",
     "logout": "Logout",
-    "notifications": "Notifications"
+    "notifications": "Notifications",
+    "admin": "Admin Panel"
+  },
+  "AdminPage": {
+    "title": "Admin Panel"
   },
   "NotificationModal": {
     "notificationsTitle": "Notifications",

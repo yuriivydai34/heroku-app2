@@ -82,7 +82,11 @@
     "dashboard": "Панель",
     "profile": "Профіль",
     "logout": "Вийти з системи",
-    "notifications": "Сповіщення"
+    "notifications": "Сповіщення",
+    "admin": "Адмін Панель"
+  },
+  "AdminPage": {
+    "title": "Адмін Панель"
   },
   "NotificationModal": {
     "notificationsTitle": "Сповіщення",
