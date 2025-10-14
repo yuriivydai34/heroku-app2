@@ -20,17 +20,41 @@ export const TaskChecklists: React.FC<{ taskId?: string, readOnly?: boolean }> =
   };
 
   const handleDeleteChecklist = async (idx: number) => {
-    // Remove from local state
-    setChecklists((prev) => prev.filter((_, i) => i !== idx));
+    const checklist = checklists[idx];
+    
+    // If checklist has an ID, it exists in the backend and should be deleted
+    if (checklist.id) {
+      try {
+        await deleteChecklist(checklist.id);
+        // The context's deleteChecklist function will handle state update
+      } catch (error) {
+        console.error("Failed to delete checklist:", error);
+        return; // Don't remove from local state if backend deletion failed
+      }
+    } else {
+      // For new checklists without ID, just remove from local state
+      setChecklists((prev) => prev.filter((_, i) => i !== idx));
+    }
   };
 
   const handleUpdateChecklist = async (idx: number, updatedChecklist: any) => {
-    // Update local state
+    const checklist = checklists[idx];
+    
+    // Update local state first
     setChecklists((prev) =>
       prev.map((cl, i) =>
         i === idx ? { ...cl, ...updatedChecklist } : cl
       )
     );
+
+    // If checklist has an ID, update it in the backend
+    if (checklist.id && taskId) {
+      try {
+        await updateChecklist(checklist.id, { ...checklist, ...updatedChecklist, taskId: Number(taskId) });
+      } catch (error) {
+        console.error("Failed to update checklist:", error);
+      }
+    }
   };
 
   const setChecklistItems = (idx: number, items: any[]) => {
