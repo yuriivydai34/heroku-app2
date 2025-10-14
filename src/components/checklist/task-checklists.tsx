@@ -4,7 +4,7 @@ import { TaskChecklist } from "./task-checklist";
 import { useChecklistContext } from "@/context/checklist-context";
 import { useTranslations } from 'next-intl';
 
-export const TaskChecklists: React.FC<{ taskId?: string }> = ({ taskId }) => {
+export const TaskChecklists: React.FC<{ taskId?: string, readOnly?: boolean }> = ({ taskId, readOnly }) => {
   const { checklists, setChecklists, fetchChecklists, createChecklists, updateChecklist, deleteChecklist } = useChecklistContext();
   
   const t = useTranslations('TaskChecklists');
@@ -45,7 +45,10 @@ export const TaskChecklists: React.FC<{ taskId?: string }> = ({ taskId }) => {
 
   return (
     <div>
-      <Button variant="light" onPress={createChecklist}>{t('addChecklistButton')}</Button>
+      {readOnly ? null: (<Button 
+        variant="light" 
+        onPress={createChecklist}
+        >{t('addChecklistButton')}</Button>)}
       <div id="checklists">
         {checklists.map((checklist, idx) => (
           <div key={checklist.id || idx} className="mb-4 p-4 border rounded-lg">
@@ -57,19 +60,21 @@ export const TaskChecklists: React.FC<{ taskId?: string }> = ({ taskId }) => {
                 size="sm"
                 variant="underlined"
                 className="flex-1"
+                disabled={readOnly}
               />
-              <Button 
+              {readOnly ? null: (<Button 
                 variant="light" 
                 color="danger" 
                 size="sm"
                 onPress={() => handleDeleteChecklist(idx)}
               >
                 {t('deleteButton')}
-              </Button>
+              </Button>)}
             </div>
             <TaskChecklist
               checklistItems={checklist.checklistItems ?? []}
               setChecklistItems={(items) => setChecklistItems(idx, items)}
+              readOnly={readOnly}
             />
           </div>
         ))}

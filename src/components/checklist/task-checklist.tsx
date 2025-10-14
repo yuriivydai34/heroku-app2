@@ -5,9 +5,10 @@ import { useTranslations } from 'next-intl';
 type TaskChecklistProps = {
   checklistItems: ChecklistItem[];
   setChecklistItems: (items: ChecklistItem[]) => void;
+  readOnly?: boolean;
 };
 
-export const TaskChecklist: React.FC<TaskChecklistProps> = ({ checklistItems, setChecklistItems }) => {
+export const TaskChecklist: React.FC<TaskChecklistProps> = ({ checklistItems, setChecklistItems, readOnly }) => {
   const t = useTranslations('TaskChecklists');
 
   const addChecklist = () => {
@@ -48,6 +49,7 @@ export const TaskChecklist: React.FC<TaskChecklistProps> = ({ checklistItems, se
                   ? updateItem(item.id, { completed: !item.completed })
                   : updateItem(idx, { completed: !item.completed }, true)
               }
+              disabled={readOnly}
             />
             <input
               type="text"
@@ -57,8 +59,10 @@ export const TaskChecklist: React.FC<TaskChecklistProps> = ({ checklistItems, se
                   ? updateItem(item.id, { text: e.target.value })
                   : updateItem(idx, { text: e.target.value }, true)
               }
+              style={item.completed ? { textDecoration: 'line-through' } : undefined}
+              disabled={readOnly}
             />
-            <Button
+            {readOnly ? null: (<Button
               variant="light"
               color="danger"
               onPress={() =>
@@ -67,20 +71,21 @@ export const TaskChecklist: React.FC<TaskChecklistProps> = ({ checklistItems, se
                   : setChecklistItems(checklistItems.filter((_, i) => i !== idx))
               }
               title={t('deleteButton')}
+              disabled={readOnly}
             >
               🗑️
-            </Button>
+            </Button>)}
           </li>
         ))}
       </ul>
-      <Button
+      {readOnly ? null: (<Button
         variant="light"
         color="default"
         onPress={addChecklist}
         title={t('addChecklistItem')}
       >
         {t('addChecklistItem')}
-      </Button>
+      </Button>)}
     </div>
   );
 };

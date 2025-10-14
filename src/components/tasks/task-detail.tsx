@@ -139,7 +139,7 @@ export const TaskDetail: React.FC<TaskDetailProps> = ({ task }) => {
       <div>
         <h3 className="text-lg font-semibold mb-4">{t('checklists')}</h3>
         <ChecklistProvider>
-          <TaskChecklists taskId={task.id!} />
+          <TaskChecklists taskId={task.id!} readOnly={true} />
         </ChecklistProvider>
       </div>
 
