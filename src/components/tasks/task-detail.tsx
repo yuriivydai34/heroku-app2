@@ -7,6 +7,7 @@ import { CommentProvider } from "@/context/comment-context";
 import { CommentForm } from "@/components/comments/comment-form";
 import { CommentList } from "@/components/comments/comment-list";
 import { useUserContext } from "@/context/user-context";
+import { ChecklistProvider } from "@/context/checklist-context";
 import { TaskChecklists } from "../checklist/task-checklists";
 import { useTranslations } from 'next-intl';
 
@@ -135,7 +136,12 @@ export const TaskDetail: React.FC<TaskDetailProps> = ({ task }) => {
       
       <Divider />
 
-      <TaskChecklists />
+      <div>
+        <h3 className="text-lg font-semibold mb-4">{t('checklists')}</h3>
+        <ChecklistProvider>
+          <TaskChecklists taskId={task.id!} />
+        </ChecklistProvider>
+      </div>
 
       <Divider />
       

@@ -4,10 +4,16 @@ import { TaskChecklist } from "./task-checklist";
 import { useChecklistContext } from "@/context/checklist-context";
 import { useTranslations } from 'next-intl';
 
-export const TaskChecklists: React.FC = () => {
-  const { checklists, setChecklists, createChecklists, updateChecklist, deleteChecklist } = useChecklistContext();
+export const TaskChecklists: React.FC<{ taskId?: string }> = ({ taskId }) => {
+  const { checklists, setChecklists, fetchChecklists, createChecklists, updateChecklist, deleteChecklist } = useChecklistContext();
   
   const t = useTranslations('TaskChecklists');
+
+  React.useEffect(() => {
+    if (taskId && taskId !== "" && !isNaN(Number(taskId))) {
+      fetchChecklists(Number(taskId));
+    }
+  }, [taskId, fetchChecklists]);
 
   const createChecklist = () => {
     setChecklists((prev) => [...prev, { title: `Checklist ${prev.length + 1}` }]);

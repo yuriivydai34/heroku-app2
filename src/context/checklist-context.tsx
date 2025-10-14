@@ -1,6 +1,6 @@
 'use client';
 
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useState, useCallback } from "react";
 import taskChecklistService from "@/services/task-checklist.service";
 import { Checklist } from "@/types";
 
@@ -18,29 +18,29 @@ const ChecklistContext = createContext<ChecklistContextType | undefined>(undefin
 export const ChecklistProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [checklists, setChecklists] = useState<Checklist[]>([]);
 
-  const fetchChecklists = async (taskId: number) => {
+  const fetchChecklists = useCallback(async (taskId: number) => {
     const res = await taskChecklistService.getTaskChecklists(taskId);
     setChecklists(Array.isArray(res.data) ? res.data : []);
-  };
+  }, []);
 
-  const createChecklists = async (taskId: number) => {
+  const createChecklists = useCallback(async (taskId: number) => {
     const newChecklists = checklists.map(cl => ({ ...cl, taskId }));
     const result = await taskChecklistService.createTaskChecklist(newChecklists);
     if (!result.success) {
       console.error("Error creating checklist:", result.message);
       // Optionally show toast here
     }
-  };
+  }, [checklists]);
 
-  const updateChecklist = async (checklistId: number, checklist: Checklist) => {
+  const updateChecklist = useCallback(async (checklistId: number, checklist: Checklist) => {
     await taskChecklistService.updateTaskChecklist(String(checklistId), checklist);
     // Optionally refetch or update state
-  };
+  }, []);
 
-  const deleteChecklist = async (checklistId: number) => {
+  const deleteChecklist = useCallback(async (checklistId: number) => {
     await taskChecklistService.deleteTaskChecklist(String(checklistId));
     setChecklists(prev => prev.filter(cl => cl.id !== checklistId));
-  };
+  }, []);
 
   return (
     <ChecklistContext.Provider

@@ -29,6 +29,7 @@ import { format } from "date-fns";
 import { TaskChecklists } from "../checklist/task-checklists";
 import { useUserContext } from "@/context/user-context";
 import { useTaskTemplateContext } from "@/context/task-template-context";
+import { useChecklistContext } from "@/context/checklist-context";
 import { TaskTemplateData } from "@/types";
 import { useTranslations } from 'next-intl';
 
@@ -41,6 +42,7 @@ export const TaskForm: React.FC<TaskFormProps> = ({ task, onClose }) => {
   const { users } = useUserContext();
   const { createTask, updateTask, fetchTasks } = useTaskContext();
   const { files, selectedFiles, setSelectedFiles, clearSelectedFiles, toggleFileSelection } = useFileContext();
+  const { createChecklists } = useChecklistContext();
   const [templateSelected, setTemplateSelected] = React.useState<TaskTemplateData | null>(null);
   const { templates } = useTaskTemplateContext();
 
@@ -171,11 +173,19 @@ export const TaskForm: React.FC<TaskFormProps> = ({ task, onClose }) => {
         files: selectedFiles.map(f => f.id).filter((id): id is number => typeof id === "number")
       };
 
+      let createdOrUpdatedTask: Task;
+
       if (isEditMode) {
-        await updateTask(taskWithFiles);
+        createdOrUpdatedTask = await updateTask(taskWithFiles);
       } else {
-        await createTask(taskWithFiles);
+        createdOrUpdatedTask = await createTask(taskWithFiles);
+        
+        // Create checklists for the new task if task ID is available
+        if (createdOrUpdatedTask.id) {
+          await createChecklists(Number(createdOrUpdatedTask.id));
+        }
       }
+      
       await fetchTasks({ sortBy: 'createdAt', sortOrder: 'desc' }); // Refresh task list
       onClose();
     } catch (error) {
@@ -330,7 +340,7 @@ export const TaskForm: React.FC<TaskFormProps> = ({ task, onClose }) => {
 
       <Divider />
 
-      <TaskChecklists />
+      <TaskChecklists taskId={formData.id ? String(formData.id) : undefined} />
 
       <div>
         <div className="flex justify-between items-center mb-2">
