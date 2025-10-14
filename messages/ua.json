@@ -99,6 +99,7 @@
     "deleteButton": "Видалити",
     "addChecklistButton": "Додати список перевірки",
     "checklistTitle": "Список перевірки {title}",
+    "checklistTitlePlaceholder": "Введіть назву списку перевірки...",
     "addChecklistItem": "Додати пункт списку перевірки",
     "itemPlaceholder": "Опис пункту списку перевірки",
     "itemRequired": "Пункт списку перевірки не може бути порожнім",

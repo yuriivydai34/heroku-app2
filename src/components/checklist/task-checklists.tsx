@@ -1,5 +1,5 @@
 import React from "react";
-import { Button } from "@heroui/react";
+import { Button, Input } from "@heroui/react";
 import { TaskChecklist } from "./task-checklist";
 import { useChecklistContext } from "@/context/checklist-context";
 import { useTranslations } from 'next-intl';
@@ -19,12 +19,28 @@ export const TaskChecklists: React.FC<{ taskId?: string }> = ({ taskId }) => {
     setChecklists((prev) => [...prev, { title: `Checklist ${prev.length + 1}` }]);
   };
 
-  const setChecklistItems = (idx: number, items: any[]) => {
+  const handleDeleteChecklist = async (idx: number) => {
+    // Remove from local state
+    setChecklists((prev) => prev.filter((_, i) => i !== idx));
+  };
+
+  const handleUpdateChecklist = async (idx: number, updatedChecklist: any) => {
+    // Update local state
     setChecklists((prev) =>
-      prev.map((checklist, i) =>
-        i === idx ? { ...checklist, checklistItems: items } : checklist
+      prev.map((cl, i) =>
+        i === idx ? { ...cl, ...updatedChecklist } : cl
       )
     );
+  };
+
+  const setChecklistItems = (idx: number, items: any[]) => {
+    const updatedData = { checklistItems: items };
+    handleUpdateChecklist(idx, updatedData);
+  };
+
+  const handleTitleChange = (idx: number, title: string) => {
+    const updatedData = { title };
+    handleUpdateChecklist(idx, updatedData);
   };
 
   return (
@@ -32,10 +48,25 @@ export const TaskChecklists: React.FC<{ taskId?: string }> = ({ taskId }) => {
       <Button variant="light" onPress={createChecklist}>{t('addChecklistButton')}</Button>
       <div id="checklists">
         {checklists.map((checklist, idx) => (
-          <div key={idx}>
-            {t('checklistTitle', { title: checklist.title })} <Button variant="light" color="danger" onPress={() => {
-              setChecklists((prev) => prev.filter((_, i) => i !== idx));
-            }}>{t('deleteButton')}</Button>
+          <div key={checklist.id || idx} className="mb-4 p-4 border rounded-lg">
+            <div className="flex items-center gap-2 mb-3">
+              <Input
+                value={checklist.title}
+                onChange={(e) => handleTitleChange(idx, e.target.value)}
+                placeholder={t('checklistTitlePlaceholder')}
+                size="sm"
+                variant="underlined"
+                className="flex-1"
+              />
+              <Button 
+                variant="light" 
+                color="danger" 
+                size="sm"
+                onPress={() => handleDeleteChecklist(idx)}
+              >
+                {t('deleteButton')}
+              </Button>
+            </div>
             <TaskChecklist
               checklistItems={checklist.checklistItems ?? []}
               setChecklistItems={(items) => setChecklistItems(idx, items)}

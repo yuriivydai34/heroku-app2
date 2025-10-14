@@ -42,7 +42,7 @@ export const TaskForm: React.FC<TaskFormProps> = ({ task, onClose }) => {
   const { users } = useUserContext();
   const { createTask, updateTask, fetchTasks } = useTaskContext();
   const { files, selectedFiles, setSelectedFiles, clearSelectedFiles, toggleFileSelection } = useFileContext();
-  const { createChecklists } = useChecklistContext();
+  const { createChecklists, checklists, saveAllChanges } = useChecklistContext();
   const [templateSelected, setTemplateSelected] = React.useState<TaskTemplateData | null>(null);
   const { templates } = useTaskTemplateContext();
 
@@ -177,6 +177,11 @@ export const TaskForm: React.FC<TaskFormProps> = ({ task, onClose }) => {
 
       if (isEditMode) {
         createdOrUpdatedTask = await updateTask(taskWithFiles);
+        
+        // Save all checklist changes when updating a task
+        if (createdOrUpdatedTask.id) {
+          await saveAllChanges(Number(createdOrUpdatedTask.id));
+        }
       } else {
         createdOrUpdatedTask = await createTask(taskWithFiles);
         

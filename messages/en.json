@@ -99,6 +99,7 @@
     "deleteButton": "Delete",
     "addChecklistButton": "Add Checklist",
     "checklistTitle": "Checklist {title}",
+    "checklistTitlePlaceholder": "Enter checklist title...",
     "addChecklistItem": "Add Checklist Item",
     "itemPlaceholder": "Checklist item description",
     "itemRequired": "Checklist item cannot be empty",
