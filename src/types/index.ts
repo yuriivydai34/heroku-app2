@@ -155,3 +155,30 @@ export interface TaskSort {
   sortBy: string;
   sortOrder: 'asc' | 'desc';
 }
+
+interface ApiError {
+  statusCode: number;
+  message: string;        // Now always user-friendly and safe
+  timestamp: string;
+  path: string;
+}
+
+// Backup related types
+export interface Backup {
+  id: number;
+  name: string;
+  description?: string;
+  filepath: string;
+  filename: string;
+  size: number;
+  cloudUrl?: string;
+  createdAt: string;
+  updatedAt?: string;
+}
+
+export interface CreateBackupDto {
+  name: string;
+  description?: string;
+}
+
+export interface BackupResponseDto extends Backup {}
