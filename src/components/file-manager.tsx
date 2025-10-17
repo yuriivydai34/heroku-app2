@@ -18,8 +18,7 @@ import { Icon } from "@iconify/react";
 import { useFileContext } from "../context/file-context";
 import { FileUploader } from "./file-uploader";
 import { useTranslations } from "next-intl";
-
-const baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:3000";
+import { getFileUrl, formatFileSize, getFileTypeFromMimetype } from "../utils/file-utils";
 
 export const FileManager: React.FC = () => {
   const {
@@ -50,14 +49,6 @@ export const FileManager: React.FC = () => {
         console.error(t('deleteFailed'), error);
       }
     }
-  };
-
-  // Helper function to format file size
-  const formatFileSize = (bytes: number) => {
-    if (bytes < 1024) return bytes + " B";
-    else if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + " KB";
-    else if (bytes < 1024 * 1024 * 1024) return (bytes / (1024 * 1024)).toFixed(1) + " MB";
-    else return (bytes / (1024 * 1024 * 1024)).toFixed(1) + " GB";
   };
 
   if (error) {
@@ -118,14 +109,12 @@ export const FileManager: React.FC = () => {
                         </div>
 
                         <div className="text-xs text-default-400 mb-3">
-                          {formatFileSize(file.size)} • {typeof file.mimetype === "string" && file.mimetype.includes('/')
-                            ? file.mimetype.split('/')[1].toUpperCase()
-                            : "UNKNOWN"}
+                          {formatFileSize(file.size)} • {getFileTypeFromMimetype(file.mimetype)}
                         </div>
 
                         <div className="flex justify-between">
                           <a
-                            href={`${baseUrl}/${file.url}`}
+                            href={getFileUrl(file.url)}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="text-xs text-primary flex items-center gap-1"

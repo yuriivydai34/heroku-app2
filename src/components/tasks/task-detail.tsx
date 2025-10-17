@@ -10,8 +10,7 @@ import { useUserContext } from "@/context/user-context";
 import { ChecklistProvider } from "@/context/checklist-context";
 import { TaskChecklists } from "../checklist/task-checklists";
 import { useTranslations } from 'next-intl';
-
-const baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:3000";
+import { getFileUrl } from "../../utils/file-utils";
 
 interface TaskDetailProps {
   task: Task;
@@ -172,7 +171,7 @@ export const TaskDetail: React.FC<TaskDetailProps> = ({ task }) => {
                     </div>
                     <div className="flex gap-2">
                       <a 
-                        href={`${baseUrl}/${file.url}`} 
+                        href={getFileUrl(file.url)} 
                         target="_blank" 
                         rel="noopener noreferrer" 
                         className="text-primary"
@@ -189,7 +188,7 @@ export const TaskDetail: React.FC<TaskDetailProps> = ({ task }) => {
                         </Tooltip>
                       </a>
                       <a 
-                        href={`${baseUrl}/${file.url}`} 
+                        href={getFileUrl(file.url)} 
                         target="_blank" 
                         rel="noopener noreferrer" 
                         className="text-primary"

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useBackupContext } from "../../context/backup-context";
 import { CreateBackupDto } from "../../types";
 import { useTranslations } from "next-intl";
+import { formatFileSize } from "../../utils/file-utils";
 
 const BackupComponent = () => {
   const {
@@ -66,19 +67,6 @@ const BackupComponent = () => {
         // Error is handled by context
       }
     }
-  };
-
-  const formatFileSize = (bytes: number): string => {
-    const units = ['B', 'KB', 'MB', 'GB'];
-    let size = bytes;
-    let unitIndex = 0;
-
-    while (size >= 1024 && unitIndex < units.length - 1) {
-      size /= 1024;
-      unitIndex++;
-    }
-
-    return `${size.toFixed(1)} ${units[unitIndex]}`;
   };
 
   const formatDate = (dateString: string): string => {

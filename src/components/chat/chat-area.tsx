@@ -23,8 +23,7 @@ import { useFileContext } from "@/context/file-context";
 import { Message, UploadedFile } from "@/types";
 import { useUserContext } from "@/context/user-context";
 import { useTranslations } from "next-intl";
-
-const baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3000';
+import { getFileUrl, formatFileSize } from "../../utils/file-utils";
 
 export const ChatArea: React.FC = () => {
   const {
@@ -176,14 +175,6 @@ export const ChatArea: React.FC = () => {
     setSelectedFiles(selectedFiles.filter(f => f.id !== file.id));
   };
 
-  // Format file size
-  const formatFileSize = (bytes: number) => {
-    if (bytes < 1024) return bytes + " B";
-    else if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + " KB";
-    else if (bytes < 1024 * 1024 * 1024) return (bytes / (1024 * 1024)).toFixed(1) + " MB";
-    else return (bytes / (1024 * 1024 * 1024)).toFixed(1) + " GB";
-  };
-
   if (error) {
     return (
       <div className="p-4 text-danger">
@@ -306,7 +297,7 @@ export const ChatArea: React.FC = () => {
                                         {formatFileSize(file.size)}
                                       </span>
                                       <a
-                                        href={baseUrl + '/' + file.url}
+                                        href={getFileUrl(file.url)}
                                         target="_blank"
                                         rel="noopener noreferrer"
                                         className={isCurrentUser ? 'text-white' : 'text-primary'}

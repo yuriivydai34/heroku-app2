@@ -14,8 +14,7 @@ import { format } from "date-fns";
 import { useCommentContext } from "@/context/comment-context";
 import { useUserContext } from "@/context/user-context";
 import { useTranslations } from 'next-intl';
-
-const baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:3000";
+import { getFileUrl, formatFileSize } from "../../utils/file-utils";
 
 interface CommentListProps {
   taskId: string;
@@ -57,13 +56,6 @@ export const CommentList: React.FC<CommentListProps> = ({ taskId }) => {
     } catch {
       return dateString;
     }
-  };
-
-  const formatFileSize = (bytes: number) => {
-    if (bytes < 1024) return bytes + " B";
-    else if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + " KB";
-    else if (bytes < 1024 * 1024 * 1024) return (bytes / (1024 * 1024)).toFixed(1) + " MB";
-    else return (bytes / (1024 * 1024 * 1024)).toFixed(1) + " GB";
   };
 
   if (loading && comments.length === 0) {
@@ -147,7 +139,7 @@ export const CommentList: React.FC<CommentListProps> = ({ taskId }) => {
                               {formatFileSize(file.size)}
                             </span>
                             <a
-                              href={`${baseUrl}/${file.url}`}
+                              href={getFileUrl(file.url)}
                               target="_blank"
                               rel="noopener noreferrer"
                               className="text-primary"
