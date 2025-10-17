@@ -88,6 +88,31 @@
   "AdminPage": {
     "title": "Адмін Панель"
   },
+  "BackupPage": {
+    "title": "Резервні копії бази даних",
+    "createBackup": "Створити резервну копію",
+    "createNewBackup": "Створити нову резервну копію",
+    "backupName": "Назва резервної копії",
+    "backupNameRequired": "Назва резервної копії *",
+    "description": "Опис",
+    "enterBackupName": "Введіть назву резервної копії",
+    "enterBackupDescription": "Введіть опис резервної копії (необов'язково)",
+    "creating": "Створення...",
+    "create": "Створити",
+    "cancel": "Скасувати",
+    "loadingBackups": "Завантаження резервних копій...",
+    "noBackupsFound": "Резервні копії не знайдено. Створіть свою першу резервну копію для початку.",
+    "file": "Файл",
+    "size": "Розмір",
+    "created": "Створено",
+    "uploadedToCloud": "✓ Завантажено в хмару",
+    "download": "Завантажити",
+    "uploadToCloud": "Завантажити в хмару",
+    "delete": "Видалити",
+    "confirmDelete": "Ви впевнені, що хочете видалити цю резервну копію?",
+    "errorOccurred": "Виникла помилка",
+    "closeError": "×"
+  },
   "NotificationModal": {
     "notificationsTitle": "Сповіщення",
     "notificationsCount": "{count} Сповіщення",

@@ -88,6 +88,31 @@
   "AdminPage": {
     "title": "Admin Panel"
   },
+  "BackupPage": {
+    "title": "Database Backups",
+    "createBackup": "Create Backup",
+    "createNewBackup": "Create New Backup",
+    "backupName": "Backup Name",
+    "backupNameRequired": "Backup Name *",
+    "description": "Description",
+    "enterBackupName": "Enter backup name",
+    "enterBackupDescription": "Enter backup description (optional)",
+    "creating": "Creating...",
+    "create": "Create",
+    "cancel": "Cancel",
+    "loadingBackups": "Loading backups...",
+    "noBackupsFound": "No backups found. Create your first backup to get started.",
+    "file": "File",
+    "size": "Size",
+    "created": "Created",
+    "uploadedToCloud": "✓ Uploaded to cloud",
+    "download": "Download",
+    "uploadToCloud": "Upload to Cloud",
+    "delete": "Delete",
+    "confirmDelete": "Are you sure you want to delete this backup?",
+    "errorOccurred": "An error occurred",
+    "closeError": "×"
+  },
   "NotificationModal": {
     "notificationsTitle": "Notifications",
     "notificationsCount": "{count} Notifications",
