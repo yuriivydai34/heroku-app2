@@ -1,5 +1,5 @@
 import React from "react";
-import { Backup, CreateBackupDto, BackupResponseDto } from "../types";
+import { Backup, CreateBackupDto, BackupResponseDto, RestoreBackupResponseDto } from "../types";
 import { BackupService } from "../services/backup.service";
 
 interface BackupContextType {
@@ -12,7 +12,9 @@ interface BackupContextType {
   getBackupById: (id: number) => Promise<BackupResponseDto>;
   downloadBackup: (id: number) => Promise<void>;
   uploadToCloud: (id: number) => Promise<BackupResponseDto>;
+  refreshCloudUrl: (id: number) => Promise<BackupResponseDto>;
   deleteBackup: (id: number) => Promise<boolean>;
+  restoreBackup: (id: number) => Promise<RestoreBackupResponseDto>;
   selectBackup: (backup: BackupResponseDto | null) => void;
   clearError: () => void;
 }
@@ -27,7 +29,9 @@ const BackupContext = React.createContext<BackupContextType>({
   getBackupById: async () => ({} as BackupResponseDto),
   downloadBackup: async () => {},
   uploadToCloud: async () => ({} as BackupResponseDto),
+  refreshCloudUrl: async () => ({} as BackupResponseDto),
   deleteBackup: async () => false,
+  restoreBackup: async () => ({} as RestoreBackupResponseDto),
   selectBackup: () => {},
   clearError: () => {},
 });
@@ -120,6 +124,27 @@ export const BackupProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     }
   }, [selectedBackup?.id]);
 
+  const refreshCloudUrl = React.useCallback(async (id: number): Promise<BackupResponseDto> => {
+    setLoading(true);
+    setError(null);
+    try {
+      const updatedBackup = await BackupService.refreshCloudUrl(id);
+      setBackups(prev => prev.map(backup => 
+        backup.id === id ? updatedBackup : backup
+      ));
+      if (selectedBackup?.id === id) {
+        setSelectedBackup(updatedBackup);
+      }
+      return updatedBackup;
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : "Failed to refresh cloud URL";
+      setError(errorMessage);
+      throw new Error(errorMessage);
+    } finally {
+      setLoading(false);
+    }
+  }, [selectedBackup?.id]);
+
   const deleteBackup = React.useCallback(async (id: number): Promise<boolean> => {
     setLoading(true);
     setError(null);
@@ -138,6 +163,21 @@ export const BackupProvider: React.FC<{ children: React.ReactNode }> = ({ childr
       setLoading(false);
     }
   }, [selectedBackup?.id]);
+
+  const restoreBackup = React.useCallback(async (id: number): Promise<RestoreBackupResponseDto> => {
+    setLoading(true);
+    setError(null);
+    try {
+      const result = await BackupService.restoreBackup(id);
+      return result;
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : "Failed to restore backup";
+      setError(errorMessage);
+      throw new Error(errorMessage);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
 
   const selectBackup = React.useCallback((backup: BackupResponseDto | null) => {
     setSelectedBackup(backup);
@@ -158,7 +198,9 @@ export const BackupProvider: React.FC<{ children: React.ReactNode }> = ({ childr
       getBackupById,
       downloadBackup,
       uploadToCloud,
+      refreshCloudUrl,
       deleteBackup,
+      restoreBackup,
       selectBackup,
       clearError,
     }),
@@ -172,7 +214,9 @@ export const BackupProvider: React.FC<{ children: React.ReactNode }> = ({ childr
       getBackupById,
       downloadBackup,
       uploadToCloud,
+      refreshCloudUrl,
       deleteBackup,
+      restoreBackup,
       selectBackup,
       clearError,
     ]

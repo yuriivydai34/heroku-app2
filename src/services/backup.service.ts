@@ -1,4 +1,4 @@
-import { Backup, CreateBackupDto, BackupResponseDto } from "@/types";
+import { Backup, CreateBackupDto, BackupResponseDto, RestoreBackupResponseDto } from "@/types";
 import authService from "./auth.service";
 
 const baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3000';
@@ -89,7 +89,7 @@ export const BackupService = {
     window.URL.revokeObjectURL(url);
   },
 
-  // Upload backup to cloud storage (MinIO)
+  // Upload backup to cloud storage (MinIO) - Note: Now happens automatically during creation
   uploadToCloud: async (id: number): Promise<BackupResponseDto> => {
     const response = await fetch(`${baseUrl}/backups/${id}/upload-cloud`, {
       method: 'POST',
@@ -99,6 +99,21 @@ export const BackupService = {
     if (!response.ok) {
       const errorData = await response.json().catch(() => ({}));
       throw new Error(errorData.message || 'Failed to upload backup to cloud');
+    }
+
+    return await response.json();
+  },
+
+  // Refresh expired cloud URL
+  refreshCloudUrl: async (id: number): Promise<BackupResponseDto> => {
+    const response = await fetch(`${baseUrl}/backups/${id}/refresh-url`, {
+      method: 'POST',
+      headers: authService.getAuthHeaders(),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      throw new Error(errorData.message || 'Failed to refresh cloud URL');
     }
 
     return await response.json();
@@ -114,6 +129,21 @@ export const BackupService = {
     if (!response.ok) {
       const errorData = await response.json().catch(() => ({}));
       throw new Error(errorData.message || 'Failed to delete backup');
+    }
+
+    return await response.json();
+  },
+
+  // Restore backup
+  restoreBackup: async (id: number): Promise<RestoreBackupResponseDto> => {
+    const response = await fetch(`${baseUrl}/backups/${id}/restore`, {
+      method: 'POST',
+      headers: authService.getAuthHeaders(),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      throw new Error(errorData.message || 'Failed to restore backup');
     }
 
     return await response.json();

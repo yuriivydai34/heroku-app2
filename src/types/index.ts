@@ -166,7 +166,6 @@ interface ApiError {
 // Backup related types
 export interface Backup {
   id: number;
-  name: string;
   description?: string;
   filepath: string;
   filename: string;
@@ -177,8 +176,12 @@ export interface Backup {
 }
 
 export interface CreateBackupDto {
-  name: string;
   description?: string;
+}
+
+export interface RestoreBackupResponseDto {
+  message: string;
+  backupInfo: BackupResponseDto;
 }
 
 export interface BackupResponseDto extends Backup {}
