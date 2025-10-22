@@ -1,6 +1,6 @@
 import React from "react";
 import { Message, ChatRoom, UserStatus, UploadedFile, UserData, MessageRequest } from "@/types";
-import { ChatService, socket } from "@/services/chat-service";
+import { ChatService, getSocket } from "@/services/chat-service";
 import { useFileContext } from "./file-context";
 
 interface ChatContextType {
@@ -129,6 +129,13 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({ children
     try {
       let newMessage: Omit<MessageRequest, 'id' | 'timestamp' | 'isRead'>;
       
+      console.log('Sending message with context:', {
+        currentUserId,
+        activeRoomId,
+        activeDirectUserId,
+        content: content.substring(0, 20) + '...'
+      });
+      
       if (activeRoomId) {
         newMessage = {
           content,
@@ -146,6 +153,8 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({ children
       } else {
         throw new Error("No active conversation selected");
       }
+      
+      console.log('Constructed message:', newMessage);
       
       const sentMessage = await ChatService.sendMessage(newMessage);
       setMessages(prev => [...prev, sentMessage]);
@@ -261,12 +270,18 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({ children
     return currentUserId;
   }, [currentUserId]);
   
-  const handleNewMessage = (message: Message) => {
+  const handleNewMessage = React.useCallback((message: Message) => {
+    console.log('handleNewMessage called with:', message);
+    console.log('activeRoomId:', activeRoomId);
+    console.log('activeDirectUserId:', activeDirectUserId);
+    console.log('currentUserId:', currentUserId);
+    
     // If the message belongs to the active room or DM, add it to messages
     if ((activeRoomId && message.roomId === activeRoomId) ||
         (activeDirectUserId && 
          ((message.senderId === activeDirectUserId && message.receiverId === currentUserId) ||
           (message.senderId === currentUserId && message.receiverId === activeDirectUserId)))) {
+      console.log('Adding message to current conversation');
       setMessages(prev => [...prev, message]);
       
       // If the message is from another user, mark it as read
@@ -274,28 +289,66 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({ children
         markMessagesAsRead([String(message.id)]);
       }
     } else {
+      console.log('Message belongs to different conversation, updating unread counts');
+      console.log('Message details:', {
+        messageRoomId: message.roomId,
+        messageSenderId: message.senderId,
+        messageReceiverId: message.receiverId,
+        activeRoomId,
+        activeDirectUserId,
+        currentUserId
+      });
       // Otherwise, just update unread counts
       calculateUnreadCounts();
     }
-  };
+  }, [activeRoomId, activeDirectUserId, currentUserId, markMessagesAsRead, calculateUnreadCounts]);
 
   // Initialize data
   React.useEffect(() => {
     fetchRooms();
     fetchUserStatuses();
     calculateUnreadCounts();
+  }, [fetchRooms, fetchUserStatuses, calculateUnreadCounts]);
 
-    // In a real app, you would set up socket.io listeners here
-    socket.on('new_message', handleNewMessage);
+  // Setup socket listeners (separate effect to handle dependencies properly)
+  React.useEffect(() => {
+    // Only initialize socket in browser environment
+    if (typeof window === 'undefined') {
+      return;
+    }
+
+    // Initialize socket and set up listeners
+    const currentSocket = getSocket();
+    
+    // Add debug listeners to see all events
+    currentSocket.onAny((eventName, ...args) => {
+      console.log('Received socket event:', eventName, args);
+    });
+    
+    // Listen for the correct event name from backend
+    currentSocket.on('message_received', handleNewMessage);
+    
+    // Also try other possible event names as fallback
+    currentSocket.on('new_message', handleNewMessage);
+    currentSocket.on('message', handleNewMessage);
+    currentSocket.on('newMessage', handleNewMessage);
+    
     // socket.on('message_read', handleMessageRead);
     // socket.on('user_status_changed', handleUserStatusChanged);
     
     return () => {
-      socket.off('new_message', handleNewMessage);
-    //   socket.off('message_read', handleMessageRead);
-    //   socket.off('user_status_changed', handleUserStatusChanged);
+      // Only cleanup if we're in browser environment
+      if (typeof window !== 'undefined') {
+        currentSocket.off('message_received', handleNewMessage);
+        currentSocket.off('new_message', handleNewMessage);
+        currentSocket.off('message', handleNewMessage);
+        currentSocket.off('newMessage', handleNewMessage);
+        currentSocket.offAny();
+      }
+    //   currentSocket.off('message_read', handleMessageRead);
+    //   currentSocket.off('user_status_changed', handleUserStatusChanged);
     };
-  }, [fetchRooms, fetchUserStatuses, calculateUnreadCounts]);
+  }, [handleNewMessage]);
   
   const value = {
     messages,
@@ -317,7 +370,7 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({ children
     getUnreadCount,
     markMessagesAsRead,
     getCurrentUserId,
-    socket // Add socket property
+    socket: getSocket() // Add socket property
   };
   
   return (

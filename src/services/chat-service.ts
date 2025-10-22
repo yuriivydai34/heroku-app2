@@ -5,11 +5,88 @@ import { io, Socket } from "socket.io-client";
 
 const baseUrl = `${process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:3000"}`;
 
-export const socket: Socket = io(baseUrl, {
-  auth: {
-    userId: authService.getCurrentUserId()
+let socket: Socket | null = null;
+
+// Initialize socket connection
+const initializeSocket = (): Socket => {
+  const userId = authService.getCurrentUserId();
+  
+  // Always disconnect existing socket when initializing to ensure fresh connection with correct user ID
+  if (socket) {
+    console.log('Disconnecting existing socket for user ID change');
+    socket.disconnect();
+    socket = null;
   }
-});
+  
+  console.log('Initializing socket for user ID:', userId);
+  
+  socket = io(baseUrl, {
+    auth: {
+      userId: userId
+    },
+    transports: ['websocket', 'polling'],
+    timeout: 20000,
+    forceNew: true, // Force new connection
+  });
+  
+  // Add connection event listeners for debugging
+  socket.on('connect', () => {
+    console.log('Socket connected successfully:', socket?.id);
+    console.log('Current user ID:', userId);
+  });
+  
+  socket.on('disconnect', () => {
+    console.log('Socket disconnected');
+  });
+  
+  socket.on('connect_error', (error) => {
+    console.error('Socket connection error:', error);
+  });
+  
+  return socket;
+};
+
+// Get current socket instance
+export const getSocket = (): Socket => {
+  // Don't initialize socket during SSR
+  if (typeof window === 'undefined') {
+    // Return a mock socket for SSR that doesn't do anything
+    return {
+      on: () => {},
+      off: () => {},
+      emit: () => {},
+      onAny: () => {},
+      offAny: () => {},
+      connected: false,
+      id: null,
+    } as any;
+  }
+
+  const currentUserId = authService.getCurrentUserId();
+  
+  // If user ID has changed or no socket exists, create new connection
+  if (!socket || !socket.connected || (socket as any).auth?.userId !== currentUserId) {
+    console.log('Creating new socket connection for user:', currentUserId);
+    return initializeSocket();
+  }
+  
+  return socket;
+};
+
+// Force socket reconnection (useful when user changes)
+export const reconnectSocket = (): Socket => {
+  // Don't do anything during SSR
+  if (typeof window === 'undefined') {
+    return getSocket();
+  }
+  
+  console.log('Forcing socket reconnection');
+  if (socket) {
+    socket.disconnect();
+    socket = null;
+  }
+  return initializeSocket();
+};
 
 export const ChatService = {
   // Get messages for a specific room or direct conversation
@@ -29,7 +106,8 @@ export const ChatService = {
 
   // Send a new message
   sendMessage: async (message: Omit<MessageRequest, 'id' | 'timestamp' | 'isRead'>): Promise<Message> => {
-    socket.emit('new_message', message); // Emit via socket.io for real-time updates
+    const currentSocket = getSocket();
+    currentSocket.emit('new_message', message); // Emit via socket.io for real-time updates
     
     const response = await fetch(`${baseUrl}/message`, {
       method: "POST",
