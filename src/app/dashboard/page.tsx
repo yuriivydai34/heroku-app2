@@ -1,119 +1,15 @@
 'use client';
 
-import React from "react";
-import { Tabs, Tab, Card, CardBody, useDisclosure } from "@heroui/react";
-import { TaskList } from "@/components/tasks/task-list";
-import { FileManager } from "@/components/file-manager";
-import { TaskProvider } from "@/context/task-context";
-import { FileProvider } from "@/context/file-context";
-import { CommentProvider } from "@/context/comment-context";
-import { ChatProvider } from "@/context/chat-context";
-import { ChatPage } from "@/components/chat/chat-page";
-import { NavbarComponent } from "@/components/navbar";
-import { authService } from "@/services/auth.service";
-import { useRouter } from "next/navigation";
-import { useTranslations } from 'next-intl';
-import { ChecklistProvider } from "@/context/checklist-context";
-import { UserProvider } from "@/context/user-context";
-import ProfileModal from "@/components/profile-modal";
-import { NotificationProvider } from "@/context/notification-context";
-import NotificationModal from "@/components/notification-modal";
-import { TaskTemplateList } from "@/components/task-templates/task-template-list";
-import { TaskTemplateProvider } from "@/context/task-template-context";
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 
-export default function App() {
+export default function DashboardPage() {
   const router = useRouter();
 
-  const [selected, setSelected] = React.useState("tasks");
-  const {
-    isOpen: isProfileOpen,
-    onOpenChange: onProfileOpenChange
-  } = useDisclosure();
+  useEffect(() => {
+    // Redirect to the default tab (tasks)
+    router.replace('/dashboard/tasks');
+  }, [router]);
 
-  const {
-    isOpen: isNotificationOpen,
-    onOpenChange: onNotificationOpenChange
-  } = useDisclosure();
-
-  const t = useTranslations('DashboardPage');
-
-  const handleLogout = async () => {
-    // Clear any authentication tokens or session data here
-    await authService.logout();
-
-    // Redirect to login page
-    router.push('/login');
-  }
-
-  const onOpenAdmin = () => {
-    router.push('/admin');
-  }
-
-  return (
-    <UserProvider>
-      <NotificationProvider>
-        <ChecklistProvider>
-          <FileProvider>
-            <TaskTemplateProvider>
-              <TaskProvider>
-                <CommentProvider>
-                  <ChatProvider>
-                    <div className="min-h-screen bg-background p-4 md:p-8">
-                      {/* Navbar */}
-                      <NavbarComponent onLogout={handleLogout} onOpenProfile={onProfileOpenChange} onOpenNotification={onNotificationOpenChange} onOpenAdmin={onOpenAdmin} />
-
-                      {/* Main Content */}
-                      <div className="container mx-auto max-w-6xl">
-                        <h1 className="text-3xl font-semibold mb-6">{t('title')}</h1>
-
-                        <ProfileModal isOpen={isProfileOpen} onOpenChange={onProfileOpenChange} />
-                        <NotificationModal isOpen={isNotificationOpen} onOpenChange={onNotificationOpenChange} />
-                        <Card className="mb-8">
-                          <CardBody className="p-0">
-                            <Tabs
-                              selectedKey={selected}
-                              onSelectionChange={setSelected as any}
-                              classNames={{
-                                base: "w-full",
-                                tabList: "w-full bg-content2 p-0",
-                                tab: "h-14",
-                                tabContent: "group-data-[selected=true]:text-primary group-data-[selected=true]:font-bold group-data-[selected=true]:!text-black", // <-- add !text-black or another readable color
-                                cursor: "bg-primary",
-                              }}
-                            >
-                              <Tab key="tasks" title={t("tasks")}>
-                                <div className="p-4">
-                                  <TaskList />
-                                </div>
-                              </Tab>
-                              <Tab key="templates" title={t("templates")}>
-                                <div className="p-4">
-                                  <TaskTemplateList />
-                                </div>
-                              </Tab>
-                              <Tab key="files" title={t("files")}>
-                                <div className="p-4">
-                                  <FileManager />
-                                </div>
-                              </Tab>
-                              <Tab key="chat" title={t("chat")}>
-                                <div className="p-0">
-                                  <ChatPage />
-                                </div>
-                              </Tab>
-                            </Tabs>
-                          </CardBody>
-                        </Card>
-
-                      </div>
-                    </div>
-                  </ChatProvider>
-                </CommentProvider>
-              </TaskProvider>
-            </TaskTemplateProvider>
-          </FileProvider>
-        </ChecklistProvider>
-      </NotificationProvider>
-    </UserProvider>
-  );
+  return null; // This page will redirect immediately
 }
