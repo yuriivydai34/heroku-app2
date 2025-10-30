@@ -402,5 +402,33 @@
     "members": "Members",
     "rooms": "Rooms",
     "direct": "Direct"
+  },
+  "BackupPage": {
+    "title": "Database Backups",
+    "refresh": "Refresh",
+    "createBackup": "Create Backup",
+    "restoreWarning": "⚠️ Warning: Database restore will replace all current data. This action cannot be undone. Please ensure you have a recent backup before proceeding.",
+    "closeError": "✕",
+    "createNewBackup": "Create New Backup",
+    "description": "Description",
+    "enterBackupDescription": "Enter backup description (optional)",
+    "creating": "Creating...",
+    "create": "Create",
+    "cancel": "Cancel",
+    "loadingBackups": "Loading backups...",
+    "noBackupsFound": "No backups found",
+    "file": "File",
+    "size": "Size",
+    "created": "Created",
+    "storedLocally": "Stored locally",
+    "download": "Download",
+    "dangerZone": "Danger Zone",
+    "restore": "Restore",
+    "delete": "Delete",
+    "confirmDelete": "Are you sure you want to delete this backup? This action cannot be undone.",
+    "confirmRestore": "Are you sure you want to restore this backup? This will replace all current data.",
+    "restoreSuccess": "Database restored successfully from backup: {backupName}",
+    "restoreSuccessWithWarning": "Database was likely restored successfully from backup: {backupName}. The connection was temporarily lost during the process, which is normal.",
+    "restoreSuccessRefreshManually": "Database restore completed successfully. Please refresh this page manually to see updated data."
   }
 }
